@@ -21,6 +21,6 @@ jobs:
           curl -H "Content-Type: application/json" \
           -X POST \
           -d "{
-            \"content\": \"🎮 **Main 업데이트!**\n\n👤 **작성자:** ${AUTHOR}\n📦 **저장소:** ${REPOSITORY}\n💬 **커밋:** ${COMMIT}\n🔗 ${COMMIT_URL}\"
+            \"content\": \"**Main push 알림**\n\n**작성자:** ${AUTHOR}\n**저장소:** ${REPOSITORY}\n**커밋:** ${COMMIT}\n <${COMMIT_URL}>\"
           }" \
           "$DISCORD_WEBHOOK"
