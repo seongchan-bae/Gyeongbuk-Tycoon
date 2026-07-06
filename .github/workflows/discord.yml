@@ -1,0 +1,26 @@
+name: Discord Push Notification
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Discord Notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          AUTHOR: ${{ github.actor }}
+          COMMIT: ${{ github.event.head_commit.message }}
+          REPOSITORY: ${{ github.repository }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d "{
+            \"content\": \"🎮 **Main 업데이트!**\n\n👤 **작성자:** ${AUTHOR}\n📦 **저장소:** ${REPOSITORY}\n💬 **커밋:** ${COMMIT}\n🔗 ${COMMIT_URL}\"
+          }" \
+          "$DISCORD_WEBHOOK"
