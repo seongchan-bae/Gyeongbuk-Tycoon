@@ -19,6 +19,8 @@ public class BuildingInstall : MonoBehaviour
     Vector3 mouseWorldPos;
     //인게임 마우스 포지션을 타일맵에 맞춰 격자좌표계로 변환한 함수
     Vector3Int cellPosition;
+
+    GameManager gameManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -32,6 +34,32 @@ public class BuildingInstall : MonoBehaviour
         mouseWorldPos.z = 0f;
         //받아온 마우스 포지션을 타일맵 격자에 호환시킴(격자좌표계로 변환)
         cellPosition = baseGrid.WorldToCell(mouseWorldPos);
+
+        //현재 건물 설치 기능이 활성화되어있는지 검사
+        if (gameManager.installingActivation())
+        {
+            
+            //좌클릭 감지시
+            if (Input.GetMouseButtonDown(0))
+            {
+                buildingInstalling(cellPosition);
+            }
+        }
+        //현재 삭제 기능이 활성화되어 있는지 검사
+        if (gameManager.destroyingActivation())
+        {
+            
+            //좌클릭 감지시
+            if (Input.GetMouseButtonDown(0))
+            {
+                buildingInstalling(cellPosition);
+            }
+        }
+            
+
+        
+
+        
     }
 
 
@@ -82,6 +110,7 @@ public class BuildingInstall : MonoBehaviour
         bool tileChecker = false;
         //for문을 이용해 건물의 크기만큼 루프를 돌림. 루프를 돌리는 도중 
         //tileChecker가 검사 도중에 true가 될 경우 바로 루프 중단
+        
         return tileChecker;
     }
     

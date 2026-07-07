@@ -28,4 +28,35 @@ public class GameManager : MonoBehaviour
     {
         userKnowledgePoint -= knowledgePoint;
     }
+    /// <summary>
+    /// 로딩 화면을 띄워주는 함수
+    /// </summary>
+    void showLoadingUI()
+    {
+        
+    }
+    /// <summary>
+    /// 건물 설치 기능 활성화 상태. 함수 호출 시 건물 설치 기능활성화
+    /// </summary>
+    /// <returns>
+    /// 현재 활성화 상태면 true
+    /// </returns>
+    public bool installingActivation()
+    {
+        //dummy return value
+        return false;
+    }
+    /// <summary>
+    /// 건물 삭제 기능 활성화 상태. 함수 호출 시 건물 삭제 기능 활성화
+    /// </summary>
+    /// <returns>
+    /// 현재 활성화 상태면 true
+    /// </returns>
+    public bool destroyingActivation()
+    {
+        //dummy return value
+        return false;
+    }
+
+
 }
