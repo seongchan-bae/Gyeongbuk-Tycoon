@@ -3,8 +3,13 @@ using UnityEngine;
 public class Building : MonoBehaviour
 {
     [SerializeField]
-    //건물의 타일 크기. 5 * 5면 25, 6 * 6이면 36
-    private int wholeTileCount = 0 ;
+    //건물의 가로 타일
+    public int tileWidth = 0 ;
+
+    //건물의 세로 타일
+    [SerializeField]
+    public int tileHeight = 0;
+
 
     [SerializeField]
     private float goldProductionRate = 0f;

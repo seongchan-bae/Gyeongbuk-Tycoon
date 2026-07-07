@@ -2,14 +2,23 @@ using UnityEngine;
 
 public class BaseUI : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    //설정화면
+    void settingUI()
     {
         
     }
-
-    // Update is called once per frame
-    void Update()
+    //상점화면
+    void storeUI()
+    {
+        
+    }
+    //연구소화면
+    void laboratoryUI()
+    {
+        
+    }
+    //유저정보화면(레벨(진척도), 현재 골드량, 해금건물 개수 등등)
+    void userInformationUI()
     {
         
     }

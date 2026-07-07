@@ -76,7 +76,7 @@ public class BuildingInstall : MonoBehaviour
 
         //건물을 설치하려는 대상 타일이 점유되어있을 경우
         if(isOccupiedArea()){
-            
+            //건물 근처를 빨갛게 빛낸다던지 해서 건물을 설치할 수 없다는 표시를 함.
         }
         //건물을 설치하려는 대상 타일이 점유되어있지 않을 경우
         else {
@@ -106,10 +106,31 @@ public class BuildingInstall : MonoBehaviour
     /// </returns>
     
     bool isOccupiedArea(){
-        //타일을 검사하며 타일이 설치가 불가능할 경우 true로 바뀌는 함수
+        //타일을 검사하며 타일이 설치가 불가능할 경우 true로 바뀌는 변수
         bool tileChecker = false;
+        Building building = GetComponent<Building>();
+        // 1. 가로(X축) 범위 계산
+        int minX = -(building.tileWidth / 2);
+        int maxX = (building.tileWidth - 1) / 2;
+
+        // 2. 세로(Y축) 범위 계산
+        int minY = -(building.tileHeight / 2);
+        int maxY = (building.tileHeight - 1) / 2;
         //for문을 이용해 건물의 크기만큼 루프를 돌림. 루프를 돌리는 도중 
         //tileChecker가 검사 도중에 true가 될 경우 바로 루프 중단
+        //이렇게 작성할 경우, 정확히 건물의 가로, 세로 타일의 영역만을 검사
+        for(int width = minX; width < maxY; width++)
+        {
+            for(int height = minY; height < maxY ; height++)
+            {
+                if (baseTilemap.HasTile(cellPosition))
+                {
+                    tileChecker = true;
+                    break;
+                }
+            }
+            if(tileChecker) break;
+        }
         
         return tileChecker;
     }
