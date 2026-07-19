@@ -2,15 +2,21 @@ using UnityEngine;
 
 public class BaseUI : MonoBehaviour
 {
+    public Store store;
+
     //설정화면
     void settingUI()
     {
         
     }
     //상점화면
-    void storeUI()
+    public void ShowStoreUI()
     {
-        
+        store.ShowStoreMainUI();
+    }
+    public void CloseStoreUI()
+    {
+        store.CloseStoreMainUI();
     }
     //연구소화면
     void laboratoryUI()
