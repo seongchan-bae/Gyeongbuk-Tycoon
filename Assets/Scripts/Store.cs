@@ -9,6 +9,9 @@ public class Store : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        ///<summary>
+        ///시작시 상점 UI창 꺼짐상태
+        ///</summary>        
         storeMainPanel.SetActive(false);
     }
 
@@ -23,6 +26,10 @@ public class Store : MonoBehaviour
     /// </summary>
     public void ShowStoreMainUI()
     {
+        
+        ///<summary>
+        ///시작시 상점 UI창 켜짐상태
+        ///</summary>
         storeMainPanel.SetActive(true);
     }
 

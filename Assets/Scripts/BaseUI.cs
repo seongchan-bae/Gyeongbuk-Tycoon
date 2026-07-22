@@ -2,8 +2,13 @@ using UnityEngine;
 
 public class BaseUI : MonoBehaviour
 {
-    public Store store;
-
+    //상점화면
+    [SerializeField] 
+    private GameObject store;
+    //메인화면
+    [SerializeField] 
+    private GameObject main;
+    
     //설정화면
     void settingUI()
     {
@@ -12,11 +17,13 @@ public class BaseUI : MonoBehaviour
     //상점화면
     public void ShowStoreUI()
     {
-        store.ShowStoreMainUI();
+        store.SetActive(true);
+        main.SetActive(false);
     }
     public void CloseStoreUI()
     {
-        store.CloseStoreMainUI();
+        store.SetActive(false);
+        main.SetActive(true);
     }
     //연구소화면
     void laboratoryUI()
