@@ -8,8 +8,10 @@ public class BuildingInstall : MonoBehaviour
     [SerializeField]
     //Grid 오브젝트
     private Grid baseGrid;
+    private Building currentBuilding;
+    private GameObject ghostBuilding;
     [SerializeField]
-    //타일맵을 얻어올 대상 변수
+    // //타일맵을 얻어올 대상 변수
     private Tilemap baseTilemap;
 
     [SerializeField]
@@ -19,11 +21,20 @@ public class BuildingInstall : MonoBehaviour
     Vector3 mouseWorldPos;
     //인게임 마우스 포지션을 타일맵에 맞춰 격자좌표계로 변환한 함수
     Vector3Int cellPosition;
-
+    
+    
+    [SerializeField]
     GameManager gameManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Debug.Log(gameManager);
+
+    if (gameManager == null)
+    {
+        Debug.LogError("GameManager 연결 안됨");
+    }   
     }
 
     // Update is called once per frame
@@ -36,7 +47,8 @@ public class BuildingInstall : MonoBehaviour
         cellPosition = baseGrid.WorldToCell(mouseWorldPos);
 
         //현재 건물 설치 기능이 활성화되어있는지 검사
-        if (gameManager.installingActivation())
+        //if (gameManager.installingActivation())
+        if(gameManager.installingActivation())
         {
             
             //좌클릭 감지시
@@ -49,22 +61,38 @@ public class BuildingInstall : MonoBehaviour
         if (gameManager.destroyingActivation())
         {
             
-            //좌클릭 감지시
-            if (Input.GetMouseButtonDown(0))
+            //좌클릭 감지시, 건물이 선택되었을 때   
+            if (Input.GetMouseButtonDown(0)&& currentBuilding != null)
             {
                 buildingInstalling(cellPosition);
             }
         }
-            
-
-        
-
-        
+        if (ghostBuilding != null)
+        {
+            ghostBuilding.transform.position =
+            baseGrid.GetCellCenterWorld(cellPosition);
+        }
     }
 
+    public void StartPlacement(Building building)
+    {
+        //Building에서 building을 넘기고 currentBuilding은 현재 선택된 건물객체가 들어감
+        currentBuilding = building;
+        
+        //객체 생성
+        ghostBuilding = Instantiate(building.gameObject);
 
+        // 반투명 처리
+        SpriteRenderer sr = ghostBuilding.GetComponent<SpriteRenderer>();
 
-    
+        if (sr != null)
+        {
+            Color c = sr.color;
+            c.a = 0.5f;
+            sr.color = c;
+        }
+    }
+
     /// <summary>
     ///건물을 설치하는 함수
     /// </summary>
@@ -80,20 +108,30 @@ public class BuildingInstall : MonoBehaviour
         }
         //건물을 설치하려는 대상 타일이 점유되어있지 않을 경우
         else {
-            baseTilemap.SetTile(cellPosition, tileAsset);
-        }
+            //baseTilemap.SetTile(cellPosition, tileAsset);
+            Instantiate(
+            currentBuilding.gameObject,
+            ghostBuilding.transform.position,
+            Quaternion.identity
+        );
+
+        // Ghost 제거
+        Destroy(ghostBuilding);
+
+        ghostBuilding = null;
+        currentBuilding = null;        }
 
     }
-    
-
-    
+        
     /// <summary>
     /// 건물을 클릭하면 해당 건물을 하이라이트 처리한뒤 '건물을 삭제하시겠습니까?' 팝업을 띄우고 
     /// '아니오'를 클릭하면 그대로 동작종료. '예'를 클릭하면 건물을 삭제시키는 함수
     /// </summary>
     void buildingUninstalling(){
         //해당 칸의 타일을 제거
-        baseTilemap.SetTile(cellPosition, null);
+        //baseTilemap.SetTile(cellPosition, null);
+    
+    
     }
     /// <summary>
     ///현재 타일이 점유된 상태인지를 loop를 통해 모두 검사. 설치된 건물의 타일(x * y)수만큼 반복.
@@ -108,7 +146,8 @@ public class BuildingInstall : MonoBehaviour
     bool isOccupiedArea(){
         //타일을 검사하며 타일이 설치가 불가능할 경우 true로 바뀌는 변수
         bool tileChecker = false;
-        Building building = GetComponent<Building>();
+        Building building = currentBuilding;
+        //Building building = GetComponent<Building>();
         // 1. 가로(X축) 범위 계산
         int minX = -(building.tileWidth / 2);
         int maxX = (building.tileWidth - 1) / 2;
@@ -119,11 +158,14 @@ public class BuildingInstall : MonoBehaviour
         //for문을 이용해 건물의 크기만큼 루프를 돌림. 루프를 돌리는 도중 
         //tileChecker가 검사 도중에 true가 될 경우 바로 루프 중단
         //이렇게 작성할 경우, 정확히 건물의 가로, 세로 타일의 영역만을 검사
-        for(int width = minX; width < maxY; width++)
+        for(int width = minX; width < maxX; width++)
         {
             for(int height = minY; height < maxY ; height++)
             {
-                if (baseTilemap.HasTile(cellPosition))
+                Vector3Int checkPos =
+                cellPosition + new Vector3Int(width, height, 0);
+                //if (baseTilemap.HasTile(cellPosition))
+                if(baseTilemap.HasTile(checkPos))
                 {
                     tileChecker = true;
                     break;
