@@ -8,6 +8,11 @@ public class GameManager : MonoBehaviour
     // 유저가 가지고 있는 지식포인트(GameManager에서만 관리)
     private long userKnowledgePoint = 0L;
 
+    [SerializeField]
+    public bool installingActivation = true;
+    [SerializeField]
+    public bool destroyingActivation = false;
+
     //유저머니 추가
     void addUserMoney(long money)
     {
@@ -35,41 +40,7 @@ public class GameManager : MonoBehaviour
     {
         
     }
-    private bool isInstalling = false;
-    private bool isDestroying = false;
-
-    /// <summary>
-    /// 건물 설치 기능 활성화 상태. 함수 호출 시 건물 설치 기능활성화
-    /// </summary>
-    /// <returns>
-    /// 현재 활성화 상태면 true
-    /// </returns>
-    public bool installingActivation()
-    {
-        //dummy return value
-        //return false;
-        return isInstalling;
-    }
-    public void SetInstalling(bool value)
-    {
-        isInstalling = value;
-    }
-    /// <summary>
-    /// 건물 삭제 기능 활성화 상태. 함수 호출 시 건물 삭제 기능 활성화
-    /// </summary>
-    /// <returns>
-    /// 현재 활성화 상태면 true
-    /// </returns>
-    public bool destroyingActivation()
-    {
-        //dummy return value
-        //return false;
-        return isDestroying;
-    }
-    public void SetDestroying(bool value)
-    {
-        isDestroying = value;
-    }
+    
 
 
 }

@@ -16,7 +16,8 @@ public class Store : MonoBehaviour
          Debug.Log("purchase");
         buildingSelect = building;
         mainUI.CloseStoreUI();
-        bInstall.StartPlacement(building);
+        //bInstall.StartPlacement(building); // 기존 방식
+        bInstall.SetBuilding(building.gameObject);
     } 
     /// <summary>
     /// 퀘스트 등을 수행하지 않아 아직 잡겨 있는 건물의 lock을 풀어주는 함수

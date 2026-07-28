@@ -1,187 +1,196 @@
 using UnityEngine;
-using System;
-using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+
 public class BuildingInstall : MonoBehaviour
 {
+    [Header("타일맵 참조")]
+    [SerializeField] private Grid baseGrid;
+    [SerializeField] private Tilemap baseTilemap;
 
-    [SerializeField]
-    //Grid 오브젝트
-    private Grid baseGrid;
-    private Building currentBuilding;
-    private GameObject ghostBuilding;
-    [SerializeField]
-    // //타일맵을 얻어올 대상 변수
-    private Tilemap baseTilemap;
+    [Header("설치 대상")]
+    [SerializeField] private GameObject BuildingPrefab;
+    [SerializeField] private TileBase tileAsset;
 
-    [SerializeField]
-    //설치대상 건물
-    private TileBase tileAsset;
-    //인게임 마우스 포지션
-    Vector3 mouseWorldPos;
-    //인게임 마우스 포지션을 타일맵에 맞춰 격자좌표계로 변환한 함수
-    Vector3Int cellPosition;
-    
-    
-    [SerializeField]
-    GameManager gameManager;
+    [Header("게임 매니저 & 충돌 레이어")]
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private LayerMask buildingLayer; // Building, Cloud 레이어 다중 선택
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Vector3 mouseWorldPos;
+    private Vector3Int cellPosition;
+    private bool isCollidingWithBuilding = false;
+
     void Start()
     {
-        Debug.Log(gameManager);
-
-    if (gameManager == null)
-    {
-        Debug.LogError("GameManager 연결 안됨");
-    }   
+        SetupTriggerCollider();
     }
 
-    // Update is called once per frame
+    void SetupTriggerCollider()
+    {
+        // 2D 마름모 충돌을 감지할 PolygonCollider2D 추가/설정
+        PolygonCollider2D col = GetComponent<PolygonCollider2D>();
+        if (col == null) col = gameObject.AddComponent<PolygonCollider2D>();
+        col.isTrigger = true;
+
+        float w = 1f;
+        float h = 1f;
+
+        if (BuildingPrefab != null)
+        {
+            Building prefabBuilding = BuildingPrefab.GetComponent<Building>();
+            if (prefabBuilding != null)
+            {
+                w = prefabBuilding.tileWidth;
+                h = prefabBuilding.tileHeight;
+            }
+        }
+
+        // 유니티 2D Isometric 타일 표준 마름모 비율 (2:1)
+        Vector2[] points = new Vector2[4];
+        points[0] = new Vector2(-w * 0.5f, 0);       // 좌
+        points[1] = new Vector2(0, h * 0.25f);       // 상
+        points[2] = new Vector2(w * 0.5f, 0);        // 우
+        points[3] = new Vector2(0, -h * 0.25f);      // 하
+        col.points = points;
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb == null) rb = gameObject.AddComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Kinematic;
+    }
+
     void Update()
     {
-        //현재 마우스 포지션을 인게임 좌표로 변환해 저장
-        mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // 1. 마우스의 월드 좌표 가져오기
+        Vector3 mouseScreen = Input.mousePosition;
+        mouseScreen.z = -Camera.main.transform.position.z;
+        mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreen);
         mouseWorldPos.z = 0f;
-        //받아온 마우스 포지션을 타일맵 격자에 호환시킴(격자좌표계로 변환)
-        cellPosition = baseGrid.WorldToCell(mouseWorldPos);
 
-        //현재 건물 설치 기능이 활성화되어있는지 검사
-        //if (gameManager.installingActivation())
-        if(gameManager.installingActivation())
+        // 2. 마우스 좌표를 Grid 셀 단위로 변환 후, 이 감지 오브젝트의 위치를 셀 중심으로 이동
+        if (baseGrid != null)
         {
-            
-            //좌클릭 감지시
-            if (Input.GetMouseButtonDown(0))
+            cellPosition = baseGrid.WorldToCell(mouseWorldPos);
+            transform.position = baseGrid.GetCellCenterWorld(cellPosition);
+        }
+
+        // 3. 모드 변경 및 클릭 로직
+        if (gameManager != null)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                gameManager.installingActivation = true;
+                gameManager.destroyingActivation = false;
+                Debug.Log("모드 변경: 건물 설치 모드");
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                gameManager.destroyingActivation = true;
+                gameManager.installingActivation = false;
+                Debug.Log("모드 변경: 건물 삭제 모드");
+            }
+
+            // 설치 모드 클릭
+            if (gameManager.installingActivation && Input.GetMouseButtonDown(0))
             {
                 buildingInstalling(cellPosition);
             }
-        }
-        //현재 삭제 기능이 활성화되어 있는지 검사
-        if (gameManager.destroyingActivation())
-        {
-            
-            //좌클릭 감지시, 건물이 선택되었을 때   
-            if (Input.GetMouseButtonDown(0)&& currentBuilding != null)
+
+            // 삭제 모드 클릭
+            if (gameManager.destroyingActivation && Input.GetMouseButtonDown(0))
             {
-                buildingInstalling(cellPosition);
+                buildingUninstalling();
             }
-        }
-        if (ghostBuilding != null)
-        {
-            ghostBuilding.transform.position =
-            baseGrid.GetCellCenterWorld(cellPosition);
         }
     }
 
-    public void StartPlacement(Building building)
+    // --- [충돌 감지 부분] ---
+    private void OnTriggerStay2D(Collider2D other)
     {
-        //Building에서 building을 넘기고 currentBuilding은 현재 선택된 건물객체가 들어감
-        currentBuilding = building;
+        // 셀프 충돌 방지
+        if (other.gameObject == this.gameObject || other.transform.IsChildOf(this.transform)) return;
 
-        //객체 생성
-        ghostBuilding = Instantiate(building.gameObject);
-
-        // 반투명 처리
-        SpriteRenderer sr = ghostBuilding.GetComponent<SpriteRenderer>();
-
-        if (sr != null)
+        // 지정된 레이어(Building, Cloud)와 겹치면 감지
+        if (((1 << other.gameObject.layer) & buildingLayer) != 0)
         {
-            Color c = sr.color;
-            c.a = 0.5f;
-            sr.color = c;
+            isCollidingWithBuilding = true;
         }
-
-        // 설치 모드 활성화
-        gameManager.SetInstalling(true);
     }
 
-    /// <summary>
-    ///건물을 설치하는 함수
-    /// </summary>
-    /// <param name="currentMousePos">
-    /// 현재 마우스 포지션을 인자로 받음. 
-    /// </param>
-    void buildingInstalling(Vector3 currentMousePos){
-        
-
-        //건물을 설치하려는 대상 타일이 점유되어있을 경우
-        if(isOccupiedArea()){
-            //건물 근처를 빨갛게 빛낸다던지 해서 건물을 설치할 수 없다는 표시를 함.
-        }
-        //건물을 설치하려는 대상 타일이 점유되어있지 않을 경우
-        else {
-            //baseTilemap.SetTile(cellPosition, tileAsset);
-            Instantiate(
-            currentBuilding.gameObject,
-            ghostBuilding.transform.position,
-            Quaternion.identity
-        );
-
-        // Ghost 제거
-        Destroy(ghostBuilding);
-
-        ghostBuilding = null;
-        currentBuilding = null;
-
-        // 설치 모드 비활성화
-        gameManager.SetInstalling(false);
-        }
-
-    }
-        
-    /// <summary>
-    /// 건물을 클릭하면 해당 건물을 하이라이트 처리한뒤 '건물을 삭제하시겠습니까?' 팝업을 띄우고 
-    /// '아니오'를 클릭하면 그대로 동작종료. '예'를 클릭하면 건물을 삭제시키는 함수
-    /// </summary>
-    void buildingUninstalling(){
-        //해당 칸의 타일을 제거
-        //baseTilemap.SetTile(cellPosition, null);
-    
-    
-    }
-    /// <summary>
-    ///현재 타일이 점유된 상태인지를 loop를 통해 모두 검사. 설치된 건물의 타일(x * y)수만큼 반복.
-    ///ex) 5*5 크기의 건물을 설치하려 한다면 현재 마우스 포지션은 그 건물의 중앙 타일을 가져오게되고, 그 위치 기준
-    ///총 25개의 타일에 건물이 있는지 검사. 있으면 true 없으면 false    
-    /// </summary>
-    /// <returns>
-    /// true: 건물이 이미 설치된 타일공간이다.
-    /// false: 건물이 없는, 설치가 가능한 타일공간이다.
-    /// </returns>
-    
-    bool isOccupiedArea(){
-        //타일을 검사하며 타일이 설치가 불가능할 경우 true로 바뀌는 변수
-        bool tileChecker = false;
-        Building building = currentBuilding;
-        //Building building = GetComponent<Building>();
-        // 1. 가로(X축) 범위 계산
-        int minX = -(building.tileWidth / 2);
-        int maxX = (building.tileWidth - 1) / 2;
-
-        // 2. 세로(Y축) 범위 계산
-        int minY = -(building.tileHeight / 2);
-        int maxY = (building.tileHeight - 1) / 2;
-        //for문을 이용해 건물의 크기만큼 루프를 돌림. 루프를 돌리는 도중 
-        //tileChecker가 검사 도중에 true가 될 경우 바로 루프 중단
-        //이렇게 작성할 경우, 정확히 건물의 가로, 세로 타일의 영역만을 검사
-        for(int width = minX; width < maxX; width++)
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (((1 << other.gameObject.layer) & buildingLayer) != 0)
         {
-            for(int height = minY; height < maxY ; height++)
+            isCollidingWithBuilding = false;
+        }
+    }
+
+    // 상점에서 건물 선택 시 호출 - 설치할 건물 프리팹 설정 및 설치 모드 활성화
+    public void SetBuilding(GameObject prefab)
+    {
+        BuildingPrefab = prefab;
+        SetupTriggerCollider();
+        if (gameManager != null)
+            gameManager.installingActivation = true;
+    }
+
+    void buildingInstalling(Vector3Int currentCellPos)
+    {
+        if (isCollidingWithBuilding)
+        {
+            Debug.LogWarning("여기는 건물이나 장애물이 있어 설치할 수 없습니다!");
+            return;
+        }
+
+        // 현재 감지 마름모가 위치한 정확한 중심점에 건물 소환
+        Vector3 spawnPos = baseGrid.GetCellCenterWorld(currentCellPos);
+        GameObject installedBuilding = Instantiate(BuildingPrefab, spawnPos, Quaternion.identity);
+        installedBuilding.transform.SetParent(baseGrid.transform);
+
+        isCollidingWithBuilding = false;
+        Debug.Log("건물 설치 완료!");
+    }
+
+    void buildingUninstalling()
+    {
+        if (baseTilemap != null)
+        {
+            baseTilemap.SetTile(cellPosition, null);
+        }
+    }
+
+    // --- [씬 뷰 마름모 기즈모 시각화] ---
+    private void OnDrawGizmos()
+    {
+        if (baseGrid == null) return;
+
+        Vector3 centerPos = baseGrid.GetCellCenterWorld(cellPosition);
+
+        float w = 1f;
+        float h = 1f;
+
+        if (BuildingPrefab != null)
+        {
+            Building prefabBuilding = BuildingPrefab.GetComponent<Building>();
+            if (prefabBuilding != null)
             {
-                Vector3Int checkPos =
-                cellPosition + new Vector3Int(width, height, 0);
-                //if (baseTilemap.HasTile(cellPosition))
-                if(baseTilemap.HasTile(checkPos))
-                {
-                    tileChecker = true;
-                    break;
-                }
+                w = prefabBuilding.tileWidth;
+                h = prefabBuilding.tileHeight;
             }
-            if(tileChecker) break;
         }
-        
-        return tileChecker;
+
+        // 충돌 중일 때는 빨간색, 설치 가능할 때는 초록색
+        Gizmos.color = isCollidingWithBuilding ? Color.red : Color.green;
+
+        float horizontalRadius = w * 0.5f;
+        float verticalRadius = h * 0.25f;
+
+        Vector3 right  = centerPos + new Vector3(horizontalRadius, 0, 0);
+        Vector3 left   = centerPos + new Vector3(-horizontalRadius, 0, 0);
+        Vector3 top    = centerPos + new Vector3(0, verticalRadius, 0);
+        Vector3 bottom = centerPos + new Vector3(0, -verticalRadius, 0);
+
+        Gizmos.DrawLine(top, right);
+        Gizmos.DrawLine(right, bottom);
+        Gizmos.DrawLine(bottom, left);
+        Gizmos.DrawLine(left, top);
     }
-    
 }
