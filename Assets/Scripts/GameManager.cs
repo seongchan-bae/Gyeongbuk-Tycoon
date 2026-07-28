@@ -35,6 +35,9 @@ public class GameManager : MonoBehaviour
     {
         
     }
+    private bool isInstalling = false;
+    private bool isDestroying = false;
+
     /// <summary>
     /// 건물 설치 기능 활성화 상태. 함수 호출 시 건물 설치 기능활성화
     /// </summary>
@@ -44,7 +47,12 @@ public class GameManager : MonoBehaviour
     public bool installingActivation()
     {
         //dummy return value
-        return false;
+        //return false;
+        return isInstalling;
+    }
+    public void SetInstalling(bool value)
+    {
+        isInstalling = value;
     }
     /// <summary>
     /// 건물 삭제 기능 활성화 상태. 함수 호출 시 건물 삭제 기능 활성화
@@ -55,7 +63,12 @@ public class GameManager : MonoBehaviour
     public bool destroyingActivation()
     {
         //dummy return value
-        return false;
+        //return false;
+        return isDestroying;
+    }
+    public void SetDestroying(bool value)
+    {
+        isDestroying = value;
     }
 
 

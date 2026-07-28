@@ -78,7 +78,7 @@ public class BuildingInstall : MonoBehaviour
     {
         //Building에서 building을 넘기고 currentBuilding은 현재 선택된 건물객체가 들어감
         currentBuilding = building;
-        
+
         //객체 생성
         ghostBuilding = Instantiate(building.gameObject);
 
@@ -91,6 +91,9 @@ public class BuildingInstall : MonoBehaviour
             c.a = 0.5f;
             sr.color = c;
         }
+
+        // 설치 모드 활성화
+        gameManager.SetInstalling(true);
     }
 
     /// <summary>
@@ -119,7 +122,11 @@ public class BuildingInstall : MonoBehaviour
         Destroy(ghostBuilding);
 
         ghostBuilding = null;
-        currentBuilding = null;        }
+        currentBuilding = null;
+
+        // 설치 모드 비활성화
+        gameManager.SetInstalling(false);
+        }
 
     }
         
