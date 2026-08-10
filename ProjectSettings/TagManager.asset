@@ -41,6 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Tilemap
+    uniqueID: 1407747609
+    locked: 0
+  - name: Building
+    uniqueID: 4278531321
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1

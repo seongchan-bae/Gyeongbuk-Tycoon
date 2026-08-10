@@ -2,10 +2,14 @@ using UnityEngine;
 
 public class Store : MonoBehaviour
 {
-    public Building[] buildingLists; //상점에서 보여질 건물 리스트
-    public Building buildingSelect;  // 상점에서 선택한 건물, UI화면으로 옮겨질 것
+    public BuildingData[] buildingLists; //상점에서 보여질 건물 리스트
+    public BuildingData buildingSelect;  // 상점에서 선택한 건물, UI화면으로 옮겨질 것
     [Header("UI")]
     public GameObject storeMainPanel;
+    [Header("매니저")]
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private BuildingInstall buildingInstall;
+    [SerializeField] private BaseUI baseUI;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -37,11 +41,22 @@ public class Store : MonoBehaviour
     {
         storeMainPanel.SetActive(false);
     }
+    // 건물 카드의 Buy 버튼에서 호출
+    public void BuyBuilding(BuildingData building)
+    {
+        if (buildingInstall != null)
+            buildingInstall.SelectBuilding(building);
+
+        CloseStoreMainUI();
+        if (baseUI != null)
+            baseUI.CloseStoreUI();
+    }
+
     /// <summary>
     /// 퀘스트 등을 수행하지 않아 아직 잡겨 있는 건물의 lock을 풀어주는 함수
     /// </summary>
     void unlockBuilding()
     {
-        
+
     }
 }

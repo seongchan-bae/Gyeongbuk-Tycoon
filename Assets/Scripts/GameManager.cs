@@ -8,10 +8,14 @@ public class GameManager : MonoBehaviour
     // 유저가 가지고 있는 지식포인트(GameManager에서만 관리)
     private long userKnowledgePoint = 0L;
 
-    [SerializeField]
-    public bool installingActivation = true;
-    [SerializeField]
-    public bool destroyingActivation = false;
+    [HideInInspector] public bool installingActivation;
+    [HideInInspector] public bool destroyingActivation;
+
+    void Awake()
+    {
+        installingActivation = false;
+        destroyingActivation = false;
+    }
 
     //유저머니 추가
     void addUserMoney(long money)
