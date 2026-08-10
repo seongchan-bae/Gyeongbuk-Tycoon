@@ -5,6 +5,7 @@ public class BuildingCardUI : MonoBehaviour
     [SerializeField] private BuildingData buildingData;  // 이 카드가 나타내는 건물 데이터
     [SerializeField] private BuildingInstall buildingInstall;
     [SerializeField] private BaseUI baseUI;              // 닫을 상점 UI
+    [SerializeField] private GameManager gameManager;
 
     // 카드의 Buy 버튼 OnClick에 연결
     public void OnBuyClicked()
@@ -17,6 +18,13 @@ public class BuildingCardUI : MonoBehaviour
         if (buildingInstall == null)
         {
             Debug.LogError("BuildingCardUI: buildingInstall이 Inspector에 연결되지 않았습니다.");
+            return;
+        }
+
+        // 골드 부족 시 구매 차단
+        if (gameManager != null && !gameManager.SpendMoney(buildingData.price))
+        {
+            Debug.Log("골드가 부족합니다!");
             return;
         }
 

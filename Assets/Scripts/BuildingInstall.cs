@@ -200,6 +200,14 @@ public class BuildingInstall : MonoBehaviour
         // 설치된 건물에 2D 충돌체 자동 설정 (트리거 겹침 감지용)
         SetupBuildingCollider(installedBuilding);
 
+        // Building 컴포넌트가 없으면 코드에서 직접 추가
+        Building building = installedBuilding.GetComponent<Building>();
+        if (building == null)
+            building = installedBuilding.AddComponent<Building>();
+
+        building.Initialize(gameManager);
+        building.buildingData = currentBuildingData;
+
         // Ghost 숨기고 설치 모드 종료
         if (ghostRenderer != null)
             ghostRenderer.gameObject.SetActive(false);
