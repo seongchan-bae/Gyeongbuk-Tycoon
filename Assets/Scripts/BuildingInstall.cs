@@ -57,50 +57,50 @@ public class BuildingInstall : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
     }
 
-    void Update()
-    {
-        // 1. 마우스의 월드 좌표 가져오기
-        Vector3 mouseScreen = Input.mousePosition;
-        mouseScreen.z = -Camera.main.transform.position.z;
-        mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreen);
-        mouseWorldPos.z = 0f;
+    // void Update()
+    // {
+    //     // 1. 마우스의 월드 좌표 가져오기
+    //     Vector3 mouseScreen = Input.mousePosition;
+    //     mouseScreen.z = -Camera.main.transform.position.z;
+    //     mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreen);
+    //     mouseWorldPos.z = 0f;
 
-        // 2. 마우스 좌표를 Grid 셀 단위로 변환 후, 이 감지 오브젝트의 위치를 셀 중심으로 이동
-        if (baseGrid != null)
-        {
-            cellPosition = baseGrid.WorldToCell(mouseWorldPos);
-            transform.position = baseGrid.GetCellCenterWorld(cellPosition);
-        }
+    //     // 2. 마우스 좌표를 Grid 셀 단위로 변환 후, 이 감지 오브젝트의 위치를 셀 중심으로 이동
+    //     if (baseGrid != null)
+    //     {
+    //         cellPosition = baseGrid.WorldToCell(mouseWorldPos);
+    //         transform.position = baseGrid.GetCellCenterWorld(cellPosition);
+    //     }
 
-        // 3. 모드 변경 및 클릭 로직
-        if (gameManager != null)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                gameManager.installingActivation = true;
-                gameManager.destroyingActivation = false;
-                Debug.Log("모드 변경: 건물 설치 모드");
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                gameManager.destroyingActivation = true;
-                gameManager.installingActivation = false;
-                Debug.Log("모드 변경: 건물 삭제 모드");
-            }
+    //     // 3. 모드 변경 및 클릭 로직
+    //     if (gameManager != null)
+    //     {
+    //         if (Input.GetKeyDown(KeyCode.Alpha1))
+    //         {
+    //             gameManager.installingActivation = true;
+    //             gameManager.destroyingActivation = false;
+    //             Debug.Log("모드 변경: 건물 설치 모드");
+    //         }
+    //         if (Input.GetKeyDown(KeyCode.Alpha2))
+    //         {
+    //             gameManager.destroyingActivation = true;
+    //             gameManager.installingActivation = false;
+    //             Debug.Log("모드 변경: 건물 삭제 모드");
+    //         }
 
-            // 설치 모드 클릭
-            if (gameManager.installingActivation && Input.GetMouseButtonDown(0))
-            {
-                buildingInstalling(cellPosition);
-            }
+    //         // 설치 모드 클릭
+    //         if (gameManager.installingActivation && Input.GetMouseButtonDown(0))
+    //         {
+    //             buildingInstalling(cellPosition);
+    //         }
 
-            // 삭제 모드 클릭
-            if (gameManager.destroyingActivation && Input.GetMouseButtonDown(0))
-            {
-                buildingUninstalling();
-            }
-        }
-    }
+    //         // 삭제 모드 클릭
+    //         if (gameManager.destroyingActivation && Input.GetMouseButtonDown(0))
+    //         {
+    //             buildingUninstalling();
+    //         }
+    //     }
+    // }
 
     // --- [충돌 감지 부분] ---
     private void OnTriggerStay2D(Collider2D other)
@@ -174,9 +174,9 @@ public class BuildingInstall : MonoBehaviour
         float horizontalRadius = w * 0.5f;
         float verticalRadius = h * 0.25f;
 
-        Vector3 right  = centerPos + new Vector3(horizontalRadius, 0, 0);
-        Vector3 left   = centerPos + new Vector3(-horizontalRadius, 0, 0);
-        Vector3 top    = centerPos + new Vector3(0, verticalRadius, 0);
+        Vector3 right = centerPos + new Vector3(horizontalRadius, 0, 0);
+        Vector3 left = centerPos + new Vector3(-horizontalRadius, 0, 0);
+        Vector3 top = centerPos + new Vector3(0, verticalRadius, 0);
         Vector3 bottom = centerPos + new Vector3(0, -verticalRadius, 0);
 
         Gizmos.DrawLine(top, right);

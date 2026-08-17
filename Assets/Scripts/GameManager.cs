@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     //유저머니 추가
     void addUserMoney(long money)
     {
-        userMoney += money;    
+        userMoney += money;
     }
     //유저머니 차감
     void subUserMoney(long money)
@@ -24,9 +24,9 @@ public class GameManager : MonoBehaviour
         userMoney -= money;
     }
     //유저 지식포인트 추가
-    void addUserKnowledgePoint(long knowledgePoint)
+    public void addUserKnowledgePoint(long knowledgePoint)
     {
-        userKnowledgePoint += knowledgePoint;    
+        userKnowledgePoint += knowledgePoint;
     }
     //유저 지식포인트 차감
     void subUserknowledgePoint(long knowledgePoint)
@@ -38,9 +38,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void showLoadingUI()
     {
-        
+
     }
-    
+
 
 
 }
