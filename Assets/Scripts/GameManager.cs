@@ -3,21 +3,39 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     // 유저가 가지고 있는 돈(GameManager에서만 관리)
-    private long userMoney = 0L;
+    [SerializeField] private long userMoney = 10000L;
 
     // 유저가 가지고 있는 지식포인트(GameManager에서만 관리)
     private long userKnowledgePoint = 0L;
 
-    [SerializeField]
-    public bool installingActivation = true;
-    [SerializeField]
-    public bool destroyingActivation = false;
+    [HideInInspector] public bool installingActivation;
+    [HideInInspector] public bool destroyingActivation;
+
+    public long UserMoney => userMoney;
+    public event System.Action<long> OnMoneyChanged;
+
+    void Awake()
+    {
+        installingActivation = false;
+        destroyingActivation = false;
+    }
 
     //유저머니 추가
-    void addUserMoney(long money)
+    public void AddMoney(long money)
     {
-        userMoney += money;    
+        userMoney += money;
+        OnMoneyChanged?.Invoke(userMoney);
     }
+
+    // 구매 시 차감 — 잔액 부족이면 false 반환
+    public bool SpendMoney(long money)
+    {
+        if (userMoney < money) return false;
+        userMoney -= money;
+        OnMoneyChanged?.Invoke(userMoney);
+        return true;
+    }
+
     //유저머니 차감
     void subUserMoney(long money)
     {

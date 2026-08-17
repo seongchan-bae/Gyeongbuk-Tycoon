@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class BaseUI : MonoBehaviour
 {
@@ -8,22 +10,32 @@ public class BaseUI : MonoBehaviour
     //메인화면
     [SerializeField] 
     private GameObject main;
+    [SerializeField]
+    private Button Shopbutton;
     
     //설정화면
     void settingUI()
     {
-        
+
+    }
+    public void ShowStoreButton()
+    {
+        Shopbutton.gameObject.SetActive(true);
+    }
+    public void CloseStoreButton()
+    {
+        Shopbutton.gameObject.SetActive(false);
     }
     //상점화면
     public void ShowStoreUI()
     {
         store.SetActive(true);
-        main.SetActive(false);
+        Shopbutton.gameObject.SetActive(false);
     }
     public void CloseStoreUI()
     {
         store.SetActive(false);
-        main.SetActive(true);
+        Shopbutton.gameObject.SetActive(true);
     }
     //연구소화면
     void laboratoryUI()

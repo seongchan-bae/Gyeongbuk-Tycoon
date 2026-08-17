@@ -1,40 +1,62 @@
-    using UnityEngine;
+using UnityEngine;
 
-    public class Building : MonoBehaviour
+public class Building : MonoBehaviour
+{
+    public BuildingData buildingData;
+
+    private SpriteRenderer sr;
+    private GameManager gameManager;
+    private float goldTimer = 0f;
+    private const float goldInterval = 1f; // 1초마다 골드 생산
+
+    public static bool AnyBuildingDragging { get; set; }
+
+    void Awake()
     {
-        
-        [SerializeField]
-        public string buildingName;         //상점에서 선택 시 출력될 이름
+        sr = GetComponent<SpriteRenderer>();
+        if (sr == null) sr = GetComponentInChildren<SpriteRenderer>();
 
-        [SerializeField]
-        public int price;                   //비용 상점에서 사용할 변수
-        //public int popular;               //인기도 쓸지는 모르겠음 상점에서 사용하는 변수
-
-        public GameObject prefab;           //
-        [SerializeField]
-        //건물의 가로 타일
-       public int tileWidth = 0 ;
-
-        //건물의 세로 타일
-        [SerializeField]
-        public int tileHeight = 0;
-
-
-        [SerializeField]
-        private float goldProductionRate = 0f;
-        
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        if (sr != null)
         {
-            
+            sr.sortingLayerName = "Default";
+            UpdateSortingOrder();
         }
-        public void EarnMoney()
+        else
         {
-            
-        }
-        // Update is called once per frame
-        void Update()
-        {
-            
+            Debug.LogError($"[Building] {gameObject.name}에서 SpriteRenderer를 찾을 수 없습니다.");
         }
     }
+
+    // BuildingInstall에서 설치 후 호출해 GameManager 연결
+    public void Initialize(GameManager gm)
+    {
+        gameManager = gm;
+    }
+
+    public void EarnMoney()
+    {
+
+    }
+
+    void Update()
+    {
+        UpdateSortingOrder();
+
+        // 1초마다 goldProductionRate만큼 골드 생산
+        if (gameManager != null && buildingData != null)
+        {
+            goldTimer += Time.deltaTime;
+            if (goldTimer >= goldInterval)
+            {
+                goldTimer = 0f;
+                gameManager.AddMoney((long)buildingData.goldProductionRate);
+            }
+        }
+    }
+
+    void UpdateSortingOrder()
+    {
+        if (sr != null)
+            sr.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100) + 5000;
+    }
+}
