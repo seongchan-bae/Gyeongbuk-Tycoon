@@ -7,8 +7,9 @@ public class Building : MonoBehaviour
     private SpriteRenderer sr;
     private GameManager gameManager;
     private float goldTimer = 0f;
-    private float goldTimer1 = 0f;
     private const float goldInterval = 1f; // 1초마다 골드 생산
+
+    public static bool AnyBuildingDragging { get; set; }
 
     void Awake()
     {
@@ -50,12 +51,6 @@ public class Building : MonoBehaviour
                 goldTimer = 0f;
                 gameManager.AddMoney((long)buildingData.goldProductionRate);
             }
-        }
-        if (goldTimer1 >= goldInterval)
-        {
-            goldTimer1 = 0f;
-            //gameManager.AddMoney((long)buildingData.goldProductionRate);
-            Debug.Log($"골드 추가! 현재: {gameManager.UserMoney}");
         }
     }
 

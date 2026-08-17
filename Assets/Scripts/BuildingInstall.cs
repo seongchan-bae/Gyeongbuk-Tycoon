@@ -106,12 +106,6 @@ public class BuildingInstall : MonoBehaviour
         // 4. 모드 변경 및 클릭 로직
         if (gameManager != null)
         {
-            /*if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                gameManager.installingActivation = true;
-                gameManager.destroyingActivation = false;
-                Debug.Log("모드 변경: 건물 설치 모드");
-            }*/
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 gameManager.destroyingActivation = true;
@@ -119,16 +113,122 @@ public class BuildingInstall : MonoBehaviour
                 Debug.Log("모드 변경: 건물 삭제 모드");
             }
 
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
-                // 설치 모드 클릭
-                if (gameManager.installingActivation)
-                    buildingInstalling(cellPosition);
+                bool clickHandled = false;
 
-                // 삭제 모드 클릭
-                if (gameManager.destroyingActivation)
-                    buildingUninstalling();
+                // 설치/삭제 모드일 때
+                if (Input.GetMouseButtonDown(0) && !Building.AnyBuildingDragging)
+                {
+                    if (gameManager.installingActivation)
+                    {
+                        buildingInstalling(cellPosition);
+                        clickHandled = true;
+                        clickConsumedByAction = true;
+                    }
+                    if (gameManager.destroyingActivation)
+                    {
+                        buildingUninstalling();
+                        clickHandled = true;
+                        clickConsumedByAction = true;
+                    }
+                }
+
+                // 버튼을 떼면 소비 플래그 해제
+                if (Input.GetMouseButtonUp(0))
+                    clickConsumedByAction = false;
+
+                // 일반 모드일 때 건물 클릭/드래그 처리 (설치/삭제 클릭과 같은 프레임엔 실행 안 함)
+                if (!gameManager.installingActivation && !gameManager.destroyingActivation && !clickHandled && !clickConsumedByAction)
+                    HandleBuildingInteraction();
             }
+        }
+    }
+
+    // --- [건물 클릭/드래그 + 카메라 이동 처리] ---
+    private Building draggedBuilding = null;
+    private Vector3 mouseDownScreenPos;
+    private bool isDraggingBuilding = false;
+
+    // 카메라 드래그용
+    private bool isCameraDragging = false;
+    private Vector3 cameraDragStartWorld;
+
+    // 설치/삭제 클릭으로 소비된 버튼 — 손 뗄 때까지 HandleBuildingInteraction 진입 차단
+    private bool clickConsumedByAction = false;
+
+    void HandleBuildingInteraction()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            mouseDownScreenPos = Input.mousePosition;
+            isDraggingBuilding = false;
+            isCameraDragging = false;
+            draggedBuilding = null;
+
+            // 스프라이트 경계 기반 건물 클릭 감지
+            Vector3 clickPos = mouseWorldPos;
+            foreach (Building b in FindObjectsByType<Building>(FindObjectsSortMode.None))
+            {
+                SpriteRenderer sr = b.GetComponent<SpriteRenderer>();
+                if (sr == null) sr = b.GetComponentInChildren<SpriteRenderer>();
+                if (sr != null && sr.bounds.Contains(new Vector3(clickPos.x, clickPos.y, sr.bounds.center.z)))
+                {
+                    draggedBuilding = b;
+                    break;
+                }
+            }
+
+            if (draggedBuilding != null)
+            {
+                BuildingPopupUI.Instance?.Hide();
+            }
+            else
+            {
+                // 빈 화면 클릭 → 카메라 드래그 준비
+                cameraDragStartWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            }
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            if (draggedBuilding != null)
+            {
+                // 건물 드래그 이동
+                if (Vector2.Distance(Input.mousePosition, mouseDownScreenPos) > 10f)
+                {
+                    isDraggingBuilding = true;
+                    Building.AnyBuildingDragging = true;
+
+                    Vector3Int cell = baseGrid.WorldToCell(mouseWorldPos);
+                    draggedBuilding.transform.position = baseGrid.GetCellCenterWorld(cell);
+                }
+            }
+            else
+            {
+                // 카메라 드래그 이동
+                if (Vector2.Distance(Input.mousePosition, mouseDownScreenPos) > 5f)
+                {
+                    isCameraDragging = true;
+                    Vector3 currentWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector3 delta = cameraDragStartWorld - currentWorld;
+                    delta.z = 0f;
+                    Camera.main.transform.position += delta;
+                    // 다음 프레임 기준점 갱신 (누적 방지)
+                    cameraDragStartWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                }
+            }
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (draggedBuilding != null && !isDraggingBuilding)
+                BuildingPopupUI.Instance?.Show(draggedBuilding);
+
+            isDraggingBuilding = false;
+            isCameraDragging = false;
+            Building.AnyBuildingDragging = false;
+            draggedBuilding = null;
         }
     }
 
