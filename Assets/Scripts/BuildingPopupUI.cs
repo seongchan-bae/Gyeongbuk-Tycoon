@@ -12,11 +12,16 @@ public class BuildingPopupUI : MonoBehaviour
     [SerializeField] private Button infoButton;
     [SerializeField] private Button upgradeButton;
     [SerializeField] private Button deleteButton;
+    [SerializeField] private TextMeshProUGUI buildingName;
 
     [Header("TourAPI 설정")]
     [SerializeField] private string tourApiKey = "YOUR_API_KEY_HERE"; // data.go.kr 디코딩 키 입력
     [SerializeField] private GameObject infoPopupPanel;               // 관광 정보를 표시할 별도 패널 (선택)
     [SerializeField] private TextMeshProUGUI infoText;                // 관광 정보 텍스트
+    
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private BuildingData buildingData;
+    
 
     private Building selectedBuilding;
 
@@ -47,6 +52,10 @@ public class BuildingPopupUI : MonoBehaviour
         deleteButton.onClick.AddListener(OnDeleteClicked);
 
         popupPanel.gameObject.SetActive(true);
+        if(buildingName != null)
+        {
+            buildingName.text = buildingData.buildingName;
+        }
         UpdatePosition();
     }
 
@@ -161,6 +170,8 @@ public class BuildingPopupUI : MonoBehaviour
 
     void OnDeleteClicked()
     {
+        long sellMoney = buildingData.price/2;
+        gameManager.AddMoney(sellMoney);
         Destroy(selectedBuilding.gameObject);
         Hide();
     }
