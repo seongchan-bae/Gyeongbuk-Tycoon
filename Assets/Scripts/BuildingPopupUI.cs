@@ -13,14 +13,14 @@ public class BuildingPopupUI : MonoBehaviour
     [SerializeField] private Button upgradeButton;
     [SerializeField] private Button deleteButton;
     [SerializeField] private TextMeshProUGUI buildingName;
-
-    [Header("TourAPI 설정")]
-    [SerializeField] private string tourApiKey = "YOUR_API_KEY_HERE"; // data.go.kr 디코딩 키 입력
-    [SerializeField] private GameObject infoPopupPanel;               // 관광 정보를 표시할 별도 패널 (선택)
-    [SerializeField] private TextMeshProUGUI infoText;                // 관광 정보 텍스트
-    
     [SerializeField] private GameManager gameManager;
     [SerializeField] private BuildingData buildingData;
+    
+
+    [Header("TourAPI 설정")]
+    [SerializeField] private string tourApiKey = "616315cd61c155564e9088acbc319ff980ccc75a67ed38601b3876602d23ee9d"; // data.go.kr 디코딩 키 입력
+    [SerializeField] private GameObject infoPopupPanel;               // 관광 정보를 표시할 별도 패널
+    [SerializeField] private TextMeshProUGUI infoText;                // 관광 정보 텍스트
     
 
     private Building selectedBuilding;
@@ -78,7 +78,7 @@ public class BuildingPopupUI : MonoBehaviour
             canvas.worldCamera,
             out Vector2 localPos
         );
-        popupPanel.localPosition = localPos + new Vector2(25f, -25f);
+        popupPanel.localPosition = localPos + new Vector2(10f, -10f);
     }
 
     void OnInfoClicked()
@@ -95,21 +95,15 @@ public class BuildingPopupUI : MonoBehaviour
     IEnumerator FetchTourInfo(string contentId)
     {
         // TourAPI - detailCommon1 (국문 공통정보) 엔드포인트
-        string url = $"https://apis.data.go.kr/B551011/KorService1/detailCommon1" +
-                     $"?serviceKey={tourApiKey}" +
-                     $"&contentId={contentId}" +
-                     $"&contentTypeId=76" + // 관광지 타입 (필요시 변경)
-                     $"&defaultYN=Y" +
-                     $"&firstImageYN=N" +
-                     $"&areacodeYN=N" +
-                     $"&catcodeYN=N" +
-                     $"&addrinfoYN=N" +
-                     $"&mapinfoYN=N" +
-                     $"&overviewYN=Y" + // 개요(설명) 포함
-                     $"&MobileOS=ETC" +
-                     $"&MobileApp=GyeongbukTycoon" +
-                     $"&_type=json";
-
+        string url =$"https://apis.data.go.kr/B551011/KorService2/detailCommon2" +
+                    $"?serviceKey={tourApiKey}" +
+                    $"&contentId={contentId}" +
+                    $"&MobileOS=ETC" +
+                    $"&MobileApp=GyeongbukTycoon" +
+                    $"&_type=json" +
+                    $"&numOfRows=10" +
+                    $"&pageNo=1";
+//numOfRows=10&pageNo=1
         using UnityWebRequest req = UnityWebRequest.Get(url);
         yield return req.SendWebRequest();
 
@@ -121,7 +115,7 @@ public class BuildingPopupUI : MonoBehaviour
         }
 
         string json = req.downloadHandler.text;
-        string overview = ParseOverview(json);
+        string overview = FormatOverview(ParseOverview(json));
 
         if (string.IsNullOrEmpty(overview))
         {
@@ -133,7 +127,25 @@ public class BuildingPopupUI : MonoBehaviour
             ShowInfoText(overview);
         }
     }
+    string FormatOverview(string text){
+    // 한자 필터링
+    text = System.Text.RegularExpressions.Regex.Replace(text, @"\([\u4E00-\u9FFF]+\)", "");
 
+    // 마침표 2개당 개행
+    string[] sentences = text.Split(". ");
+    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+    for (int i = 0; i < sentences.Length; i++){
+        sb.Append(sentences[i]);
+        if (i < sentences.Length - 1)
+        {
+            sb.Append(". ");
+            if ((i + 1) % 2 == 0)
+                sb.Append("\n");
+        }
+    }
+        return sb.ToString();
+    }
     // JsonUtility가 중첩 구조를 지원하지 않으므로 문자열 파싱으로 overview 추출
     string ParseOverview(string json)
     {
@@ -149,6 +161,7 @@ public class BuildingPopupUI : MonoBehaviour
                    .Replace("\\t", " ");
     }
 
+    
     void ShowInfoText(string text)
     {
         if (infoPopupPanel != null)

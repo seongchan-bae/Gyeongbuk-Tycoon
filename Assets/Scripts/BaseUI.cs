@@ -29,6 +29,7 @@ public class BaseUI : MonoBehaviour
     //상점화면
     public void ShowStoreUI()
     {
+        BuildingPopupUI.Instance?.Hide();
         store.SetActive(true);
         Shopbutton.gameObject.SetActive(false);
     }

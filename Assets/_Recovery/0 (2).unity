@@ -700,6 +700,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BaseUI
   store: {fileID: 1944466381}
   main: {fileID: 193482142}
+  Shopbutton: {fileID: 0}
 --- !u!1 &223345607
 GameObject:
   m_ObjectHideFlags: 0
@@ -750,6 +751,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BaseUI
   store: {fileID: 1054378668}
   main: {fileID: 1383040019}
+  Shopbutton: {fileID: 0}
 --- !u!1 &335675632
 GameObject:
   m_ObjectHideFlags: 0
@@ -981,6 +983,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4365401504b02143b6ed1d0991d19d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  userMoney: 10000
   installingActivation: 0
   destroyingActivation: 1
 --- !u!4 &361643059
@@ -5202,6 +5205,10 @@ PrefabInstance:
     - target: {fileID: 214549715540103407, guid: c80d8f469d074fd4e979bd4a4a1192d2, type: 3}
       propertyPath: m_Name
       value: DummyBuilding
+      objectReference: {fileID: 0}
+    - target: {fileID: 214549715540103407, guid: c80d8f469d074fd4e979bd4a4a1192d2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1667783808752773099, guid: c80d8f469d074fd4e979bd4a4a1192d2, type: 3}
       propertyPath: baseGrid

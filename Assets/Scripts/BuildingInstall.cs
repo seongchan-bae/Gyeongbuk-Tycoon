@@ -113,7 +113,7 @@ public class BuildingInstall : MonoBehaviour
                 Debug.Log("모드 변경: 건물 삭제 모드");
             }
 
-            if (!EventSystem.current.IsPointerOverGameObject())
+                if (!EventSystem.current.IsPointerOverGameObject())
             {
                 bool clickHandled = false;
 
@@ -185,6 +185,7 @@ public class BuildingInstall : MonoBehaviour
             }
             else
             {
+                BuildingPopupUI.Instance?.Hide();
                 // 빈 화면 클릭 → 카메라 드래그 준비
                 cameraDragStartWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             }

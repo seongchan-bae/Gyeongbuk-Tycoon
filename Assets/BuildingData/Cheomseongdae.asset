@@ -16,5 +16,6 @@ MonoBehaviour:
   price: 5000
   goldProductionRate: 100
   prefab: {fileID: 2914136947125602690, guid: 0147cacd99448d248b9e9f5ec4dce248, type: 3}
-  tileWidth: 4
-  tileHeight: 4
+  tileWidth: 2
+  tileHeight: 2
+  contentId: 126207
