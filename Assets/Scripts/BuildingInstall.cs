@@ -4,6 +4,11 @@ using UnityEngine.EventSystems;
 
 public class BuildingInstall : MonoBehaviour
 {
+    public Grid BaseGrid => baseGrid;
+
+    [Header("건물 데이터베이스")]
+    [SerializeField] private BuildingData[] allBuildingDataList;
+
     [Header("타일맵 참조")]
     [SerializeField] private Grid baseGrid;
     [SerializeField] private Tilemap baseTilemap;
@@ -34,7 +39,40 @@ public class BuildingInstall : MonoBehaviour
         SetupGhost();
         rb = GetComponent<Rigidbody2D>();
 
+        RestorePlacedBuildings();
     }
+
+    public void RestorePlacedBuildings()
+    {
+        if (SaveManager.Instance == null || baseGrid == null) return;
+
+        var savedBuildings = SaveManager.Instance.CurrentData.placedBuildings;
+        if (savedBuildings == null || savedBuildings.Count == 0) return;
+
+        foreach (var bSave in savedBuildings)
+        {
+            // 저장된 이름과 일치하는 설계도(BuildingData) 찾기
+            BuildingData matchedData = System.Array.Find(allBuildingDataList, data => data.buildingName == bSave.buildingName);
+
+            if (matchedData != null && matchedData.prefab != null)
+            {
+                Vector3Int cellPos = new Vector3Int(bSave.gridX, bSave.gridY, bSave.gridZ);
+                Vector3 spawnPos = baseGrid.GetCellCenterWorld(cellPos);
+
+                GameObject installedBuilding = Instantiate(matchedData.prefab, spawnPos, Quaternion.identity);
+                installedBuilding.transform.SetParent(baseGrid.transform);
+
+                SetupBuildingCollider(installedBuilding);
+
+                Building b = installedBuilding.GetComponent<Building>();
+                if (b == null) b = installedBuilding.AddComponent<Building>();
+
+                b.Initialize(gameManager);
+                b.buildingData = matchedData;
+            }
+        }
+    }
+
 
     // Ghost 오브젝트를 자식으로 자동 생성 — Inspector 작업 불필요
     void SetupGhost()
@@ -113,7 +151,7 @@ public class BuildingInstall : MonoBehaviour
                 Debug.Log("모드 변경: 건물 삭제 모드");
             }
 
-                if (!EventSystem.current.IsPointerOverGameObject())
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
                 bool clickHandled = false;
 
@@ -279,7 +317,8 @@ public class BuildingInstall : MonoBehaviour
             ghostRenderer.gameObject.SetActive(true);
         }
 
-        if (gameManager != null){
+        if (gameManager != null)
+        {
             gameManager.installingActivation = true;
             baseUI.CloseStoreButton();
         }
@@ -394,9 +433,9 @@ public class BuildingInstall : MonoBehaviour
         float horizontalRadius = w * 0.5f;
         float verticalRadius = h * 0.25f;
 
-        Vector3 right  = centerPos + new Vector3(horizontalRadius, 0, 0);
-        Vector3 left   = centerPos + new Vector3(-horizontalRadius, 0, 0);
-        Vector3 top    = centerPos + new Vector3(0, verticalRadius, 0);
+        Vector3 right = centerPos + new Vector3(horizontalRadius, 0, 0);
+        Vector3 left = centerPos + new Vector3(-horizontalRadius, 0, 0);
+        Vector3 top = centerPos + new Vector3(0, verticalRadius, 0);
         Vector3 bottom = centerPos + new Vector3(0, -verticalRadius, 0);
 
         Gizmos.DrawLine(top, right);
