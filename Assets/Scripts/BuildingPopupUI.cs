@@ -168,7 +168,14 @@ public class BuildingPopupUI : MonoBehaviour
         {
             infoPopupPanel.SetActive(true);
             if (infoText != null)
-                infoText.text = text;
+            {
+                infoText.text = "\n" + text;
+                Canvas.ForceUpdateCanvases();
+                LayoutRebuilder.ForceRebuildLayoutImmediate(infoText.GetComponent<RectTransform>());
+                RectTransform contentRect = infoText.transform.parent.GetComponent<RectTransform>();
+                if (contentRect != null)
+                    contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, infoText.preferredHeight + 50f);
+            }
         }
         else
         {
