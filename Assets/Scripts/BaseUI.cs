@@ -13,6 +13,9 @@ public class BaseUI : MonoBehaviour
     [SerializeField]
     private Button Shopbutton;
     
+    [SerializeField]
+    private RectTransform APIBoard;
+
     //설정화면
     void settingUI()
     {
@@ -25,6 +28,10 @@ public class BaseUI : MonoBehaviour
     public void CloseStoreButton()
     {
         Shopbutton.gameObject.SetActive(false);
+    }
+    public void CloseApiBoardBoutton()
+    {
+        APIBoard.gameObject.SetActive(false);
     }
     //상점화면
     public void ShowStoreUI()
