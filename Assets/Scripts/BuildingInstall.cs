@@ -324,15 +324,6 @@ public class BuildingInstall : MonoBehaviour
         }
     }
 
-    // 상점에서 건물 선택 시 호출 - 설치할 건물 프리팹 설정 및 설치 모드 활성화
-    public void SetBuilding(GameObject prefab)
-    {
-        BuildingPrefab = prefab;
-        SetupTriggerCollider();
-        if (gameManager != null)
-            gameManager.installingActivation = true;
-    }
-
     void buildingInstalling(Vector3Int currentCellPos)
     {
         if (isCollidingWithBuilding)

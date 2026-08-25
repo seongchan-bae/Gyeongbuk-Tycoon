@@ -28,6 +28,10 @@ public class GameSaveData
     public List<string> unlockedBuildingList = new List<string>();
     public List<PlacedBuildingSaveData> placedBuildings = new List<PlacedBuildingSaveData>();
 
+    // 4. 테마 설정
+    public string currentThemeId = "";                       // 현재 선택된 테마 id
+    public List<string> unlockedThemeIds = new List<string>(); // GPS 인증으로 해금한 테마 id
+
     // (선택) 마지막 접속 시간 기록
     public string lastSavedTime = "";
 }

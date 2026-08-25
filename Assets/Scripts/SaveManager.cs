@@ -104,6 +104,13 @@ public class SaveManager : MonoBehaviour
         SaveGameData();
     }
 
+    // 테마 변경 시 호출할 편의 함수
+    public void SaveCurrentTheme(string themeId)
+    {
+        CurrentData.currentThemeId = themeId;
+        SaveGameData();
+    }
+
     // 게임 종료 또는 백그라운드 전환 시 자동 저장
     private void OnApplicationPause(bool pauseStatus)
     {

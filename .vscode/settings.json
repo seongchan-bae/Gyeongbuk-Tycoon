@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Gyeongbuk_Tycoon.slnx"
+    "dotnet.defaultSolution": "Gyeongbuk-Tycoon.slnx"
 }

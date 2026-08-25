@@ -35,6 +35,8 @@ public class TitleUIController : MonoBehaviour
     [Header("Scene Settings")]
     [SerializeField] private string mainGameSceneName = "SampleScene"; // 씬 이름 (기본값: SampleScene)
 
+    private bool isLoadingScene = false;
+
     private void Start()
     {
         // 초기 패널 상태 세팅
@@ -52,6 +54,10 @@ public class TitleUIController : MonoBehaviour
     /// </summary>
     public void OnClickStartButton()
     {
+        // 로딩 중 중복 터치 방지
+        if (isLoadingScene) return;
+        isLoadingScene = true;
+
         if (titlePanel != null) titlePanel.SetActive(false);
         StartCoroutine(LoadMainSceneAsync());
     }
