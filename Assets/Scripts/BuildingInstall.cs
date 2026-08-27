@@ -314,6 +314,7 @@ public class BuildingInstall : MonoBehaviour
             ghostRenderer.sprite = prefabSprite.sprite;
             ghostRenderer.sortingLayerName = prefabSprite.sortingLayerName;
             ghostRenderer.sortingOrder = prefabSprite.sortingOrder + 1;
+            ghostRenderer.transform.localScale = data.prefab.transform.localScale;
             ghostRenderer.gameObject.SetActive(true);
         }
 
