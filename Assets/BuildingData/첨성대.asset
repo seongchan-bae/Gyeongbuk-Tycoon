@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
-  m_Name: Cheomseongdae
+  m_Name: "\uCCA8\uC131\uB300"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   buildingName: Cheomseongdae
   price: 5000
