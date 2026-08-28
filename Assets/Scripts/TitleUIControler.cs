@@ -9,7 +9,6 @@ public class TitleUIController : MonoBehaviour
     [Header("Main Title Panels")]
     [SerializeField] private GameObject titlePanel;          // 메인 타이틀 패널
     [SerializeField] private GameObject settingsPanel;       // 환경설정 팝업창
-    [SerializeField] private GameObject worldSelectPanel;    // 월드 선택 팝업창
 
     [Header("Loading UI Elements")]
     [SerializeField] private GameObject loadingPanel;        // 로딩 화면 패널
@@ -27,11 +26,6 @@ public class TitleUIController : MonoBehaviour
         "[TIP] 관광객 수가 늘어날수록 골드 생산 속도가 빨라집니다."
     };
 
-    [Header("World Slot Buttons & Texts (선택 사항)")]
-    [SerializeField] private TextMeshProUGUI slot1Text;      // 슬롯 1 정보 텍스트
-    [SerializeField] private TextMeshProUGUI slot2Text;      // 슬롯 2 정보 텍스트
-    [SerializeField] private TextMeshProUGUI slot3Text;      // 슬롯 3 정보 텍스트
-
     [Header("Audio Settings")]
     [SerializeField] private AudioSource bgmAudioSource;     // 배경음악 AudioSource
     [SerializeField] private Slider bgmSlider;               // 환경설정창 배경음 슬라이더
@@ -46,7 +40,6 @@ public class TitleUIController : MonoBehaviour
         // 초기 패널 상태 세팅
         if (titlePanel != null) titlePanel.SetActive(false);
         if (settingsPanel != null) settingsPanel.SetActive(false);
-        if (worldSelectPanel != null) worldSelectPanel.SetActive(false);
 
         InitVolumeSettings();
 
@@ -59,26 +52,13 @@ public class TitleUIController : MonoBehaviour
     /// </summary>
     public void OnClickStartButton()
     {
-        if (worldSelectPanel != null)
-        {
-            worldSelectPanel.SetActive(true);
-            if (titlePanel != null) titlePanel.SetActive(false);
-
-            UpdateSlotUI();
-        }
+        if (titlePanel != null) titlePanel.SetActive(false);
+        StartCoroutine(LoadMainSceneAsync());
     }
 
     /// <summary>
     /// 월드 선택 팝업 닫기 (X 버튼)
     /// </summary>
-    public void OnClickCloseWorldSelect()
-    {
-        if (worldSelectPanel != null)
-        {
-            worldSelectPanel.SetActive(false);
-            if (titlePanel != null) titlePanel.SetActive(true);
-        }
-    }
 
     /// <summary>
     /// [환경설정] 버튼 ➔ 설정 팝업 열기
@@ -141,7 +121,6 @@ public class TitleUIController : MonoBehaviour
 
     private IEnumerator LoadMainSceneAsync()
     {
-        if (worldSelectPanel != null) worldSelectPanel.SetActive(false);
         if (titlePanel != null) titlePanel.SetActive(false);
         if (loadingPanel != null) loadingPanel.SetActive(true);
 
@@ -213,47 +192,29 @@ public class TitleUIController : MonoBehaviour
         }
     }
 
-    private void UpdateSlotUI()
-    {
-        if (slot1Text != null) slot1Text.text = "월드 1\n(골드: 5,000G)";
-        if (slot2Text != null) slot2Text.text = "월드 2\n(골드: 1,200G)";
-        if (slot3Text != null) slot3Text.text = "월드 3";
-    }
 
 
     #region 사운드 및 볼륨 조절 로직
 
     private void InitVolumeSettings()
     {
-        // 저장된 볼륨값 로드 (기본값 BGM: 0.8, SFX: 1.0)
-        float savedBGM = PlayerPrefs.GetFloat("BGMVolume", 0.5f);
-        float savedSFX = PlayerPrefs.GetFloat("SFXVolume", 0.8f);
+        // SaveManager에서 볼륨 값 가져오기
+        float savedBGM = SaveManager.Instance != null ? SaveManager.Instance.CurrentData.bgmVolume : 0.5f;
+        float savedSFX = SaveManager.Instance != null ? SaveManager.Instance.CurrentData.sfxVolume : 0.8f;
 
-        // 1. BGM 볼륨 적용 및 재생
         if (bgmAudioSource != null)
         {
             bgmAudioSource.volume = savedBGM;
             if (!bgmAudioSource.isPlaying) bgmAudioSource.Play();
         }
 
-        // 2. 슬라이더 초기화 및 연동
         if (bgmSlider != null)
         {
-            bgmSlider.minValue = 0f;
-            bgmSlider.maxValue = 1f;
             bgmSlider.value = savedBGM;
             bgmSlider.onValueChanged.RemoveAllListeners();
             bgmSlider.onValueChanged.AddListener(OnBGMVolumeChanged);
         }
-
-        if (sfxSlider != null)
-        {
-            sfxSlider.minValue = 0f;
-            sfxSlider.maxValue = 1f;
-            sfxSlider.value = savedSFX;
-            sfxSlider.onValueChanged.RemoveAllListeners();
-            sfxSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
-        }
+        // sfxSlider도 동일하게 적용
     }
 
     /// <summary>
@@ -261,12 +222,9 @@ public class TitleUIController : MonoBehaviour
     /// </summary>
     public void OnBGMVolumeChanged(float value)
     {
-        if (bgmAudioSource != null)
-        {
-            bgmAudioSource.volume = value;
-        }
-        PlayerPrefs.SetFloat("BGMVolume", value);
-        PlayerPrefs.Save();
+        if (bgmAudioSource != null) bgmAudioSource.volume = value;
+        // SaveManager 통합 저장 호출
+        SaveManager.Instance?.SaveSettings(value, sfxSlider != null ? sfxSlider.value : 0.8f);
     }
 
     /// <summary>

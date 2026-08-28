@@ -14,10 +14,23 @@ public class GameManager : MonoBehaviour
     public long UserMoney => userMoney;
     public event System.Action<long> OnMoneyChanged;
 
+    public static GameManager Instance { get; private set; } // 프로퍼티 개방
+
     void Awake()
     {
+        Instance = this;
         installingActivation = false;
         destroyingActivation = false;
+    }
+
+    void Start()
+    {
+        if (SaveManager.Instance != null)
+        {
+            userMoney = SaveManager.Instance.CurrentData.userMoney;
+            userKnowledgePoint = SaveManager.Instance.CurrentData.userKnowledgePoint;
+        }
+        OnMoneyChanged?.Invoke(userMoney);
     }
 
     //유저머니 추가
@@ -44,7 +57,7 @@ public class GameManager : MonoBehaviour
     //유저 지식포인트 추가
     void addUserKnowledgePoint(long knowledgePoint)
     {
-        userKnowledgePoint += knowledgePoint;    
+        userKnowledgePoint += knowledgePoint;
     }
     //유저 지식포인트 차감
     void subUserknowledgePoint(long knowledgePoint)
@@ -56,9 +69,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void showLoadingUI()
     {
-        
+
     }
-    
+
 
 
 }
