@@ -19,3 +19,5 @@ MonoBehaviour:
   tileWidth: 2
   tileHeight: 2
   contentId: 126207
+  maxTouristIncrease: 1000
+  touristIncrease: 200

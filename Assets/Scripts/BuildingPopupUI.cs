@@ -212,8 +212,19 @@ public class BuildingPopupUI : MonoBehaviour
 
     void OnDeleteClicked()
     {
-        long sellMoney = buildingData.price/2;
-        gameManager.AddMoney(sellMoney);
+        BuildingData data = selectedBuilding.buildingData;
+
+        // 삭제 후 현재 관광객이 새 최대치를 초과하면 삭제 불가
+        int newCurrent = gameManager.CurrentTourists - data.touristIncrease;
+        int newMax = gameManager.MaxTourists - data.maxTouristIncrease;
+        if (newCurrent > newMax)
+        {
+            Debug.LogWarning("이 건물을 삭제하면 관광객이 한도를 초과합니다!");
+            return;
+        }
+
+        gameManager.AddMoney(data.price / 2);
+        gameManager.RemoveTourists(data.touristIncrease, data.maxTouristIncrease);
         Destroy(selectedBuilding.gameObject);
         Hide();
     }

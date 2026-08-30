@@ -8,6 +8,13 @@ public class GameManager : MonoBehaviour
     // 유저가 가지고 있는 지식포인트(GameManager에서만 관리)
     private long userKnowledgePoint = 0L;
 
+    // 관광객 수치
+    private int currentTourists = 0;
+    private int maxTourists = 0;
+    public int CurrentTourists => currentTourists;
+    public int MaxTourists => maxTourists;
+    public event System.Action<int, int> OnTouristsChanged;
+
     [HideInInspector] public bool installingActivation;
     [HideInInspector] public bool destroyingActivation;
 
@@ -31,6 +38,22 @@ public class GameManager : MonoBehaviour
             userKnowledgePoint = SaveManager.Instance.CurrentData.userKnowledgePoint;
         }
         OnMoneyChanged?.Invoke(userMoney);
+    }
+
+    // 건물 설치 시 관광객 수치 추가
+    public void AddTourists(int tourist, int maxTourist)
+    {
+        currentTourists += tourist;
+        maxTourists += maxTourist;
+        OnTouristsChanged?.Invoke(currentTourists, maxTourists);
+    }
+
+    // 건물 삭제 시 관광객 수치 차감
+    public void RemoveTourists(int tourist, int maxTourist)
+    {
+        currentTourists -= tourist;
+        maxTourists -= maxTourist;
+        OnTouristsChanged?.Invoke(currentTourists, maxTourists);
     }
 
     //유저머니 추가

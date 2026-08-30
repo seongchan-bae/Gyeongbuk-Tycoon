@@ -333,6 +333,15 @@ public class BuildingInstall : MonoBehaviour
             return;
         }
 
+        // 관광객 초과 시 설치 불가
+        int newCurrent = gameManager.CurrentTourists + currentBuildingData.touristIncrease;
+        int newMax = gameManager.MaxTourists + currentBuildingData.maxTouristIncrease;
+        if (newCurrent > newMax)
+        {
+            Debug.LogWarning("관광객 수용 한도를 초과하여 설치할 수 없습니다!");
+            return;
+        }
+
         // 현재 감지 마름모가 위치한 정확한 중심점에 건물 소환
         Vector3 spawnPos = baseGrid.GetCellCenterWorld(currentCellPos);
         GameObject installedBuilding = Instantiate(currentBuildingData.prefab, spawnPos, Quaternion.identity);
@@ -348,6 +357,7 @@ public class BuildingInstall : MonoBehaviour
 
         building.Initialize(gameManager);
         building.buildingData = currentBuildingData;
+        gameManager.AddTourists(currentBuildingData.touristIncrease, currentBuildingData.maxTouristIncrease);
 
         // Ghost 숨기고 설치 모드 종료
         if (ghostRenderer != null)
