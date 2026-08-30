@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using UnityEngine.EventSystems;
 using TMPro;
 
 public class BuildingPopupUI : MonoBehaviour
@@ -30,6 +31,10 @@ public class BuildingPopupUI : MonoBehaviour
         Instance = this;
         popupPanel.gameObject.SetActive(false);
         if (infoPopupPanel != null) infoPopupPanel.SetActive(false);
+
+        // 팝업 배경이 클릭을 가로채지 않도록 Raycast Target 비활성화
+        Image bg = popupPanel.GetComponent<Image>();
+        if (bg != null) bg.raycastTarget = false;
     }
 
     void Update()
@@ -37,6 +42,18 @@ public class BuildingPopupUI : MonoBehaviour
         // 선택된 건물이 이동할 때 팝업 위치도 따라다님
         if (selectedBuilding != null && popupPanel.gameObject.activeSelf)
             UpdatePosition();
+
+        // UI 버튼 외 클릭 시 팝업 닫기
+        if (popupPanel.gameObject.activeSelf && Input.GetMouseButtonDown(0))
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                WasHiddenThisClick = true;
+                Hide();
+            }
+        }
+        if (Input.GetMouseButtonUp(0))
+            WasHiddenThisClick = false;
     }
 
     public void Show(Building building)
@@ -58,6 +75,8 @@ public class BuildingPopupUI : MonoBehaviour
         }
         UpdatePosition();
     }
+
+    public static bool WasHiddenThisClick { get; private set; } = false;
 
     public void Hide()
     {
@@ -87,9 +106,11 @@ public class BuildingPopupUI : MonoBehaviour
         if (string.IsNullOrEmpty(contentId))
         {
             Debug.LogWarning($"[Popup] {selectedBuilding?.buildingData?.buildingName}에 contentId가 설정되지 않았습니다.");
+            Hide();
             return;
         }
         StartCoroutine(FetchTourInfo(contentId));
+        Hide();
     }
 
     IEnumerator FetchTourInfo(string contentId)
@@ -186,6 +207,7 @@ public class BuildingPopupUI : MonoBehaviour
     void OnUpgradeClicked()
     {
         Debug.Log($"[Popup] 업그레이드: {selectedBuilding?.buildingData?.buildingName}");
+        Hide();
     }
 
     void OnDeleteClicked()

@@ -12,6 +12,8 @@ public class BaseUI : MonoBehaviour
     private GameObject main;
     [SerializeField]
     private Button Shopbutton;
+    [SerializeField]
+    private GameObject APIboard;
 
 
     [Header("환경설정 UI")]
@@ -56,6 +58,10 @@ public class BaseUI : MonoBehaviour
     {
         store.SetActive(false);
         Shopbutton.gameObject.SetActive(true);
+    }
+    public void CloseAPIBoard()
+    {
+        APIboard.SetActive(false);
     }
     //연구소화면
     void laboratoryUI()

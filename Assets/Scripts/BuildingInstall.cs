@@ -261,7 +261,7 @@ public class BuildingInstall : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            if (draggedBuilding != null && !isDraggingBuilding)
+            if (draggedBuilding != null && !isDraggingBuilding && !BuildingPopupUI.WasHiddenThisClick)
                 BuildingPopupUI.Instance?.Show(draggedBuilding);
 
             isDraggingBuilding = false;
