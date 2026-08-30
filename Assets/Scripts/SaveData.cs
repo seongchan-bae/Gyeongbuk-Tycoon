@@ -19,6 +19,10 @@ public class GameSaveData
     // 1. 환경설정 데이터
     public float bgmVolume = 0.5f;
     public float sfxVolume = 0.8f;
+    // 음소거는 볼륨과 별도로 보관한다.
+    // 음소거를 볼륨 0으로 저장해버리면 해제했을 때 원래 크기를 복원할 수 없다.
+    public bool bgmMuted = false;
+    public bool sfxMuted = false;
 
     // 2. 인게임 재화 데이터
     public long userMoney = 10000L;
