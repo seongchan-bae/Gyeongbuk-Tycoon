@@ -15,7 +15,7 @@ MonoBehaviour:
   buildingName: 
   price: 20000
   goldProductionRate: 500
-  prefab: {fileID: 8873258100519564580, guid: f94a7dacc9ff6c647801a0f972c78f84, type: 3}
+  prefab: {fileID: 4119108367356186960, guid: 963afcac4aebf2b4e9ca17e745fbb9b0, type: 3}
   tileWidth: 4
   tileHeight: 4
   contentId: 128676
