@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
   m_Name: "\uCCA8\uC131\uB300"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
-  buildingName: Cheomseongdae
+  buildingName: "\uCCA8\uC131\uB300"
   price: 5000
   goldProductionRate: 100
   prefab: {fileID: 2914136947125602690, guid: 0147cacd99448d248b9e9f5ec4dce248, type: 3}

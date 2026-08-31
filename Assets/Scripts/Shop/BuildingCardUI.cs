@@ -15,6 +15,10 @@ public class BuildingCardUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI maxTouristIncreaseText;
     [SerializeField] private TextMeshProUGUI priceText;
 
+    [Header("구매 가능 여부")]
+    [SerializeField] private GameObject lockOverlay;  // 잠금 이미지 오브젝트
+    [SerializeField] private GameObject buyButton;    // 구매 버튼 오브젝트
+
     void Start()
     {
         if (buildingData == null) return;
@@ -23,6 +27,24 @@ public class BuildingCardUI : MonoBehaviour
         if (touristIncreaseText != null)    touristIncreaseText.text    = buildingData.touristIncrease.ToString("N0");
         if (maxTouristIncreaseText != null) maxTouristIncreaseText.text = buildingData.maxTouristIncrease.ToString("N0");
         if (priceText != null)              priceText.text              = buildingData.price.ToString("N0");
+
+        if (gameManager == null) gameManager = GameManager.Instance;
+        UpdateAffordability(gameManager != null ? gameManager.UserMoney : 0);
+        if (gameManager != null) gameManager.OnMoneyChanged += UpdateAffordability;
+    }
+
+    void OnDestroy()
+    {
+        if (gameManager != null) gameManager.OnMoneyChanged -= UpdateAffordability;
+    }
+
+    void UpdateAffordability(long currentMoney)
+    {
+        if (buildingData == null) return;
+        bool canAfford = currentMoney >= buildingData.price;
+
+        if (buyButton != null)   buyButton.SetActive(canAfford);
+        if (lockOverlay != null) lockOverlay.SetActive(!canAfford);
     }
 
     // 카드의 Buy 버튼 OnClick에 연결
