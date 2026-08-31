@@ -22,8 +22,8 @@ public class BuildingInstall : MonoBehaviour
     [SerializeField] private LayerMask buildingLayer; // Building, Cloud 레이어 다중 선택
 
     [Header("ShopButton 화면에 보이게/안보이게끔 조절")]
-    [SerializeField]
-    private BaseUI baseUI;
+    [SerializeField] private BaseUI baseUI;
+
 
     private Vector3 mouseWorldPos;
     private Vector3Int cellPosition;
@@ -257,6 +257,7 @@ public class BuildingInstall : MonoBehaviour
                     Vector3 delta = cameraDragStartWorld - currentWorld;
                     delta.z = 0f;
                     Camera.main.transform.position += delta;
+                    CameraController.Instance?.ClampCamera();
                     // 다음 프레임 기준점 갱신 (누적 방지)
                     cameraDragStartWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 }
