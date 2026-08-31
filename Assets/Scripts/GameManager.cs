@@ -18,6 +18,10 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool installingActivation;
     [HideInInspector] public bool destroyingActivation;
 
+    [SerializeField] private GameObject puzzleUI;
+    [SerializeField] private GameObject mainUI;
+    [SerializeField] private GameObject HintPopupUI;
+
     public long UserMoney => userMoney;
     public event System.Action<long> OnMoneyChanged;
 
@@ -96,5 +100,47 @@ public class GameManager : MonoBehaviour
     }
 
 
+    
 
+    // "미니게임" 버튼을 눌렀을 때 실행될 함수
+    public void OpenPuzzleUI()
+    {
+
+        if (puzzleUI != null)
+        {
+            puzzleUI.SetActive(true); // PuzzleUI 활성화 (화면에 표시)
+        }
+        mainUI.SetActive(false);
+    }
+
+    // 퍼즐 UI 내의 "닫기(X)" 버튼 등에 연결할 함수
+    public void ClosePuzzleUI()
+    {
+        if (puzzleUI != null)
+        {
+            puzzleUI.SetActive(false); // PuzzleUI 비활성화 (화면에서 숨김)
+        }
+        mainUI.SetActive(true);
+    }
+
+    public void OpenHintPopupUI()
+    {
+
+        if (HintPopupUI != null)
+        {
+            HintPopupUI.SetActive(true); 
+        }
+       
+    }
+    public void CloseHintPopupUI()
+    {
+
+        if (HintPopupUI != null)
+        {
+            HintPopupUI.SetActive(false); 
+        }
+       
+    }
 }
+
+
