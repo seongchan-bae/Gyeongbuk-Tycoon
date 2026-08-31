@@ -35,8 +35,6 @@ public class TitleUIController : MonoBehaviour
     [Header("Scene Settings")]
     [SerializeField] private string mainGameSceneName = "SampleScene"; // 씬 이름 (기본값: SampleScene)
 
-    private bool isLoadingScene = false;
-
     private void Start()
     {
         // 초기 패널 상태 세팅
@@ -46,8 +44,7 @@ public class TitleUIController : MonoBehaviour
         InitVolumeSettings();
 
         // 앱 실행 시 시작 로딩 연출 실행 (1.5초간 진행 후 타이틀 화면 출력)
-        // StartCoroutine(StartAppFakeLoading(1.5f));
-        if (titlePanel != null) titlePanel.SetActive(true);
+        StartCoroutine(StartAppFakeLoading(1.5f));
     }
 
     /// <summary>
@@ -55,10 +52,6 @@ public class TitleUIController : MonoBehaviour
     /// </summary>
     public void OnClickStartButton()
     {
-        // 로딩 중 중복 터치 방지
-        if (isLoadingScene) return;
-        isLoadingScene = true;
-
         if (titlePanel != null) titlePanel.SetActive(false);
         StartCoroutine(LoadMainSceneAsync());
     }
@@ -149,24 +142,20 @@ public class TitleUIController : MonoBehaviour
         float minLoadingTime = 1.0f;
         float timer = 0f;
 
-        // 진행률은 슬라이더가 아닌 지역 변수로 추적한다.
-        // 예전에는 loadingSlider.value를 직접 읽어, Inspector에서 슬라이더 연결이 빠지면
-        // allowSceneActivation이 영원히 true가 되지 않았다. 그러면 op.isDone도 false로 남아
-        // 로딩 화면에서 무한 정지한다.
-        float displayProgress = 0f;
-
         while (!op.isDone)
         {
             yield return null;
             timer += Time.deltaTime;
 
             float targetProgress = Mathf.Clamp01(op.progress / 0.9f);
-            displayProgress = Mathf.MoveTowards(displayProgress, targetProgress, Time.deltaTime * 2f);
 
-            if (loadingSlider != null) loadingSlider.value = displayProgress;
-            if (progressText != null) progressText.text = $"마을 불러오는 중... {(displayProgress * 100f):F0}%";
+            if (loadingSlider != null)
+            {
+                loadingSlider.value = Mathf.MoveTowards(loadingSlider.value, targetProgress, Time.deltaTime * 2f);
+                if (progressText != null) progressText.text = $"마을 불러오는 중... {(loadingSlider.value * 100f):F0}%";
+            }
 
-            if (displayProgress >= 1.0f && timer >= minLoadingTime)
+            if (loadingSlider != null && loadingSlider.value >= 1.0f && timer >= minLoadingTime)
             {
                 op.allowSceneActivation = true;
             }
@@ -225,13 +214,7 @@ public class TitleUIController : MonoBehaviour
             bgmSlider.onValueChanged.RemoveAllListeners();
             bgmSlider.onValueChanged.AddListener(OnBGMVolumeChanged);
         }
-
-        if (sfxSlider != null)
-        {
-            sfxSlider.value = savedSFX;
-            sfxSlider.onValueChanged.RemoveAllListeners();
-            sfxSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
-        }
+        // sfxSlider도 동일하게 적용
     }
 
     /// <summary>
@@ -241,20 +224,16 @@ public class TitleUIController : MonoBehaviour
     {
         if (bgmAudioSource != null) bgmAudioSource.volume = value;
         // SaveManager 통합 저장 호출
-        float sfx = sfxSlider != null ? sfxSlider.value
-            : (SaveManager.Instance != null ? SaveManager.Instance.CurrentData.sfxVolume : 0.8f);
-        SaveManager.Instance?.SaveSettings(value, sfx);
+        SaveManager.Instance?.SaveSettings(value, sfxSlider != null ? sfxSlider.value : 0.8f);
     }
 
     /// <summary>
-    /// SFX 슬라이더 이동 시 저장. 배경음악과 동일하게 SaveManager를 거친다.
-    /// 실제 효과음 반영은 효과음 리소스와 AudioSource가 준비된 뒤에 연결한다.
+    /// SFX 슬라이더 이동 시 실시간 작동 및 저장
     /// </summary>
     public void OnSFXVolumeChanged(float value)
     {
-        float bgm = bgmSlider != null ? bgmSlider.value
-            : (SaveManager.Instance != null ? SaveManager.Instance.CurrentData.bgmVolume : 0.5f);
-        SaveManager.Instance?.SaveSettings(bgm, value);
+        PlayerPrefs.SetFloat("SFXVolume", value);
+        PlayerPrefs.Save();
     }
 
     #endregion

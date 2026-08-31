@@ -30,22 +30,11 @@ public class SoundManager : MonoBehaviour
 
     public void ApplySavedVolume()
     {
-        if (SaveManager.Instance == null) return;
-
-        var data = SaveManager.Instance.CurrentData;
-        ApplyBGM(data.bgmVolume, data.bgmMuted);
-        ApplySFX(data.sfxVolume, data.sfxMuted);
-    }
-
-    /// <summary>음소거 상태를 반영해 실제 출력 볼륨을 정한다.</summary>
-    public void ApplyBGM(float volume, bool muted)
-    {
-        if (bgmSource != null) bgmSource.volume = muted ? 0f : volume;
-    }
-
-    public void ApplySFX(float volume, bool muted)
-    {
-        if (sfxSource != null) sfxSource.volume = muted ? 0f : volume;
+        if (SaveManager.Instance != null)
+        {
+            if (bgmSource != null) bgmSource.volume = SaveManager.Instance.CurrentData.bgmVolume;
+            if (sfxSource != null) sfxSource.volume = SaveManager.Instance.CurrentData.sfxVolume;
+        }
     }
 
     // 환경설정 슬라이더에서 호출할 실시간 볼륨 조절 함수
