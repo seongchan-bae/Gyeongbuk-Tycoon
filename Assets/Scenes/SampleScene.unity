@@ -7662,6 +7662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6b606a19402f0645a06b0e819013555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  backgroundSprite: {fileID: 535163548}
 --- !u!1 &1790673833
 GameObject:
   m_ObjectHideFlags: 0
