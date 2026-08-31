@@ -740,9 +740,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridOverlay
   grid: {fileID: 911259985}
-  mapWidth: 20
-  mapHeight: 20
-  mapCenter: {x: 0, y: 0, z: 0}
+  mapWidth: 32
+  mapHeight: 32
+  mapCenter: {x: -20, y: 10, z: 0}
   cellScale: 1
   lineWidth: 0.03
   sortingOrder: 10
@@ -3045,7 +3045,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 6afe9b5b0f0d21c4cbfd48d23467d564, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9279cb514bb781c46915639e57a1e2a3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3064,8 +3064,8 @@ Transform:
   m_GameObject: {fileID: 535163547}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.2432, y: -2.4407, z: 0}
-  m_LocalScale: {x: 3.5593462, y: 3.6413708, z: 1}
+  m_LocalPosition: {x: -15.62, y: -2.19, z: 0}
+  m_LocalScale: {x: 4.797718, y: 4.90828, z: 1.347921}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -4838,6 +4838,11 @@ MonoBehaviour:
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
+  buildingNameText: {fileID: 0}
+  goldProductionText: {fileID: 0}
+  touristIncreaseText: {fileID: 0}
+  maxTouristIncreaseText: {fileID: 0}
+  priceText: {fileID: 0}
 --- !u!1 &950113499
 GameObject:
   m_ObjectHideFlags: 0
@@ -6251,6 +6256,11 @@ MonoBehaviour:
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
+  buildingNameText: {fileID: 0}
+  goldProductionText: {fileID: 0}
+  touristIncreaseText: {fileID: 0}
+  maxTouristIncreaseText: {fileID: 0}
+  priceText: {fileID: 0}
 --- !u!1 &1253644883
 GameObject:
   m_ObjectHideFlags: 0
@@ -7205,6 +7215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingInstall
   allBuildingDataList:
+  - {fileID: 11400000, guid: 4e6e584f408da834da8cce8d9eb99d74, type: 2}
   - {fileID: 11400000, guid: 4e6e584f408da834da8cce8d9eb99d74, type: 2}
   baseGrid: {fileID: 911259985}
   baseTilemap: {fileID: 180523459}
