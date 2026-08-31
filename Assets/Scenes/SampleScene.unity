@@ -4035,7 +4035,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PuzzleUIManager
   puzzleManager: {fileID: 1174124182}
   puzzleGenerator: {fileID: 979904876}
-  boardFrameImage: {fileID: 0}
+  boardFrameImage: {fileID: 609873287}
   selectionPanel: {fileID: 964694325}
   selectionContentParent: {fileID: 1115592779}
   puzzleItemPrefab: {fileID: 3385511445643491962, guid: c0d411f13b222db45ab22313bb1b5039, type: 3}

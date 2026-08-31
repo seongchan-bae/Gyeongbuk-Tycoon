@@ -4,8 +4,6 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
-
-
 public class PuzzleUIManager : MonoBehaviour
 {
     [Header("Dependencies")]
@@ -14,7 +12,7 @@ public class PuzzleUIManager : MonoBehaviour
 
     [Header("Board Background Settings")]
     [Tooltip("퍼즐 판 뒤에 깔리는 FrameImage (RawImage 또는 Image)")]
-    public RawImage boardFrameImage; // 👈 추가된 부분: RawImage 제어용 변수
+    public RawImage boardFrameImage; 
 
     [Header("Puzzle Selection Settings")]
     public GameObject selectionPanel; 
@@ -79,11 +77,16 @@ public class PuzzleUIManager : MonoBehaviour
 
         if (selectionContentParent != null)
         {
-            foreach (Transform child in selectionContentParent)
+            // 🎯 [핵심 수정] 기존 목록을 안전하게 분리 후 삭제 (중복 생성 방지)
+            int childCount = selectionContentParent.childCount;
+            for (int i = childCount - 1; i >= 0; i--)
             {
-                DestroyImmediate(child.gameObject);
+                Transform child = selectionContentParent.GetChild(i);
+                child.SetParent(null); // 즉시 부모 관계를 끊어 중복 순회 및 UI 재배치 문제 방지
+                Destroy(child.gameObject);
             }
 
+            // 새로운 프리팹 목록 생성
             foreach (var data in puzzleList)
             {
                 if (puzzleItemPrefab != null)
@@ -106,7 +109,7 @@ public class PuzzleUIManager : MonoBehaviour
     {
         currentSelectedSprite = selectedData.puzzleImage;
 
-        // 🎯 1. 퍼즐 틀(FrameImage) 배경 이미지 가변 변경
+        // 1. 퍼즐 틀(FrameImage) 배경 이미지 가변 변경
         if (boardFrameImage != null && currentSelectedSprite != null)
         {
             boardFrameImage.texture = currentSelectedSprite.texture;
@@ -114,7 +117,7 @@ public class PuzzleUIManager : MonoBehaviour
 
         if (selectionPanel != null) selectionPanel.SetActive(false);
 
-        // 🎯 2. 선택된 이미지로 퍼즐 조각 생성 및 게임 시작
+        // 2. 선택된 이미지로 퍼즐 조각 생성 및 게임 시작
         ResetAndInitializeUI();
     }
 
