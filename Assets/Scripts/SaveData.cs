@@ -19,6 +19,9 @@ public class GameSaveData
     // 1. 환경설정 데이터
     public float bgmVolume = 0.5f;
     public float sfxVolume = 0.8f;
+    // 음소거를 볼륨 0으로 저장해버리면 해제했을 때 원래 크기를 복원할 수 없다.
+    public bool bgmMuted = false;
+    public bool sfxMuted = false;
 
     // 2. 인게임 재화 데이터
     public long userMoney = 10000L;
@@ -27,6 +30,10 @@ public class GameSaveData
     // 3. 인게임 건물 및 해금 상태
     public List<string> unlockedBuildingList = new List<string>();
     public List<PlacedBuildingSaveData> placedBuildings = new List<PlacedBuildingSaveData>();
+
+    // 4. 테마 설정
+    public string currentThemeId = "";
+    public List<string> unlockedThemeIds = new List<string>();
 
     // (선택) 마지막 접속 시간 기록
     public string lastSavedTime = "";

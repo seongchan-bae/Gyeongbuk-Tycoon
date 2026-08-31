@@ -47,4 +47,14 @@ public class SoundManager : MonoBehaviour
     {
         if (sfxSource != null) sfxSource.volume = volume;
     }
+
+    public void ApplyBGM(float volume, bool muted)
+    {
+        if (bgmSource != null) bgmSource.volume = muted ? 0f : volume;
+    }
+
+    public void ApplySFX(float volume, bool muted)
+    {
+        if (sfxSource != null) sfxSource.volume = muted ? 0f : volume;
+    }
 }
