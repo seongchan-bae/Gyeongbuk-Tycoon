@@ -5251,6 +5251,11 @@ MonoBehaviour:
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
+  buildingNameText: {fileID: 2136790655}
+  goldProductionText: {fileID: 563348980}
+  touristIncreaseText: {fileID: 663149072}
+  maxTouristText: {fileID: 1351319217}
+  priceText: {fileID: 395911664}
 --- !u!1 &950113499
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class BuildingCardUI : MonoBehaviour
 {
@@ -6,6 +7,29 @@ public class BuildingCardUI : MonoBehaviour
     [SerializeField] private BuildingInstall buildingInstall;
     [SerializeField] private BaseUI baseUI;              // 닫을 상점 UI
     [SerializeField] private GameManager gameManager;
+
+    [Header("건물 정보 텍스트")]
+    [SerializeField] private TMP_Text buildingNameText;
+    [SerializeField] private TMP_Text goldProductionText;
+    [SerializeField] private TMP_Text touristIncreaseText;
+    [SerializeField] private TMP_Text maxTouristText;
+    [SerializeField] private TMP_Text priceText;
+
+    void Start()
+    {
+        RefreshUI();
+    }
+
+    void RefreshUI()
+    {
+        if (buildingData == null) return;
+
+        if (buildingNameText    != null) buildingNameText.text    = buildingData.buildingName;
+        if (goldProductionText  != null) goldProductionText.text  = buildingData.goldProductionRate.ToString();
+        if (touristIncreaseText != null) touristIncreaseText.text = buildingData.touristIncrease.ToString();
+        if (maxTouristText      != null) maxTouristText.text      = buildingData.maxTouristIncrease.ToString();
+        if (priceText           != null) priceText.text           = buildingData.price.ToString();
+    }
 
     // 카드의 Buy 버튼 OnClick에 연결
     public void OnBuyClicked()
