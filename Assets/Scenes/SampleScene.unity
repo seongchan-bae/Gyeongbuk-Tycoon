@@ -6680,7 +6680,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -13.333038, y: 88.99988}
+  m_AnchoredPosition: {x: -13.332794, y: 88.99988}
   m_SizeDelta: {x: 208.6723, y: 208.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1253644885
@@ -7750,7 +7750,7 @@ MonoBehaviour:
     m_Bits: 64
   gridOverlay: {fileID: 176669123}
   baseUI: {fileID: 223139033}
-  validColor: {r: 0, g: 1, b: 0, a: 0.6}
+  validColor: {r: 0, g: 1, b: 0, a: 0.39215687}
   invalidColor: {r: 1, g: 0, b: 0, a: 0.6}
   highlightSortingLayer: Default
   highlightSortingOrder: 0
@@ -9335,14 +9335,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.3254902}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.39607844}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 04d3450085863b046a30681cdc6ff605, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e1d3858c98b137e4f8e632c43104fefd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
