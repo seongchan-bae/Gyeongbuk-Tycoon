@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 public class BuildingInstall : MonoBehaviour
 {
@@ -33,10 +34,21 @@ public class BuildingInstall : MonoBehaviour
     private SpriteRenderer ghostRenderer;
     private Rigidbody2D rb;
 
+    [Header("타일 셀 하이라이트")]
+    [SerializeField] private Color validPlacementColor = new Color(0f, 1f, 0f, 0.45f);
+    [SerializeField] private Color invalidPlacementColor = new Color(1f, 0f, 0f, 0.40f);
+    [SerializeField] private string highlightSortingLayer = "Default";
+    [SerializeField] private int highlightSortingOrder = 0;
+
+    private List<SpriteRenderer> tileHighlightRenderers = new List<SpriteRenderer>();
+    private Sprite tileHighlightSprite;
+    private GameObject highlightContainer;
+
     void Start()
     {
         SetupTriggerCollider();
         SetupGhost();
+        SetupTileHighlight();
         rb = GetComponent<Rigidbody2D>();
 
         RestorePlacedBuildings();
@@ -86,6 +98,123 @@ public class BuildingInstall : MonoBehaviour
         ghostObj.transform.localPosition = Vector3.zero;
         ghostRenderer = ghostObj.AddComponent<SpriteRenderer>();
         ghostObj.SetActive(false);
+    }
+
+    // ===== 타일 셀 하이라이트 시스템 =====
+
+    void SetupTileHighlight()
+    {
+        highlightContainer = new GameObject("TileHighlightContainer");
+        highlightContainer.transform.SetParent(transform);
+        tileHighlightSprite = CreateDiamondSprite();
+    }
+
+    // 2:1 아이소메트릭 비율 마름모 스프라이트를 코드로 생성 (에셋 불필요)
+    Sprite CreateDiamondSprite()
+    {
+        int texW = 128, texH = 64;
+        Texture2D tex = new Texture2D(texW, texH, TextureFormat.RGBA32, false);
+        Color[] pixels = new Color[texW * texH];
+
+        for (int py = 0; py < texH; py++)
+        {
+            for (int px = 0; px < texW; px++)
+            {
+                float nx = (px + 0.5f) / texW;
+                float ny = (py + 0.5f) / texH;
+                // 마름모 거리 공식: |x-0.5|*2 + |y-0.5|*2
+                float dist = Mathf.Abs(nx - 0.5f) * 2f + Mathf.Abs(ny - 0.5f) * 2f;
+
+                Color c;
+                if (dist > 1.0f)
+                    c = Color.clear;
+                else if (dist > 0.88f)
+                    c = Color.white;                   // 외곽선
+                else
+                    c = new Color(1f, 1f, 1f, 0.25f); // 내부 반투명 채우기
+                pixels[py * texW + px] = c;
+            }
+        }
+        tex.SetPixels(pixels);
+        tex.Apply();
+
+        // PPU=128 → 너비 128/128=1 유닛, 높이 64/128=0.5 유닛 (1타일 크기와 일치)
+        return Sprite.Create(tex, new Rect(0, 0, texW, texH), new Vector2(0.5f, 0.5f), texW);
+    }
+
+    // 건물이 차지하는 셀 목록 계산 (tileWidth × tileHeight)
+    List<Vector3Int> GetFootprintCells(Vector3Int center, BuildingData data)
+    {
+        var cells = new List<Vector3Int>();
+        if (data == null) { cells.Add(center); return cells; }
+
+        int w = data.tileWidth;
+        int h = data.tileHeight;
+        int halfW = w / 2;
+        int halfH = h / 2;
+
+        for (int x = -halfW; x < w - halfW; x++)
+            for (int y = -halfH; y < h - halfH; y++)
+                cells.Add(new Vector3Int(center.x + x, center.y + y, center.z));
+
+        return cells;
+    }
+
+    // 매 프레임 하이라이트 위치·색상 갱신
+    void UpdateTileHighlights()
+    {
+        if (highlightContainer == null || tileHighlightSprite == null) return;
+
+        bool show = gameManager != null && gameManager.installingActivation && currentBuildingData != null;
+        List<Vector3Int> cells = show ? GetFootprintCells(cellPosition, currentBuildingData) : new List<Vector3Int>();
+
+        // 풀이 부족할 때만 새 오브젝트 추가
+        while (tileHighlightRenderers.Count < cells.Count)
+        {
+            GameObject go = new GameObject("TileHighlight");
+            go.transform.SetParent(highlightContainer.transform);
+            SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
+            sr.sprite = tileHighlightSprite;
+            sr.sortingLayerName = highlightSortingLayer;
+            sr.sortingOrder = highlightSortingOrder;
+            tileHighlightRenderers.Add(sr);
+        }
+
+        Color col = isCollidingWithBuilding ? invalidPlacementColor : validPlacementColor;
+
+        for (int i = 0; i < tileHighlightRenderers.Count; i++)
+        {
+            if (i < cells.Count && baseGrid != null)
+            {
+                tileHighlightRenderers[i].gameObject.SetActive(true);
+                tileHighlightRenderers[i].transform.position = baseGrid.GetCellCenterWorld(cells[i]);
+                tileHighlightRenderers[i].color = col;
+            }
+            else
+            {
+                tileHighlightRenderers[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
+    void ClearTileHighlights()
+    {
+        foreach (var sr in tileHighlightRenderers)
+            if (sr != null) sr.gameObject.SetActive(false);
+    }
+
+    // 설치 모드 취소 (Escape키)
+    void CancelInstalling()
+    {
+        if (ghostRenderer != null)
+            ghostRenderer.gameObject.SetActive(false);
+        ClearTileHighlights();
+        isCollidingWithBuilding = false;
+        if (gameManager != null)
+        {
+            gameManager.installingActivation = false;
+            baseUI.ShowStoreButton();
+        }
     }
 
     void SetupTriggerCollider()
@@ -145,9 +274,16 @@ public class BuildingInstall : MonoBehaviour
                 : new Color(0f, 1f, 0f, 0.5f);
         }
 
-        // 4. 모드 변경 및 클릭 로직
+        // 4. 타일 셀 하이라이트 갱신
+        UpdateTileHighlights();
+
+        // 5. 모드 변경 및 클릭 로직
         if (gameManager != null)
         {
+            // Escape로 설치 취소
+            if (Input.GetKeyDown(KeyCode.Escape) && gameManager.installingActivation)
+                CancelInstalling();
+
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 gameManager.destroyingActivation = true;
@@ -367,6 +503,7 @@ public class BuildingInstall : MonoBehaviour
         // Ghost 숨기고 설치 모드 종료
         if (ghostRenderer != null)
             ghostRenderer.gameObject.SetActive(false);
+        ClearTileHighlights();
 
         isCollidingWithBuilding = false;
         gameManager.installingActivation = false; // 설치 완료 후 모드 자동 종료

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\dlxkc\\\\OneDrive\\\\Desktop\\\\Unity project\\\\Gyeongbuk_Tycoon\\\\Assets\\\\Scripts\" -Recurse -Filter \"*.cs\")",
+      "Bash(Select-Object FullName)",
+      "Bash(Sort-Object FullName)"
+    ]
+  }
+}
