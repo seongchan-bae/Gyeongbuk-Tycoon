@@ -15,9 +15,28 @@ public class BuildingCardUI : MonoBehaviour
     [SerializeField] private TMP_Text maxTouristText;
     [SerializeField] private TMP_Text priceText;
 
+    [Header("구매 불가 잠금")]
+    [SerializeField] private GameObject lockImage;
+
     void Start()
     {
         RefreshUI();
+        UpdateLockState(gameManager != null ? gameManager.UserMoney : 0);
+
+        if (gameManager != null)
+            gameManager.OnMoneyChanged += UpdateLockState;
+    }
+
+    void OnDestroy()
+    {
+        if (gameManager != null)
+            gameManager.OnMoneyChanged -= UpdateLockState;
+    }
+
+    void UpdateLockState(long currentMoney)
+    {
+        if (lockImage == null || buildingData == null) return;
+        lockImage.SetActive(currentMoney < buildingData.price);
     }
 
     void RefreshUI()
@@ -25,10 +44,10 @@ public class BuildingCardUI : MonoBehaviour
         if (buildingData == null) return;
 
         if (buildingNameText    != null) buildingNameText.text    = buildingData.buildingName;
-        if (goldProductionText  != null) goldProductionText.text  = buildingData.goldProductionRate.ToString();
-        if (touristIncreaseText != null) touristIncreaseText.text = buildingData.touristIncrease.ToString();
-        if (maxTouristText      != null) maxTouristText.text      = buildingData.maxTouristIncrease.ToString();
-        if (priceText           != null) priceText.text           = buildingData.price.ToString();
+        if (goldProductionText  != null) goldProductionText.text  = buildingData.goldProductionRate.ToString("#,##0.##");
+        if (touristIncreaseText != null) touristIncreaseText.text = buildingData.touristIncrease.ToString("N0");
+        if (maxTouristText      != null) maxTouristText.text      = buildingData.maxTouristIncrease.ToString("N0");
+        if (priceText           != null) priceText.text           = buildingData.price.ToString("N0");
     }
 
     // 카드의 Buy 버튼 OnClick에 연결
