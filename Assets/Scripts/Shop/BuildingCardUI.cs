@@ -17,6 +17,7 @@ public class BuildingCardUI : MonoBehaviour
 
     [Header("구매 불가 잠금")]
     [SerializeField] private GameObject lockImage;
+    [SerializeField] private UnityEngine.UI.Button buyButton;
 
     void Start()
     {
@@ -35,8 +36,10 @@ public class BuildingCardUI : MonoBehaviour
 
     void UpdateLockState(long currentMoney)
     {
-        if (lockImage == null || buildingData == null) return;
-        lockImage.SetActive(currentMoney < buildingData.price);
+        if (buildingData == null) return;
+        bool locked = currentMoney < buildingData.price;
+        if (lockImage != null) lockImage.SetActive(locked);
+        if (buyButton != null) buyButton.interactable = !locked;
     }
 
     void RefreshUI()
