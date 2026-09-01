@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 public class BuildingInstall : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class BuildingInstall : MonoBehaviour
     [Header("게임 매니저 & 충돌 레이어")]
     [SerializeField] private GameManager gameManager;
     [SerializeField] private LayerMask buildingLayer; // Building, Cloud 레이어 다중 선택
+    [SerializeField] private GridOverlay gridOverlay; // 설치 가능 범위 판정용
 
     [Header("ShopButton 화면에 보이게/안보이게끔 조절")]
     [SerializeField]
@@ -28,15 +30,30 @@ public class BuildingInstall : MonoBehaviour
     private Vector3 mouseWorldPos;
     private Vector3Int cellPosition;
     private bool isCollidingWithBuilding = false;
+    private bool isOutsideGrid = false;
+
+    // 설치 불가 종합 판정 (충돌 OR 그리드 범위 밖)
+    private bool CannotPlace => isCollidingWithBuilding || isOutsideGrid;
 
     // 건물 미리보기용 Ghost 스프라이트
     private SpriteRenderer ghostRenderer;
     private Rigidbody2D rb;
 
+    [Header("타일 셀 하이라이트")]
+    [SerializeField] private Color validColor   = new Color(0f, 1f, 0f, 0.6f);
+    [SerializeField] private Color invalidColor = new Color(1f, 0f, 0f, 0.6f);
+    [SerializeField] private string highlightSortingLayer = "Default";
+    [SerializeField] private int    highlightSortingOrder = 20;
+
+    private List<SpriteRenderer> tileHighlights = new List<SpriteRenderer>();
+    private Sprite   tileHighlightSprite;
+    private GameObject highlightContainer;
+
     void Start()
     {
         SetupTriggerCollider();
         SetupGhost();
+        SetupTileHighlight();
         rb = GetComponent<Rigidbody2D>();
 
         RestorePlacedBuildings();
@@ -57,6 +74,14 @@ public class BuildingInstall : MonoBehaviour
             if (matchedData != null && matchedData.prefab != null)
             {
                 Vector3Int cellPos = new Vector3Int(bSave.gridX, bSave.gridY, bSave.gridZ);
+
+                // gridOverlay가 연결된 경우, 범위 밖 좌표의 건물은 복원 건너뜀
+                if (gridOverlay != null && !gridOverlay.Contains(cellPos))
+                {
+                    Debug.LogWarning($"[RestorePlacedBuildings] {bSave.buildingName} 저장 좌표 {cellPos} 가 GridOverlay 범위 밖 → 복원 생략");
+                    continue;
+                }
+
                 Vector3 spawnPos = baseGrid.GetCellCenterWorld(cellPos);
 
                 GameObject installedBuilding = Instantiate(matchedData.prefab, spawnPos, Quaternion.identity);
@@ -73,6 +98,121 @@ public class BuildingInstall : MonoBehaviour
         }
     }
 
+
+    // ===== 타일 셀 하이라이트 =====
+
+    void SetupTileHighlight()
+    {
+        highlightContainer = new GameObject("TileHighlightContainer");
+        highlightContainer.transform.SetParent(transform);
+        tileHighlightSprite = CreateDiamondSprite();
+    }
+
+    // 2:1 아이소메트릭 마름모 스프라이트 생성 (에셋 없이 코드로)
+    Sprite CreateDiamondSprite()
+    {
+        int texW = 128, texH = 64;
+        Texture2D tex = new Texture2D(texW, texH, TextureFormat.RGBA32, false);
+        Color[] pixels = new Color[texW * texH];
+
+        for (int py = 0; py < texH; py++)
+        {
+            for (int px = 0; px < texW; px++)
+            {
+                float nx = (px + 0.5f) / texW;
+                float ny = (py + 0.5f) / texH;
+                float dist = Mathf.Abs(nx - 0.5f) * 2f + Mathf.Abs(ny - 0.5f) * 2f;
+
+                pixels[py * texW + px] = dist > 1.0f ? Color.clear : Color.white;
+            }
+        }
+        tex.SetPixels(pixels);
+        tex.Apply();
+
+        // PPU=128 → 1유닛 너비 / 0.5유닛 높이 (아이소메트릭 1셀 크기)
+        return Sprite.Create(tex, new Rect(0, 0, texW, texH), new Vector2(0.5f, 0.5f), texW);
+    }
+
+    // 건물이 차지하는 셀 좌표 목록 반환
+    List<Vector3Int> GetFootprintCells(Vector3Int center, BuildingData data)
+    {
+        var cells = new List<Vector3Int>();
+        if (data == null) { cells.Add(center); return cells; }
+
+        int w = data.tileWidth;
+        int h = data.tileHeight;
+        for (int x = -(w / 2); x < w - (w / 2); x++)
+            for (int y = -(h / 2); y < h - (h / 2); y++)
+                cells.Add(new Vector3Int(center.x + x, center.y + y, center.z));
+
+        return cells;
+    }
+
+    void UpdateTileHighlights()
+    {
+        if (highlightContainer == null || tileHighlightSprite == null) return;
+
+        bool show = gameManager != null && (gameManager.installingActivation || isBuildingMoving) && currentBuildingData != null;
+        var cells = show ? GetFootprintCells(cellPosition, currentBuildingData) : new List<Vector3Int>();
+
+        // 하이라이트가 건물/ghost 위에 온전히 보이려면 소팅이 ghost보다 높아야 함
+        string targetLayer = ghostRenderer != null ? ghostRenderer.sortingLayerName : highlightSortingLayer;
+        int    targetOrder = ghostRenderer != null ? ghostRenderer.sortingOrder + 1 : highlightSortingOrder;
+
+        // 풀 확장 (부족할 때만)
+        while (tileHighlights.Count < cells.Count)
+        {
+            var go = new GameObject("TileHighlight");
+            go.transform.SetParent(highlightContainer.transform);
+            var sr = go.AddComponent<SpriteRenderer>();
+            sr.sprite = tileHighlightSprite;
+            sr.sortingLayerName = targetLayer;
+            sr.sortingOrder = targetOrder;
+            tileHighlights.Add(sr);
+        }
+
+        // 기존 풀 오브젝트 소팅 동기화
+        foreach (var sr in tileHighlights)
+        {
+            sr.sortingLayerName = targetLayer;
+            sr.sortingOrder = targetOrder;
+        }
+
+        Color col = CannotPlace ? invalidColor : validColor;
+
+        for (int i = 0; i < tileHighlights.Count; i++)
+        {
+            if (i < cells.Count && baseGrid != null)
+            {
+                tileHighlights[i].gameObject.SetActive(true);
+                tileHighlights[i].transform.position = baseGrid.GetCellCenterWorld(cells[i]);
+                tileHighlights[i].color = col;
+            }
+            else
+            {
+                tileHighlights[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
+    void ClearTileHighlights()
+    {
+        foreach (var sr in tileHighlights)
+            if (sr != null) sr.gameObject.SetActive(false);
+    }
+
+    // Escape 키로 설치 모드 취소
+    void CancelInstalling()
+    {
+        if (ghostRenderer != null) ghostRenderer.gameObject.SetActive(false);
+        ClearTileHighlights();
+        isCollidingWithBuilding = false;
+        if (gameManager != null)
+        {
+            gameManager.installingActivation = false;
+            baseUI.ShowStoreButton();
+        }
+    }
 
     // Ghost 오브젝트를 자식으로 자동 생성 — Inspector 작업 불필요
     void SetupGhost()
@@ -133,17 +273,26 @@ public class BuildingInstall : MonoBehaviour
                 transform.position = targetPos;
         }
 
-        // 3. Ghost 색상 업데이트 — 설치 불가: 빨간색 반투명 / 설치 가능: 흰색 반투명
+        // GridOverlay 범위 밖이면 설치 불가 처리
+        isOutsideGrid = gridOverlay != null && !gridOverlay.Contains(cellPosition);
+
+        // 3. Ghost 색상 업데이트 — 설치 불가: 빨간색 반투명 / 설치 가능: 초록색 반투명
         if (ghostRenderer != null && ghostRenderer.gameObject.activeSelf)
         {
-            ghostRenderer.color = isCollidingWithBuilding
+            ghostRenderer.color = CannotPlace
                 ? new Color(1f, 0f, 0f, 0.5f)
                 : new Color(0f, 1f, 0f, 0.5f);
         }
 
-        // 4. 모드 변경 및 클릭 로직
+        // 4. 타일 셀 하이라이트 갱신
+        UpdateTileHighlights();
+
+        // 5. 모드 변경 및 클릭 로직
         if (gameManager != null)
         {
+            if (Input.GetKeyDown(KeyCode.Escape) && gameManager.installingActivation)
+                CancelInstalling();
+
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 gameManager.destroyingActivation = true;
@@ -195,6 +344,10 @@ public class BuildingInstall : MonoBehaviour
     // 설치/삭제 클릭으로 소비된 버튼 — 손 뗄 때까지 HandleBuildingInteraction 진입 차단
     private bool clickConsumedByAction = false;
 
+    // 기존 건물 이동 모드
+    private bool isBuildingMoving = false;
+    private Vector3Int dragOriginalCell;
+
     void HandleBuildingInteraction()
     {
         if (Input.GetMouseButtonDown(0))
@@ -233,14 +386,17 @@ public class BuildingInstall : MonoBehaviour
         {
             if (draggedBuilding != null)
             {
-                // 건물 드래그 이동
                 if (Vector2.Distance(Input.mousePosition, mouseDownScreenPos) > 10f)
                 {
+                    // 처음 드래그 임계값 넘는 순간 이동 모드 시작
+                    if (!isDraggingBuilding)
+                        StartBuildingMove(draggedBuilding);
+
                     isDraggingBuilding = true;
                     Building.AnyBuildingDragging = true;
 
-                    Vector3Int cell = baseGrid.WorldToCell(mouseWorldPos);
-                    draggedBuilding.transform.position = baseGrid.GetCellCenterWorld(cell);
+                    // 건물 시각 위치는 마우스 셀 중심으로 이동
+                    draggedBuilding.transform.position = baseGrid.GetCellCenterWorld(cellPosition);
                 }
             }
             else
@@ -261,14 +417,60 @@ public class BuildingInstall : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            if (draggedBuilding != null && !isDraggingBuilding && !BuildingPopupUI.WasHiddenThisClick)
-                BuildingPopupUI.Instance?.Show(draggedBuilding);
+            if (draggedBuilding != null)
+            {
+                if (isDraggingBuilding && isBuildingMoving)
+                    FinalizeBuildingMove(draggedBuilding);
+                else if (!isDraggingBuilding && !BuildingPopupUI.WasHiddenThisClick)
+                    BuildingPopupUI.Instance?.Show(draggedBuilding);
+            }
 
             isDraggingBuilding = false;
             isCameraDragging = false;
             Building.AnyBuildingDragging = false;
             draggedBuilding = null;
         }
+    }
+
+    // 건물 이동 시작 — 드래그 임계값 넘는 순간 호출
+    void StartBuildingMove(Building building)
+    {
+        isBuildingMoving = true;
+        currentBuildingData = building.buildingData;
+        dragOriginalCell = baseGrid.WorldToCell(building.transform.position);
+
+        // 드래그 중인 건물의 콜라이더 비활성화 (자기 자신과 충돌 방지)
+        var col = building.GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+
+        // 트리거 콜라이더를 이 건물 크기에 맞게 재설정
+        SetupTriggerCollider();
+    }
+
+    // 건물 이동 확정 — 마우스 업 시 호출
+    void FinalizeBuildingMove(Building building)
+    {
+        // 건물 콜라이더 복원
+        var col = building.GetComponent<Collider2D>();
+        if (col != null) col.enabled = true;
+
+        if (CannotPlace)
+        {
+            // 설치 불가 → 원래 위치로 복귀
+            building.transform.position = baseGrid.GetCellCenterWorld(dragOriginalCell);
+        }
+        else
+        {
+            // 설치 가능 → 현재 위치 확정
+            building.transform.position = baseGrid.GetCellCenterWorld(cellPosition);
+        }
+
+        isCollidingWithBuilding = false;
+        isOutsideGrid = false;
+        isBuildingMoving = false;
+        currentBuildingData = null;
+        ClearTileHighlights();
+        SetupTriggerCollider(); // 콜라이더 크기 1x1 기본값으로 복원
     }
 
     // --- [충돌 감지 부분] ---
@@ -327,9 +529,9 @@ public class BuildingInstall : MonoBehaviour
 
     void buildingInstalling(Vector3Int currentCellPos)
     {
-        if (isCollidingWithBuilding)
+        if (CannotPlace)
         {
-            Debug.LogWarning("여기는 건물이나 장애물이 있어 설치할 수 없습니다!");
+            Debug.LogWarning(isOutsideGrid ? "GridOverlay 범위 밖입니다. 설치할 수 없습니다!" : "여기는 건물이나 장애물이 있어 설치할 수 없습니다!");
             return;
         }
 
@@ -359,9 +561,10 @@ public class BuildingInstall : MonoBehaviour
         building.buildingData = currentBuildingData;
         gameManager.AddTourists(currentBuildingData.touristIncrease, currentBuildingData.maxTouristIncrease);
 
-        // Ghost 숨기고 설치 모드 종료
+        // Ghost·하이라이트 숨기고 설치 모드 종료
         if (ghostRenderer != null)
             ghostRenderer.gameObject.SetActive(false);
+        ClearTileHighlights();
 
         isCollidingWithBuilding = false;
         gameManager.installingActivation = false; // 설치 완료 후 모드 자동 종료

@@ -97,10 +97,19 @@ public class SaveManager : MonoBehaviour
     }
 
     // 볼륨 조절 시 호출할 편의 함수
-    public void SaveSettings(float bgm, float sfx)
+    public void SaveSettings(float bgm, float sfx, bool bgmMuted = false, bool sfxMuted = false)
     {
         CurrentData.bgmVolume = bgm;
         CurrentData.sfxVolume = sfx;
+        CurrentData.bgmMuted = bgmMuted;
+        CurrentData.sfxMuted = sfxMuted;
+        SaveGameData();
+    }
+
+    // 테마 선택 시 호출할 편의 함수
+    public void SaveCurrentTheme(string themeId)
+    {
+        CurrentData.currentThemeId = themeId;
         SaveGameData();
     }
 

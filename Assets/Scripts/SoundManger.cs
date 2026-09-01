@@ -32,8 +32,28 @@ public class SoundManager : MonoBehaviour
     {
         if (SaveManager.Instance != null)
         {
-            if (bgmSource != null) bgmSource.volume = SaveManager.Instance.CurrentData.bgmVolume;
-            if (sfxSource != null) sfxSource.volume = SaveManager.Instance.CurrentData.sfxVolume;
+            var data = SaveManager.Instance.CurrentData;
+            ApplyBGM(data.bgmVolume, data.bgmMuted);
+            ApplySFX(data.sfxVolume, data.sfxMuted);
+        }
+    }
+
+    // 볼륨 + 음소거를 한 번에 적용 (SoundSettingsUI에서 호출)
+    public void ApplyBGM(float volume, bool muted)
+    {
+        if (bgmSource != null)
+        {
+            bgmSource.volume = muted ? 0f : volume;
+            bgmSource.mute = muted;
+        }
+    }
+
+    public void ApplySFX(float volume, bool muted)
+    {
+        if (sfxSource != null)
+        {
+            sfxSource.volume = muted ? 0f : volume;
+            sfxSource.mute = muted;
         }
     }
 
