@@ -94,6 +94,10 @@ public class BuildingInstall : MonoBehaviour
 
                 b.Initialize(gameManager);
                 b.buildingData = matchedData;
+
+                // 복원된 건물의 관광객 수치도 GameManager에 반영
+                if (gameManager != null)
+                    gameManager.AddTourists(matchedData.touristIncrease, matchedData.maxTouristIncrease);
             }
         }
     }

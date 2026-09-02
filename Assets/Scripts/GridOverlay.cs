@@ -21,9 +21,9 @@ public class GridOverlay : MonoBehaviour
         int halfW = mapWidth / 2;
         int halfH = mapHeight / 2;
         int minX = mapCenter.x - halfW+1;
-        int maxX = mapCenter.x + (mapWidth - halfW) - 1;  // 오른쪽 아래 1칸 보정
+        int maxX = mapCenter.x + (mapWidth - halfW)-2;  // 오른쪽 아래 1칸 보정
         int minY = mapCenter.y - halfH+1;
-        int maxY = mapCenter.y + (mapHeight - halfH) - 1;  // 왼쪽 아래 1칸 보정
+        int maxY = mapCenter.y + (mapHeight - halfH) - 2;  // 왼쪽 아래 1칸 보정
         return cell.x >= minX && cell.x <= maxX && cell.y >= minY && cell.y <= maxY;
     }
 
