@@ -15,6 +15,18 @@ public class GridOverlay : MonoBehaviour
         DrawGrid();
     }
 
+    // 해당 셀이 그리드 범위 안에 있는지 여부
+    public bool Contains(Vector3Int cell)
+    {
+        int halfW = mapWidth / 2;
+        int halfH = mapHeight / 2;
+        int minX = mapCenter.x - halfW+1;
+        int maxX = mapCenter.x + (mapWidth - halfW)-2;  // 오른쪽 아래 1칸 보정
+        int minY = mapCenter.y - halfH+1;
+        int maxY = mapCenter.y + (mapHeight - halfH) - 2;  // 왼쪽 아래 1칸 보정
+        return cell.x >= minX && cell.x <= maxX && cell.y >= minY && cell.y <= maxY;
+    }
+
     void DrawGrid()
     {
         int halfW = mapWidth / 2;
@@ -62,5 +74,37 @@ public class GridOverlay : MonoBehaviour
         lr.endColor = Color.black;
         lr.sortingLayerName = "Default";
         lr.sortingOrder = sortingOrder;
+    }
+
+    // Scene 뷰에서 격자 경계를 노란 마름모 윤곽으로 표시 — Inspector 값 조정 시 실시간 확인용
+    private void OnDrawGizmos()
+    {
+        if (grid == null) return;
+
+        int halfW = mapWidth / 2;
+        int halfH = mapHeight / 2;
+        int minX = mapCenter.x - halfW;
+        int maxX = mapCenter.x + (mapWidth - halfW) - 1;
+        int minY = mapCenter.y - halfH;
+        int maxY = mapCenter.y + (mapHeight - halfH) - 1;
+
+        // 셀 공간의 4 모서리를 월드 좌표로 변환
+        Vector3 cornerBL = grid.GetCellCenterWorld(new Vector3Int(minX, minY, 0));
+        Vector3 cornerBR = grid.GetCellCenterWorld(new Vector3Int(maxX, minY, 0));
+        Vector3 cornerTR = grid.GetCellCenterWorld(new Vector3Int(maxX, maxY, 0));
+        Vector3 cornerTL = grid.GetCellCenterWorld(new Vector3Int(minX, maxY, 0));
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(cornerBL, cornerBR);
+        Gizmos.DrawLine(cornerBR, cornerTR);
+        Gizmos.DrawLine(cornerTR, cornerTL);
+        Gizmos.DrawLine(cornerTL, cornerBL);
+
+        // 모서리 점 강조
+        float dotSize = 0.15f;
+        Gizmos.DrawSphere(cornerBL, dotSize);
+        Gizmos.DrawSphere(cornerBR, dotSize);
+        Gizmos.DrawSphere(cornerTR, dotSize);
+        Gizmos.DrawSphere(cornerTL, dotSize);
     }
 }
