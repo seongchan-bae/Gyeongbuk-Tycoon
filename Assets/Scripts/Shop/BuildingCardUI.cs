@@ -8,6 +8,13 @@ public class BuildingCardUI : MonoBehaviour
     [SerializeField] private BaseUI baseUI;              // 닫을 상점 UI
     [SerializeField] private GameManager gameManager;
 
+    [Header("건물 카드 이미지")]
+    [SerializeField] private UnityEngine.UI.Image buildingThumbnail;
+
+    [Header("카드 공통 비주얼 — 자식 Image 오브젝트 이름으로 자동 탐색")]
+    // CardVisualData 에셋을 Assets/Resources/CardVisualData.asset 에 두면 자동 적용
+    // 카드 장식 Image 오브젝트 이름: CardImage1 ~ CardImage4
+
     [Header("건물 정보 텍스트")]
     [SerializeField] private TMP_Text buildingNameText;
     [SerializeField] private TMP_Text goldProductionText;
@@ -18,6 +25,11 @@ public class BuildingCardUI : MonoBehaviour
     [Header("구매 불가 잠금")]
     [SerializeField] private GameObject lockImage;
     [SerializeField] private UnityEngine.UI.Button buyButton;
+
+    void OnValidate()
+    {
+        RefreshUI();
+    }
 
     void Start()
     {
@@ -44,13 +56,37 @@ public class BuildingCardUI : MonoBehaviour
 
     void RefreshUI()
     {
+        // 카드 공통 비주얼은 buildingData와 무관하게 항상 적용
+        var cardVisual = Resources.Load<CardVisualData>("CardVisualData");
+        if (cardVisual != null)
+        {
+            ApplyCardSprite("Icon1", cardVisual.image1);
+            ApplyCardSprite("Icon2", cardVisual.image2);
+            ApplyCardSprite("Icon3", cardVisual.image3);
+            ApplyCardSprite("Icon4", cardVisual.image4);
+        }
+
         if (buildingData == null) return;
 
+        if (buildingThumbnail   != null) buildingThumbnail.sprite  = buildingData.thumbnail;
         if (buildingNameText    != null) buildingNameText.text    = buildingData.buildingName;
         if (goldProductionText  != null) goldProductionText.text  = buildingData.goldProductionRate.ToString("#,##0.##");
         if (touristIncreaseText != null) touristIncreaseText.text = buildingData.touristIncrease.ToString("N0");
         if (maxTouristText      != null) maxTouristText.text      = buildingData.maxTouristIncrease.ToString("N0");
         if (priceText           != null) priceText.text           = buildingData.price.ToString("N0");
+    }
+
+    void ApplyCardSprite(string childName, Sprite sprite)
+    {
+        if (sprite == null) return;  // 스프라이트 미설정 시 기존 이미지 유지
+        foreach (var img in GetComponentsInChildren<UnityEngine.UI.Image>(true))
+        {
+            if (img.gameObject.name == childName)
+            {
+                img.sprite = sprite;
+                return;
+            }
+        }
     }
 
     // 카드의 Buy 버튼 OnClick에 연결

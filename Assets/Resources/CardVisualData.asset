@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d5cdb70ff0a5d547ad1ed9a44cffc91, type: 3}
+  m_Name: CardVisualData
+  m_EditorClassIdentifier: Assembly-CSharp::CardVisualData
+  image1: {fileID: 21300000, guid: bcf4c428e9dd9c2458b185bdb2805334, type: 2}
+  image2: {fileID: 21300000, guid: 66d7f3bda32bb8141bb46bdec5aeb0da, type: 2}
+  image3: {fileID: 0}
+  image4: {fileID: 0}
