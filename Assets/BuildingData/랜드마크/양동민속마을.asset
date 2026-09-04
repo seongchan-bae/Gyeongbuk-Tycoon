@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
+  m_Name: "\uC591\uB3D9\uBBFC\uC18D\uB9C8\uC744"
+  m_EditorClassIdentifier: Assembly-CSharp::BuildingData
+  buildingName: "\uC591\uB3D9\uBBFC\uC18D\uB9C8\uC744"
+  price: 0
+  goldProductionRate: 0
+  thumbnail: {fileID: 0}
+  prefab: {fileID: 0}
+  tileWidth: 0
+  tileHeight: 0
+  contentId: 127855
+  maxTouristIncrease: 0
+  touristIncrease: 0
