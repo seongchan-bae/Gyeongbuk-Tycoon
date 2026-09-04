@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 /// <summary>
@@ -14,6 +14,10 @@ public class ThemeManager : MonoBehaviour
     [Header("테마가 적용될 배경")]
     [Tooltip("비워두면 씬에서 '배경화면' 이름의 오브젝트를 찾는다.")]
     [SerializeField] private SpriteRenderer backgroundRenderer;
+
+    [Header("테스트용")]
+    [Tooltip("켜면 GPS 인증 없이 모든 테마를 해금된 것으로 취급한다. 테마 데이터의 해금 조건 자체는 그대로 두고 판정만 건너뛴다. 배포 전에 반드시 끌 것.")]
+    [SerializeField] private bool unlockAllThemesForTesting = false;
 
     public event Action<ThemeDefinition> OnThemeChanged;
 
@@ -34,6 +38,10 @@ public class ThemeManager : MonoBehaviour
             GameObject found = GameObject.Find("배경화면");
             if (found != null) backgroundRenderer = found.GetComponent<SpriteRenderer>();
         }
+
+        // 켜 둔 채로 잊어버리는 일이 없도록 눈에 띄게 남긴다.
+        if (unlockAllThemesForTesting)
+            Debug.LogWarning("[ThemeManager] 테스트용 전체 해금이 켜져 있습니다. 모든 테마가 GPS 인증 없이 열립니다.");
     }
 
     private void Start()
@@ -106,6 +114,7 @@ public class ThemeManager : MonoBehaviour
     public bool IsUnlocked(ThemeDefinition theme)
     {
         if (theme == null) return false;
+        if (unlockAllThemesForTesting) return true;
         if (theme.unlockedByDefault) return true;
         return SaveManager.Instance != null
             && SaveManager.Instance.CurrentData.unlockedThemeIds.Contains(theme.themeId);

@@ -354,6 +354,16 @@ public class BuildingInstall : MonoBehaviour
 
     void HandleBuildingInteraction()
     {
+        // 두 손가락 확대/축소 중에는 드래그(건물 이동·카메라 이동)를 처리하지 않는다.
+        if (Input.touchCount >= 2 || CameraController.IsPinching)
+        {
+            isDraggingBuilding = false;
+            isCameraDragging = false;
+            Building.AnyBuildingDragging = false;
+            draggedBuilding = null;
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             mouseDownScreenPos = Input.mousePosition;
