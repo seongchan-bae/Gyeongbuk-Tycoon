@@ -92,10 +92,14 @@ public class BaseUI : MonoBehaviour
     {
         if (settingsPanel != null) settingsPanel.SetActive(false);
 
-        // 닫을 때 바뀐 볼륨값을 JSON 파일로 최종 저장
-        if (SaveManager.Instance != null)
+        // 닫을 때 바뀐 볼륨값을 JSON 파일로 최종 저장.
+        // 슬라이더는 씬마다 연결돼 있지 않을 수 있으므로(연결이 빠지면 여기서 NullReference가 났다)
+        // 비어 있으면 저장된 값을 그대로 다시 쓴다.
+        if (SaveManager.Instance != null && (bgmSlider != null || sfxSlider != null))
         {
-            SaveManager.Instance.SaveSettings(bgmSlider.value, sfxSlider.value);
+            float bgm = bgmSlider != null ? bgmSlider.value : SaveManager.Instance.CurrentData.bgmVolume;
+            float sfx = sfxSlider != null ? sfxSlider.value : SaveManager.Instance.CurrentData.sfxVolume;
+            SaveManager.Instance.SaveSettings(bgm, sfx);
         }
     }
 
