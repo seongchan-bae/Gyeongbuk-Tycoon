@@ -12477,7 +12477,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552e286bf6b5a48a499cbf0610cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCardUI
-  buildingData: {fileID: 11400000, guid: 4e6e584f408da834da8cce8d9eb99d74, type: 2}
+  buildingData: {fileID: 11400000, guid: d470ba4e8402e9b4a8dc664d1afa9e62, type: 2}
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
@@ -21981,7 +21981,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 200
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a210622961a51444aa63071001bf69fb, type: 2}
   m_sharedMaterial: {fileID: 7660630627658350193, guid: a210622961a51444aa63071001bf69fb, type: 2}
@@ -26019,7 +26019,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a210622961a51444aa63071001bf69fb, type: 2}
   m_sharedMaterial: {fileID: 7660630627658350193, guid: a210622961a51444aa63071001bf69fb, type: 2}
@@ -50204,7 +50204,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1,000
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a210622961a51444aa63071001bf69fb, type: 2}
   m_sharedMaterial: {fileID: 7660630627658350193, guid: a210622961a51444aa63071001bf69fb, type: 2}
@@ -56563,7 +56563,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uCCA8\uC131\uB300"
+  m_text: "\uACBD\uCC30\uC11C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a210622961a51444aa63071001bf69fb, type: 2}
   m_sharedMaterial: {fileID: 7660630627658350193, guid: a210622961a51444aa63071001bf69fb, type: 2}
@@ -59126,7 +59126,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 5,000
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a210622961a51444aa63071001bf69fb, type: 2}
   m_sharedMaterial: {fileID: 7660630627658350193, guid: a210622961a51444aa63071001bf69fb, type: 2}

@@ -15,7 +15,7 @@ MonoBehaviour:
   buildingName: "\uACBD\uCC30\uC11C"
   price: 0
   goldProductionRate: 0
-  thumbnail: {fileID: 0}
+  thumbnail: {fileID: 21300000, guid: 9423ee1b517999a43a90457510188a88, type: 3}
   prefab: {fileID: 0}
   tileWidth: 0
   tileHeight: 0
@@ -23,3 +23,4 @@ MonoBehaviour:
   maxTouristIncrease: 0
   touristIncrease: 0
   requiresWaterTile: 0
+  category: 0

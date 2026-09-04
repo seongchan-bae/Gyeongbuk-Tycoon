@@ -1,5 +1,11 @@
 using UnityEngine;
 
+public enum BuildingCategory
+{
+    Basic,      // 기본건물
+    Landmark    // 랜드마크
+}
+
 [CreateAssetMenu(menuName = "Building/BuildingData")]
 public class BuildingData : ScriptableObject
 {
@@ -14,4 +20,5 @@ public class BuildingData : ScriptableObject
     public int maxTouristIncrease;      // 최대 관광객 한도 증가량
     public int touristIncrease;         // 관광객 수 정적 증가량
     public bool requiresWaterTile;      // 설치 시 발자국 셀에 물 타일 깔기
+    public BuildingCategory category;   // 상점 필터 카테고리
 }

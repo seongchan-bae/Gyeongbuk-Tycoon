@@ -8,6 +8,8 @@ public class BuildingCardUI : MonoBehaviour
     [SerializeField] private BaseUI baseUI;              // 닫을 상점 UI
     [SerializeField] private GameManager gameManager;
 
+    public BuildingCategory? Category => buildingData != null ? buildingData.category : (BuildingCategory?)null;
+
     [Header("건물 카드 이미지")]
     [SerializeField] private UnityEngine.UI.Image buildingThumbnail;
 
