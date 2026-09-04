@@ -15,7 +15,7 @@ MonoBehaviour:
   themes:
   - themeId: default
     displayName: "\uAE30\uBCF8"
-    backgroundSprite: {fileID: 21300000, guid: 03b2eeb66db4ffd4ba32a8e6ac3b7f9a, type: 3}
+    backgroundSprite: {fileID: 21300000, guid: 91ad885e3a5d4ad4abc69d7997ed30e4, type: 3}
     thumbnail: {fileID: 0}
     unlockedByDefault: 1
     latitude: 0
@@ -23,8 +23,8 @@ MonoBehaviour:
     unlockRadiusMeters: 150
     landmarkName: 
   - themeId: theme_02
-    displayName: "\uC784\uC2DC \uD14C\uB9C8 A"
-    backgroundSprite: {fileID: 21300000, guid: 0c6dad28b67cd094b86db861206e30a5, type: 3}
+    displayName: "\uC2E0\uB77C\uC2DC\uB300"
+    backgroundSprite: {fileID: 21300000, guid: ffee0d6ae3477a24fa9a7536a86a888e, type: 3}
     thumbnail: {fileID: 0}
     unlockedByDefault: 0
     latitude: 35.83471
@@ -32,8 +32,8 @@ MonoBehaviour:
     unlockRadiusMeters: 100
     landmarkName: "\uACBD\uC8FC \uCCA8\uC131\uB300"
   - themeId: theme_03
-    displayName: "\uC784\uC2DC \uD14C\uB9C8 B"
-    backgroundSprite: {fileID: 21300000, guid: 9009a1dcd3e28e84b83619b427b789e5, type: 3}
+    displayName: "\uC57C\uC2DC\uC7A5"
+    backgroundSprite: {fileID: 21300000, guid: 5f7429c4487561d4e8ddec0dc0939f83, type: 3}
     thumbnail: {fileID: 0}
     unlockedByDefault: 0
     latitude: 35.7901
@@ -41,8 +41,8 @@ MonoBehaviour:
     unlockRadiusMeters: 250
     landmarkName: "\uACBD\uC8FC \uBD88\uAD6D\uC0AC"
   - themeId: theme_04
-    displayName: "\uC784\uC2DC \uD14C\uB9C8 C"
-    backgroundSprite: {fileID: 21300000, guid: 9aa909aba20fe0c489f86c181b5dada4, type: 3}
+    displayName: "\uC6B8\uB989\uB3C4"
+    backgroundSprite: {fileID: 21300000, guid: 20b9260e4031d124cac9aedc3f3cd81a, type: 3}
     thumbnail: {fileID: 0}
     unlockedByDefault: 0
     latitude: 36.5392

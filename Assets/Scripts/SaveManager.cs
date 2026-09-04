@@ -3,26 +3,52 @@ using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
-    public static SaveManager Instance { get; private set; }
+    private static SaveManager instance;
+
+    /// <summary>
+    /// 씬에 SaveManager가 없으면 자동으로 만든다.
+    /// SaveManager는 TitleScene에만 배치되어 DontDestroyOnLoad로 넘어오는 구조라,
+    /// SampleScene을 에디터에서 직접 Play하면 인스턴스가 없어 저장이 조용히 무시된다.
+    /// </summary>
+    public static SaveManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindFirstObjectByType<SaveManager>();
+                if (instance == null)
+                {
+                    var go = new GameObject("SaveManager (auto)");
+                    instance = go.AddComponent<SaveManager>(); // Awake에서 경로 설정 + 로드 수행
+                }
+            }
+            return instance;
+        }
+    }
 
     public GameSaveData CurrentData { get; private set; } = new GameSaveData();
     private string saveFilePath;
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // 씬이 넘어가도 매니저 파괴 방지
-
-            // 모바일/PC 로컬 단일 저장 경로 지정
-            saveFilePath = Path.Combine(Application.persistentDataPath, "GyeongbukTycoonSave.json");
-            LoadGameData();
-        }
-        else
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
+            return;
         }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject); // 씬이 넘어가도 매니저 파괴 방지
+
+        // 모바일/PC 로컬 단일 저장 경로 지정
+        saveFilePath = Path.Combine(Application.persistentDataPath, "GyeongbukTycoonSave.json");
+        LoadGameData();
+    }
+
+    void OnDestroy()
+    {
+        if (instance == this) instance = null;
     }
 
     public void SaveGameData()
@@ -31,8 +57,7 @@ public class SaveManager : MonoBehaviour
         if (GameManager.Instance != null)
         {
             CurrentData.userMoney = GameManager.Instance.UserMoney;
-            // 지식 포인트 프로퍼티가 열려있다면 아래 주석 해제
-            // CurrentData.userKnowledgePoint = GameManager.Instance.UserKnowledgePoint;
+            CurrentData.userKnowledgePoint = GameManager.Instance.UserKnowledgePoint;
         }
 
         // 2. 맵에 설치된 건물 위치 동기화
@@ -97,16 +122,22 @@ public class SaveManager : MonoBehaviour
     }
 
     // 볼륨 조절 시 호출할 편의 함수
-    public void SaveSettings(float bgm, float sfx, bool bgmMuted = false, bool sfxMuted = false)
+    public void SaveSettings(float bgm, float sfx)
     {
         CurrentData.bgmVolume = bgm;
         CurrentData.sfxVolume = sfx;
-        CurrentData.bgmMuted = bgmMuted;
-        CurrentData.sfxMuted = sfxMuted;
         SaveGameData();
     }
 
-    // 테마 선택 시 호출할 편의 함수
+    /// <summary>볼륨과 음소거 상태를 함께 저장한다.</summary>
+    public void SaveSettings(float bgm, float sfx, bool bgmMuted, bool sfxMuted)
+    {
+        CurrentData.bgmMuted = bgmMuted;
+        CurrentData.sfxMuted = sfxMuted;
+        SaveSettings(bgm, sfx);
+    }
+
+    // 테마 변경 시 호출할 편의 함수
     public void SaveCurrentTheme(string themeId)
     {
         CurrentData.currentThemeId = themeId;

@@ -14,6 +14,9 @@ public class BaseUI : MonoBehaviour
     private Button Shopbutton;
     [SerializeField]
     private GameObject APIboard;
+    //미니게임 진입 버튼 — 상점 화면/건물 설치 중에는 상점 버튼과 함께 숨긴다
+    [SerializeField]
+    private GameObject miniGameButton;
 
 
     [Header("환경설정 UI")]
@@ -42,10 +45,12 @@ public class BaseUI : MonoBehaviour
     public void ShowStoreButton()
     {
         Shopbutton.gameObject.SetActive(true);
+        if (miniGameButton != null) miniGameButton.SetActive(true);
     }
     public void CloseStoreButton()
     {
         Shopbutton.gameObject.SetActive(false);
+        if (miniGameButton != null) miniGameButton.SetActive(false);
     }
     //상점화면
     public void ShowStoreUI()
@@ -53,11 +58,13 @@ public class BaseUI : MonoBehaviour
         BuildingPopupUI.Instance?.Hide();
         store.SetActive(true);
         Shopbutton.gameObject.SetActive(false);
+        if (miniGameButton != null) miniGameButton.SetActive(false);
     }
     public void CloseStoreUI()
     {
         store.SetActive(false);
         Shopbutton.gameObject.SetActive(true);
+        if (miniGameButton != null) miniGameButton.SetActive(true);
     }
     public void CloseAPIBoard()
     {
