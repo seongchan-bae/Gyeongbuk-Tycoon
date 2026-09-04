@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
@@ -69,9 +69,14 @@ public class BuildingPopupUI : MonoBehaviour
         deleteButton.onClick.AddListener(OnDeleteClicked);
 
         popupPanel.gameObject.SetActive(true);
-        if(buildingName != null)
+        if (buildingName != null)
         {
-            buildingName.text = buildingData.buildingName;
+            // 인스펙터에 꽂힌 buildingData 는 특정 건물 한 개를 가리키고 있어서
+            // 어떤 건물을 눌러도 같은 이름이 떴다. 실제로 누른 건물의 데이터를 먼저 쓴다.
+            BuildingData data = building != null && building.buildingData != null
+                ? building.buildingData
+                : buildingData;
+            buildingName.text = data != null ? data.buildingName : "";
         }
         UpdatePosition();
     }
