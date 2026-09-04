@@ -57,8 +57,7 @@ public class SaveManager : MonoBehaviour
         if (GameManager.Instance != null)
         {
             CurrentData.userMoney = GameManager.Instance.UserMoney;
-            // 지식 포인트 프로퍼티가 열려있다면 아래 주석 해제
-            // CurrentData.userKnowledgePoint = GameManager.Instance.UserKnowledgePoint;
+            CurrentData.userKnowledgePoint = GameManager.Instance.UserKnowledgePoint;
         }
 
         // 2. 맵에 설치된 건물 위치 동기화
