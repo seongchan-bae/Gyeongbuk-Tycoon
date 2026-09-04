@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     public long UserMoney => userMoney;
     public long UserKnowledgePoint => userKnowledgePoint;
     public event System.Action<long> OnMoneyChanged;
+    public event System.Action<long> OnKnowledgePointChanged;
 
     public static GameManager Instance { get; private set; } // 프로퍼티 개방
 
@@ -44,6 +45,7 @@ public class GameManager : MonoBehaviour
             userKnowledgePoint = SaveManager.Instance.CurrentData.userKnowledgePoint;
         }
         OnMoneyChanged?.Invoke(userMoney);
+        OnKnowledgePointChanged?.Invoke(userKnowledgePoint);
     }
 
     // 건물 설치 시 관광객 수치 추가
@@ -87,11 +89,13 @@ public class GameManager : MonoBehaviour
     void addUserKnowledgePoint(long knowledgePoint)
     {
         userKnowledgePoint += knowledgePoint;
+        OnKnowledgePointChanged?.Invoke(userKnowledgePoint);
     }
     //유저 지식포인트 차감
     void subUserknowledgePoint(long knowledgePoint)
     {
         userKnowledgePoint -= knowledgePoint;
+        OnKnowledgePointChanged?.Invoke(userKnowledgePoint);
     }
     /// <summary>
     /// 로딩 화면을 띄워주는 함수
@@ -112,6 +116,7 @@ public class GameManager : MonoBehaviour
             SaveManager.Instance.CurrentData.userKnowledgePoint = userKnowledgePoint;
         }
         OnMoneyChanged?.Invoke(userMoney);
+        OnKnowledgePointChanged?.Invoke(userKnowledgePoint);
     }
 
     /// <summary>골드와 지식포인트를 한 번에 지급하고 저장은 한 번만 한다.</summary>

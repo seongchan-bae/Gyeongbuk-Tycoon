@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -44,15 +44,16 @@ public class MiniGameSceneBridge : MonoBehaviour
     /// <summary>메인화면의 [미니게임] 버튼에서 호출.</summary>
     public void OpenMiniGameScene()
     {
-        SaveBeforeSceneChange();
-        SceneManager.LoadScene(miniGameSceneName);
+        // 동기 LoadScene 은 씬을 다 읽을 때까지 화면이 멎어 '끊김'으로 보인다.
+        // SceneTransition 이 페이드로 덮은 뒤 비동기로 읽는다.
+        // 저장은 화면이 완전히 가려진 뒤(콜백)에 해야 값이 어긋나지 않는다.
+        SceneTransition.LoadScene(miniGameSceneName, SaveBeforeSceneChange);
     }
 
     /// <summary>미니게임 씬의 [닫기] / [메인으로] 버튼에서 호출.</summary>
     public void ReturnToMainScene()
     {
-        SaveBeforeSceneChange();
-        SceneManager.LoadScene(mainSceneName);
+        SceneTransition.LoadScene(mainSceneName, SaveBeforeSceneChange);
     }
 
     // 씬을 떠나기 전에 현재 재화를 SaveManager 에 밀어넣는다.
