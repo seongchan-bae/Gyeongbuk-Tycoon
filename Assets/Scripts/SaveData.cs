@@ -26,6 +26,10 @@ public class GameSaveData
     public long userMoney = 10000L;
     public long userKnowledgePoint = 0L;
 
+    // 미니게임 지식포인트 일일 획득량 (날짜가 바뀌면 0부터 다시 쌓인다)
+    public string knowledgeEarnedDate = "";
+    public long knowledgeEarnedToday = 0L;
+
     // 3. 인게임 건물 및 해금 상태
     public List<string> unlockedBuildingList = new List<string>();
     public List<PlacedBuildingSaveData> placedBuildings = new List<PlacedBuildingSaveData>();

@@ -1,30 +1,11 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using TMPro;
 
 public class TitleUIController : MonoBehaviour
 {
     [Header("Main Title Panels")]
     [SerializeField] private GameObject titlePanel;          // 메인 타이틀 패널
     [SerializeField] private GameObject settingsPanel;       // 환경설정 팝업창
-
-    [Header("Loading UI Elements")]
-    [SerializeField] private GameObject loadingPanel;        // 로딩 화면 패널
-    [SerializeField] private Slider loadingSlider;           // 로딩바 Slider
-    [SerializeField] private TextMeshProUGUI progressText;   // "로딩 중... 75%" 텍스트
-    [SerializeField] private TextMeshProUGUI tipText;        // 경북 관광 팁 텍스트
-
-    [Header("경북타이쿤 관광 팁 목록")]
-    [SerializeField]
-    private string[] gyeongbukTips = new string[]
-    {
-        "[TIP] 첨성대는 신라 선덕여왕 때 건립된 동양 최고의 천문대입니다.",
-        "[TIP] 연구소에서 퀴즈를 풀면 지식 포인트를 획득할 수 있습니다.",
-        "[TIP] 실제 경북 유적지에 방문하면 특별한 건물을 해금할 수 있습니다!",
-        "[TIP] 관광객 수가 늘어날수록 골드 생산 속도가 빨라집니다."
-    };
 
     [Header("Audio Settings")]
     [SerializeField] private AudioSource bgmAudioSource;     // 배경음악 AudioSource
@@ -35,8 +16,6 @@ public class TitleUIController : MonoBehaviour
     [Header("Scene Settings")]
     [SerializeField] private string mainGameSceneName = "SampleScene"; // 씬 이름 (기본값: SampleScene)
 
-    private bool isLoadingScene = false;
-
     private void Start()
     {
         // 초기 패널 상태 세팅
@@ -45,8 +24,6 @@ public class TitleUIController : MonoBehaviour
 
         InitVolumeSettings();
 
-        // 앱 실행 시 시작 로딩 연출 실행 (1.5초간 진행 후 타이틀 화면 출력)
-        // StartCoroutine(StartAppFakeLoading(1.5f));
         if (titlePanel != null) titlePanel.SetActive(true);
     }
 
@@ -55,12 +32,8 @@ public class TitleUIController : MonoBehaviour
     /// </summary>
     public void OnClickStartButton()
     {
-        // 로딩 중 중복 터치 방지
-        if (isLoadingScene) return;
-        isLoadingScene = true;
-
         if (titlePanel != null) titlePanel.SetActive(false);
-        StartCoroutine(LoadMainSceneAsync());
+        SceneTransition.LoadScene(mainGameSceneName);
     }
 
     /// <summary>
@@ -123,87 +96,8 @@ public class TitleUIController : MonoBehaviour
         PlayerPrefs.SetInt("SelectedWorldSlot", slotIndex);
         PlayerPrefs.Save();
 
-        StartCoroutine(LoadMainSceneAsync());
+        SceneTransition.LoadScene(mainGameSceneName);
     }
-
-    private IEnumerator LoadMainSceneAsync()
-    {
-        if (titlePanel != null) titlePanel.SetActive(false);
-        if (loadingPanel != null) loadingPanel.SetActive(true);
-
-        SetRandomTip();
-        if (loadingSlider != null) loadingSlider.value = 0f;
-
-        // 비동기 씬 로드 시작
-        AsyncOperation op = SceneManager.LoadSceneAsync(mainGameSceneName);
-
-        // 씬 로드 예외 처리 (씬이 없는 경우 에러 방지)
-        if (op == null)
-        {
-            Debug.LogError($"[오류] '{mainGameSceneName}' 씬을 찾을 수 없습니다! Build Profiles와 Inspector 씬 이름을 확인해 주세요.");
-            yield break;
-        }
-
-        op.allowSceneActivation = false;
-
-        float minLoadingTime = 1.0f;
-        float timer = 0f;
-
-        // 진행률은 슬라이더가 아닌 지역 변수로 추적한다.
-        // 예전에는 loadingSlider.value를 직접 읽어, Inspector에서 슬라이더 연결이 빠지면
-        // allowSceneActivation이 영원히 true가 되지 않았다. 그러면 op.isDone도 false로 남아
-        // 로딩 화면에서 무한 정지한다.
-        float displayProgress = 0f;
-
-        while (!op.isDone)
-        {
-            yield return null;
-            timer += Time.deltaTime;
-
-            float targetProgress = Mathf.Clamp01(op.progress / 0.9f);
-            displayProgress = Mathf.MoveTowards(displayProgress, targetProgress, Time.deltaTime * 2f);
-
-            if (loadingSlider != null) loadingSlider.value = displayProgress;
-            if (progressText != null) progressText.text = $"마을 불러오는 중... {(displayProgress * 100f):F0}%";
-
-            if (displayProgress >= 1.0f && timer >= minLoadingTime)
-            {
-                op.allowSceneActivation = true;
-            }
-        }
-    }
-
-    private IEnumerator StartAppFakeLoading(float duration)
-    {
-        if (loadingPanel != null) loadingPanel.SetActive(true);
-        SetRandomTip();
-
-        float timer = 0f;
-        while (timer < duration)
-        {
-            timer += Time.deltaTime;
-            float progress = Mathf.Clamp01(timer / duration);
-
-            if (loadingSlider != null) loadingSlider.value = progress;
-            if (progressText != null) progressText.text = $"게임 준비 중... {(progress * 100f):F0}%";
-
-            yield return null;
-        }
-
-        if (loadingPanel != null) loadingPanel.SetActive(false);
-        if (titlePanel != null) titlePanel.SetActive(true);
-    }
-
-    private void SetRandomTip()
-    {
-        if (gyeongbukTips != null && gyeongbukTips.Length > 0 && tipText != null)
-        {
-            int randomIndex = Random.Range(0, gyeongbukTips.Length);
-            tipText.text = gyeongbukTips[randomIndex];
-        }
-    }
-
-
 
     #region 사운드 및 볼륨 조절 로직
 

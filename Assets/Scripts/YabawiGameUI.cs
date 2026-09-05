@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,24 +9,27 @@ public class YabawiGameUI : MonoBehaviour
     [Header("UI Panels & Buttons")]
     public GameObject yabawiGamePanel;
     public Button startButton;
+    [Tooltip("시작 화면에만 보여줄 타이틀 이미지. 시작 버튼과 같이 켜고 끈다.")]
+    public GameObject titleImage;
     public GameObject difficultySelectGroup;
     public Button easyBtn, normalBtn, hardBtn;
     public GameObject gameFinishPanel;
     public Button gameCloseButton;
+    [Tooltip("결과 패널 안의 [나가기] 버튼")]
+    public Button gameExitButton;
 
     [Header("Game Status UI")]
     public TextMeshProUGUI difficultyText;
-    public TextMeshProUGUI chanceText;
-    [Tooltip("맞춘 횟수(점수)를 표시할 텍스트")]
-    public TextMeshProUGUI scoreText;
     [Tooltip("결과(종료) 패널에 표시할 안내 문구")]
     public TextMeshProUGUI resultText;
+    [Tooltip("결과 패널 가운데에 띄울 성공/실패 이미지")]
+    public Image resultImage;
+    public Sprite successSprite;
+    public Sprite failSprite;
 
     [Header("Reward Settings")]
-    [Tooltip("한 번 맞출 때마다 지급할 골드")]
+    [Tooltip("맞출 때마다 지급할 골드")]
     public int rewardGoldPerWin = 50;
-    [Tooltip("한 번 맞출 때마다 지급할 지식 포인트")]
-    public int rewardKnowledgePointPerWin = 20;
 
     [Header("Game Elements (Dynamic Prefabs)")]
     public RectTransform yabawiGrid;
@@ -38,7 +41,6 @@ public class YabawiGameUI : MonoBehaviour
     public float cupSpacingX = 500f;         // 컵 가로 간격
     public float cupSpacingY = 400f;         // 컵 세로 간격 (2행 배치용)
     public Vector2 treasureOffset = new Vector2(0f, -20f); // 보물 위치 미세조정 (X: 좌우, Y: 위아래)
-    public int maxChances = 3;               // 플레이 총 기회
 
     [System.Serializable]
     public struct DifficultySetting
@@ -48,30 +50,25 @@ public class YabawiGameUI : MonoBehaviour
         public int shuffleCount;
         public float startSpeed; // 처음 섞기 속도 (1회 이동 소요 시간)
         public float endSpeed;   // 최종 도달 속도 (1회 이동 소요 시간)
+        public int rewardKnowledgePoint;
     }
 
     private DifficultySetting[] diffSettings = new DifficultySetting[]
     {
-        new DifficultySetting { diffName = "쉬움 (Easy - 3개)", cupCount = 3, shuffleCount = 10, startSpeed = 0.8f, endSpeed = 0.35f },
-        new DifficultySetting { diffName = "중간 (Normal - 4개)", cupCount = 4, shuffleCount = 15, startSpeed = 0.65f, endSpeed = 0.25f },
-        new DifficultySetting { diffName = "어려움 (Hard - 5개)", cupCount = 5, shuffleCount = 20, startSpeed = 0.5f, endSpeed = 0.20f }
+        new DifficultySetting { diffName = "쉬움 (Easy - 3개)", cupCount = 3, shuffleCount = 10, startSpeed = 0.8f, endSpeed = 0.35f, rewardKnowledgePoint = 100 },
+        new DifficultySetting { diffName = "중간 (Normal - 4개)", cupCount = 4, shuffleCount = 15, startSpeed = 0.65f, endSpeed = 0.25f, rewardKnowledgePoint = 200 },
+        new DifficultySetting { diffName = "어려움 (Hard - 5개)", cupCount = 5, shuffleCount = 20, startSpeed = 0.5f, endSpeed = 0.20f, rewardKnowledgePoint = 300 }
     };
 
     private DifficultySetting currentSetting;
     private List<RectTransform> activeCups = new List<RectTransform>();
     private RectTransform currentTreasure;
 
-    private int remainChances;
     private int targetIndex;
     private bool isPlaying = false;
     private bool canSelect = false;
     private bool hasOpened = false;
 
-    // 이번 판의 성적. 맞출 때마다 보상을 바로 지급하고 누적분을 결과 화면에 보여준다.
-    private int correctCount;
-    private int playedRounds;
-    private long earnedGold;
-    private long earnedKnowledgePoint;
 
     // 교환용 데이터 구조체
     private struct SwapPair
@@ -89,6 +86,7 @@ public class YabawiGameUI : MonoBehaviour
         if (normalBtn != null) normalBtn.onClick.AddListener(() => StartGameWithDifficulty(1));
         if (hardBtn != null) hardBtn.onClick.AddListener(() => StartGameWithDifficulty(2));
         if (gameCloseButton != null) gameCloseButton.onClick.AddListener(CloseGame);
+        if (gameExitButton != null) gameExitButton.onClick.AddListener(CloseGame);
 
         // Start()는 패널이 처음 활성화될 때 실행되므로, 여기서 CloseGame()을 부르면
         // OpenPanel()로 막 연 패널을 그 프레임에 도로 닫아버린다.
@@ -100,33 +98,24 @@ public class YabawiGameUI : MonoBehaviour
     {
         if (yabawiGamePanel != null) yabawiGamePanel.SetActive(true);
         hasOpened = true;
-        ResetScore();
-        UpdateStatusText("-", remainChances);
         ResetBoardUI();
     }
 
-    /// <summary>결과 패널의 [다시 도전]에서 호출. 기회와 점수를 초기화하고 처음 상태로 되돌린다.</summary>
+    /// <summary>결과 패널의 [다시 도전]에서 호출. 난이도 선택부터 다시 시작한다.</summary>
     public void RestartGame()
     {
         if (isPlaying) return;
 
-        ResetScore();
-        UpdateStatusText("-", remainChances);
         ResetBoardUI();
-    }
-
-    private void ResetScore()
-    {
-        remainChances = maxChances;
-        correctCount = 0;
-        playedRounds = 0;
-        earnedGold = 0L;
-        earnedKnowledgePoint = 0L;
+        ShowDifficultyButtons();
     }
 
     public void CloseGame()
     {
-        if (isPlaying) return;
+        // 컵을 섞는 도중에도 나갈 수 있어야 하므로, 진행 중이면 연출을 끊고 닫는다.
+        StopAllCoroutines();
+        isPlaying = false;
+        canSelect = false;
 
         bool wasOpen = hasOpened;
         hasOpened = false;
@@ -144,17 +133,22 @@ public class YabawiGameUI : MonoBehaviour
     private void ResetBoardUI()
     {
         if (startButton != null) startButton.gameObject.SetActive(true);
+        if (titleImage != null) titleImage.SetActive(true);
         if (difficultySelectGroup != null) difficultySelectGroup.SetActive(false);
         if (gameFinishPanel != null) gameFinishPanel.SetActive(false);
+        // 제목 + [게임 시작]만 보이는 화면에는 나가기 버튼도 상태 표시도 두지 않는다.
+        if (gameCloseButton != null) gameCloseButton.gameObject.SetActive(false);
+        if (difficultyText != null) difficultyText.text = string.Empty;
 
         ClearAllElements();
     }
 
     private void ShowDifficultyButtons()
     {
-        if (remainChances <= 0) return;
         if (startButton != null) startButton.gameObject.SetActive(false);
+        if (titleImage != null) titleImage.SetActive(false);
         if (difficultySelectGroup != null) difficultySelectGroup.SetActive(true);
+        if (gameCloseButton != null) gameCloseButton.gameObject.SetActive(true);
     }
 
     private void StartGameWithDifficulty(int diffLevel)
@@ -163,7 +157,7 @@ public class YabawiGameUI : MonoBehaviour
 
         currentSetting = diffSettings[diffLevel];
         if (difficultySelectGroup != null) difficultySelectGroup.SetActive(false);
-        UpdateStatusText(currentSetting.diffName, remainChances);
+        UpdateStatusText(currentSetting.diffName);
 
         SetupGameElements();
         StartCoroutine(YabawiRoutine());
@@ -367,24 +361,9 @@ public class YabawiGameUI : MonoBehaviour
 
     IEnumerator RevealResult(int selectedListIndex)
     {
-        remainChances--;
-        UpdateStatusText(currentSetting.diffName, remainChances);
-
         yield return StartCoroutine(LiftCup(activeCups[selectedListIndex], true));
 
         bool isSuccess = (selectedListIndex == targetIndex);
-        playedRounds++;
-
-        if (isSuccess)
-        {
-            // 맞출 때마다 바로 지급한다. 중간에 나가도 얻은 보상은 유지된다.
-            correctCount++;
-            earnedGold += rewardGoldPerWin;
-            earnedKnowledgePoint += rewardKnowledgePointPerWin;
-            GameManager.GrantReward(rewardGoldPerWin, rewardKnowledgePointPerWin);
-        }
-
-        UpdateStatusText(currentSetting.diffName, remainChances);
 
         yield return new WaitForSeconds(1.0f);
 
@@ -399,16 +378,7 @@ public class YabawiGameUI : MonoBehaviour
         isPlaying = false;
 
         ClearAllElements();
-
-        if (remainChances <= 0)
-        {
-            ShowScorePanel();
-        }
-        else
-        {
-            ResetBoardUI();
-            UpdateStatusText("-", remainChances);
-        }
+        ShowResultPanel(isSuccess);
     }
 
     // 컵 위/아래 이동 애니메이션 (2행 위치도 완벽 대응)
@@ -430,32 +400,34 @@ public class YabawiGameUI : MonoBehaviour
         cup.anchoredPosition = targetPos;
     }
 
-    /// <summary>
-    /// 기회를 모두 쓴 뒤 이번 판의 성적과 획득 보상을 결과 패널에 띄운다.
-    /// (다른 미니게임의 결과 화면과 같은 방식)
-    /// </summary>
-    private void ShowScorePanel()
+    /// <summary>한 판이 끝나면 성공/실패 결과 패널을 띄운다.</summary>
+    private void ShowResultPanel(bool isSuccess)
     {
-        if (resultText != null)
-        {
-            string headline = correctCount == playedRounds && playedRounds > 0
-                ? "전부 맞췄습니다!"
-                : (correctCount > 0 ? "게임 종료!" : "아쉽네요, 한 번도 못 맞췄습니다.");
+        if (resultImage != null) resultImage.sprite = isSuccess ? successSprite : failSprite;
 
-            resultText.text =
-                $"{headline}\n" +
-                $"맞춘 횟수: {correctCount} / {playedRounds}\n" +
-                $"획득 보상: {earnedGold} 골드 / {earnedKnowledgePoint} 지식 포인트";
+        string message;
+        if (isSuccess)
+        {
+            int rewardKnowledge = currentSetting.rewardKnowledgePoint;
+            long grantedKnowledge = GameManager.GrantReward(rewardGoldPerWin, rewardKnowledge);
+            message = $"보상: {rewardGoldPerWin} 골드 / {grantedKnowledge} 지식 포인트";
+            if (grantedKnowledge < rewardKnowledge) message += "\n(오늘 지식포인트 한도를 모두 채웠습니다)";
+        }
+        else
+        {
+            message = "아쉽네요, 다시 도전해 보세요.";
         }
 
+        if (resultText != null) resultText.text = message;
+
+        // 결과 화면에서는 우측 상단 나가기 대신 패널 안의 버튼을 쓴다.
+        if (gameCloseButton != null) gameCloseButton.gameObject.SetActive(false);
         if (gameFinishPanel != null) gameFinishPanel.SetActive(true);
     }
 
-    private void UpdateStatusText(string diff, int chance)
+    private void UpdateStatusText(string diff)
     {
         if (difficultyText != null) difficultyText.text = $"난이도: {diff}";
-        if (chanceText != null) chanceText.text = $"남은 기회: {chance}";
-        if (scoreText != null) scoreText.text = $"맞춘 횟수: {correctCount} / {maxChances}";
     }
 }
 

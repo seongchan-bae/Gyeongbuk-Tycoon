@@ -20,7 +20,7 @@ public class PuzzleUIManager : MonoBehaviour
     public List<PuzzleData> puzzleList = new List<PuzzleData>(); 
 
     [Header("1. Timer Settings")]
-    public float timeLimit = 180f; 
+    public float timeLimit = 300f;
     public TextMeshProUGUI timerText; 
     public GameObject gameOverPopup;
     public Button retryButton;
@@ -31,12 +31,18 @@ public class PuzzleUIManager : MonoBehaviour
     public TextMeshProUGUI rewardText;
     public Button clearExitButton;
     public int rewardGold = 100;
-    public int rewardKnowledge = 50;
+    public int rewardKnowledge = 500;
 
     [Header("UI Panels")]
     public GameObject clearUI;
     [Tooltip("퍼즐 게임 전체를 감싸는 루트 패널 (PuzzleUI). 나가기 시 이 패널을 끈다.")]
     public GameObject rootPanel;
+
+    [Header("Start Screen")]
+    [Tooltip("퍼즐에 들어오면 먼저 보여줄 시작 화면. 비워두면 예전처럼 바로 시작한다.")]
+    public GameObject startScreen;
+    [Tooltip("우측 상단 나가기(X) 버튼. 시작 화면에서는 숨기고 퍼즐이 시작되면 보여준다.")]
+    public GameObject closeButton;
 
     private float currentTimer;
     private bool isGameActive = false;
@@ -44,6 +50,33 @@ public class PuzzleUIManager : MonoBehaviour
 
     private void OnEnable()
     {
+        ShowStartScreen();
+    }
+
+    private void ShowStartScreen()
+    {
+        if (gameOverPopup != null) gameOverPopup.SetActive(false);
+        if (clearPopup != null) clearPopup.SetActive(false);
+
+        if (startScreen == null)
+        {
+            StartRandomPuzzle();
+            return;
+        }
+
+        // [게임 시작] 을 누르기 전에는 타이머도 조각 생성도 돌리지 않는다.
+        isGameActive = false;
+        if (selectionPanel != null) selectionPanel.SetActive(false);
+        // 제목 + [게임 시작]만 보이는 화면에는 나가기 버튼을 두지 않는다.
+        if (closeButton != null) closeButton.SetActive(false);
+        if (timerText != null) timerText.text = string.Empty;
+        startScreen.SetActive(true);
+    }
+
+    /// <summary>시작 화면의 [게임 시작] 버튼에서 호출.</summary>
+    public void StartGame()
+    {
+        if (startScreen != null) startScreen.SetActive(false);
         StartRandomPuzzle();
     }
 
@@ -54,6 +87,7 @@ public class PuzzleUIManager : MonoBehaviour
     {
         isGameActive = false;
         if (selectionPanel != null) selectionPanel.SetActive(false);
+        if (closeButton != null) closeButton.SetActive(true);
 
         if (puzzleList == null || puzzleList.Count == 0)
         {
@@ -204,6 +238,8 @@ public class PuzzleUIManager : MonoBehaviour
     {
         isGameActive = false;
         if (gameOverPopup != null) gameOverPopup.SetActive(true);
+        // 결과 화면에서는 우측 상단 나가기 대신 패널 안의 버튼을 쓴다.
+        if (closeButton != null) closeButton.SetActive(false);
         if (timerText != null) timerText.text = "남은 시간: 시간 초과!";
     }
 
@@ -211,13 +247,16 @@ public class PuzzleUIManager : MonoBehaviour
     {
         isGameActive = false;
 
-        GameManager.GrantReward(rewardGold, rewardKnowledge);
+        long grantedKnowledge = GameManager.GrantReward(rewardGold, rewardKnowledge);
 
         if (rewardText != null)
         {
-            rewardText.text = $"퍼즐 완성!\n보상: {rewardGold} 골드 / {rewardKnowledge} 지식 포인트";
+            string text = $"보상: {rewardGold} 골드 / {grantedKnowledge} 지식 포인트";
+            if (grantedKnowledge < rewardKnowledge) text += "\n(오늘 지식포인트 한도를 모두 채웠습니다)";
+            rewardText.text = text;
         }
 
+        if (closeButton != null) closeButton.SetActive(false);
         if (clearPopup != null) clearPopup.SetActive(true);
     }
 

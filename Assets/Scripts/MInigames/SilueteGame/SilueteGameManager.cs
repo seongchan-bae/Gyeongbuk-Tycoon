@@ -30,11 +30,17 @@ public class SilueteGameManager : MonoBehaviour
 
     [Header("Reward Settings (Inspector)")]
     public int rewardGold = 100;               // 정답 시 제공할 n 골드
-    public int rewardKnowledgePoint = 10;      // 정답 시 제공할 m 지식 포인트
+    public int rewardKnowledgePoint = 50;      // 정답 시 제공할 m 지식 포인트
 
     [Header("Root Panel")]
     [Tooltip("실루엣 게임 전체를 감싸는 루트 패널 (SilueteGameUI). 나가기 시 이 패널을 끈다.")]
     public GameObject rootPanel;
+
+    [Header("Start Screen")]
+    [Tooltip("게임에 들어오면 먼저 보여줄 시작 화면. 비워두면 예전처럼 바로 첫 문제를 낸다.")]
+    public GameObject startScreen;
+    [Tooltip("우측 상단 나가기(X) 버튼. 시작 화면에서는 숨기고 문제가 나오면 보여준다.")]
+    public GameObject closeButton;
 
     [Header("Quiz Data Pool")]
     public List<SilhouetteQuizData> quizList = new List<SilhouetteQuizData>(); // 전체 문제 데이터셋
@@ -48,13 +54,37 @@ public class SilueteGameManager : MonoBehaviour
     private void Start()
     {
         Initialize();
-        NextQuiz();
+        ShowStartScreen();
     }
 
     private void OnEnable()
     {
-        // 허브에서 다시 들어왔을 때 새 문제로 시작
-        if (isInitialized) NextQuiz();
+        // 허브에서 다시 들어왔을 때도 시작 화면부터 보여준다.
+        // 첫 활성화 때는 OnEnable 이 Start 보다 먼저 돌기 때문에 Start 쪽에 맡긴다.
+        if (isInitialized) ShowStartScreen();
+    }
+
+    /// <summary>시작 화면의 [게임 시작] 버튼에서 호출.</summary>
+    public void StartGame()
+    {
+        if (startScreen != null) startScreen.SetActive(false);
+        if (closeButton != null) closeButton.SetActive(true);
+        NextQuiz();
+    }
+
+    /// <summary>문제를 내기 전에 시작 화면을 띄운다. 연결돼 있지 않으면 예전처럼 바로 시작.</summary>
+    private void ShowStartScreen()
+    {
+        if (startScreen == null)
+        {
+            NextQuiz();
+            return;
+        }
+
+        if (resultPopupUI != null) resultPopupUI.SetActive(false);
+        // 제목 + [게임 시작]만 보이는 화면에는 나가기 버튼을 두지 않는다.
+        if (closeButton != null) closeButton.SetActive(false);
+        startScreen.SetActive(true);
     }
 
     private void Initialize()
@@ -85,6 +115,7 @@ public class SilueteGameManager : MonoBehaviour
     {
         // 팝업 비활성화
         if (resultPopupUI != null) resultPopupUI.SetActive(false);
+        if (closeButton != null) closeButton.SetActive(true);
 
         if (quizList == null || quizList.Count == 0)
         {
@@ -164,15 +195,19 @@ public class SilueteGameManager : MonoBehaviour
         }
 
         if (resultPopupUI != null) resultPopupUI.SetActive(true);
+        // 결과 화면에서는 우측 상단 나가기 대신 패널 안의 버튼을 쓴다.
+        if (closeButton != null) closeButton.SetActive(false);
 
         if (selectedIndex == currentCorrectIndex)
         {
             // [정답 처리]
-            AddReward(rewardGold, rewardKnowledgePoint);
+            long grantedKnowledge = GameManager.GrantReward(rewardGold, rewardKnowledgePoint);
 
             if (resultMessageText != null)
             {
-                resultMessageText.text = $"<b><color=#00FF00>정답입니다!</color></b>\n보상: <color=#FFD700>{rewardGold} 골드</color> / <color=#00FFFF>{rewardKnowledgePoint} 지식 포인트</color>를 획득했습니다.";
+                string text = $"<b><color=#00FF00>정답입니다!</color></b>\n보상: <color=#FFD700>{rewardGold} 골드</color> / <color=#00FFFF>{grantedKnowledge} 지식 포인트</color>를 획득했습니다.";
+                if (grantedKnowledge < rewardKnowledgePoint) text += "\n<size=80%>(오늘 지식포인트 한도를 모두 채웠습니다)</size>";
+                resultMessageText.text = text;
             }
         }
         else
@@ -183,14 +218,6 @@ public class SilueteGameManager : MonoBehaviour
                 resultMessageText.text = $"<b><color=#FF0000>오답입니다!</color></b>\n정답은 <b>[{currentQuiz.correctAnswer}]</b> 입니다.\n다른 문제에 도전하시겠습니까?";
             }
         }
-    }
-
-    /// <summary>
-    /// 보상 지급 로직
-    /// </summary>
-    private void AddReward(int gold, int point)
-    {
-        GameManager.GrantReward(gold, point);
     }
 
     public void ExitGame()

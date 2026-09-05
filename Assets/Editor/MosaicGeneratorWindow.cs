@@ -356,7 +356,7 @@ public class MosaicGeneratorWindow : EditorWindow
         var manager = Object.FindFirstObjectByType<SilueteGameManager>(FindObjectsInactive.Include);
         if (manager == null)
         {
-            lastReport = "열려 있는 씬에서 SilueteGameManager를 찾지 못했습니다.\nMiniGameScene을 연 뒤 다시 눌러 주세요.";
+            lastReport = "열려 있는 씬에서 SilueteGameManager를 찾지 못했습니다.\nSampleScene을 연 뒤 다시 눌러 주세요.";
             return;
         }
 

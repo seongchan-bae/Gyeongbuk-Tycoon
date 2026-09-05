@@ -19,24 +19,32 @@ public class CardMatchingGame : MonoBehaviour
     [SerializeField] private List<CardData> cardDataList = new List<CardData>();
 
     [Header("=== Game Settings ===")]
-    [Tooltip("한 판에 배치할 짝 개수 (15쌍 = 총 30장 카드, 5x6 배치)")]
-    [SerializeField] private int stagePairCount = 15;
+    [Tooltip("한 판에 배치할 짝 개수 (12쌍 = 총 24장 카드, 6x4 배치)")]
+    [SerializeField] private int stagePairCount = 12;
     [Tooltip("제한 시간 (초)")]
-    [SerializeField] private float timeLimit = 200f;
+    [SerializeField] private float timeLimit = 100f;
     [Tooltip("최대 기회 (틀릴 수 있는 횟수)")]
-    [SerializeField] private int maxChances = 50;
+    [SerializeField] private int maxChances = 30;
     [Tooltip("게임 성공 시 지급할 지식 포인트")]
-    [SerializeField] private long rewardKnowledgePoint = 50L;
+    [SerializeField] private long rewardKnowledgePoint = 500L;
     [Tooltip("게임 성공 시 지급할 골드")]
     [SerializeField] private long rewardGold = 100L;
 
     [Header("=== Direct Hierarchy References ===")]
     [SerializeField] private GameObject startButton;      // StartButton
+    [Tooltip("시작 화면에만 보여줄 타이틀 이미지. 게임이 시작되면 시작 버튼과 함께 숨긴다.")]
+    [SerializeField] private GameObject titleImage;       // GameTitleImage
     [SerializeField] private GameObject cardGrid;        // CardGrid (카드가 배치되는 패널)
     [SerializeField] private TextMeshProUGUI timerText;   // GameStatus 내 제한시간 텍스트
     [SerializeField] private TextMeshProUGUI chanceText;  // GameStatus 내 남은기회 텍스트
     [SerializeField] private GameObject gameOverPanel;   // 결과 팝업 패널
     [SerializeField] private TextMeshProUGUI resultText;  // GameOverPanel 내 결과 텍스트
+    [Tooltip("결과 패널 가운데에 띄울 성공/실패 이미지")]
+    [SerializeField] private Image resultImage;
+    [SerializeField] private Sprite successSprite;
+    [SerializeField] private Sprite failSprite;
+    [Tooltip("우측 상단 나가기(X) 버튼. 시작 화면에서는 숨기고 게임이 시작되면 보여준다.")]
+    [SerializeField] private GameObject gameCloseButton;  // GameCloseButton
 
     [Header("=== Prefab ===")]
     [SerializeField] private GameObject cardPrefab;       // Project 창의 CardPrefab
@@ -71,8 +79,11 @@ public class CardMatchingGame : MonoBehaviour
         isGameActive = false;
 
         if (startButton != null) startButton.SetActive(true);
+        if (titleImage != null) titleImage.SetActive(true);
         if (cardGrid != null) cardGrid.SetActive(false);
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
+        // 제목 + [게임 시작]만 보이는 화면에는 나가기 버튼을 두지 않는다.
+        if (gameCloseButton != null) gameCloseButton.SetActive(false);
 
         ClearCards();
 
@@ -81,10 +92,9 @@ public class CardMatchingGame : MonoBehaviour
 
     private void ResetStatusUI()
     {
-        // 원하는 초기 기본 문구로 적어주시면 됩니다.
-        if (timerText != null) timerText.text = "남은 시간";
-        if (chanceText != null) chanceText.text = "남은 기회";
-
+        // 게임을 시작하기 전에는 상태 표시를 비워둔다.
+        if (timerText != null) timerText.text = string.Empty;
+        if (chanceText != null) chanceText.text = string.Empty;
     }
 
     public void CloseGamePanel()
@@ -107,8 +117,10 @@ public class CardMatchingGame : MonoBehaviour
     public void OnClickStartGame()
     {
         if (startButton != null) startButton.SetActive(false);
+        if (titleImage != null) titleImage.SetActive(false);
         if (cardGrid != null) cardGrid.SetActive(true);
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
+        if (gameCloseButton != null) gameCloseButton.SetActive(true);
 
         InitializeGame();
     }
@@ -255,7 +267,7 @@ public class CardMatchingGame : MonoBehaviour
 
             if (matchedPairCount >= stagePairCount)
             {
-                GameOver(true, $"성공!\n모든 유적지 짝을 맞추셨습니다!\n보상: {rewardGold} 골드 / {rewardKnowledgePoint} 지식 포인트");
+                GameOver(true, "모든 유적지 짝을 맞추셨습니다!");
             }
         }
         else
@@ -280,12 +292,18 @@ public class CardMatchingGame : MonoBehaviour
         isGameActive = false;
 
         if (gameOverPanel != null) gameOverPanel.SetActive(true);
-        if (resultText != null) resultText.text = message;
+        // 결과 화면에서는 우측 상단 나가기 대신 패널 안의 버튼을 쓴다.
+        if (gameCloseButton != null) gameCloseButton.SetActive(false);
+        if (resultImage != null) resultImage.sprite = isSuccess ? successSprite : failSprite;
 
         if (isSuccess)
         {
-            GameManager.GrantReward(rewardGold, rewardKnowledgePoint);
+            long grantedKnowledge = GameManager.GrantReward(rewardGold, rewardKnowledgePoint);
+            message += $"\n보상: {rewardGold} 골드 / {grantedKnowledge} 지식 포인트";
+            if (grantedKnowledge < rewardKnowledgePoint) message += "\n(오늘 지식포인트 한도를 모두 채웠습니다)";
         }
+
+        if (resultText != null) resultText.text = message;
     }
 
     private void ShuffleList<T>(List<T> list)
