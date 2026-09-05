@@ -10,17 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
-  m_Name: "\uACBD\uCC30\uC11C"
+  m_Name: "\uCCA8\uC131\uB300"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
-  buildingName: "\uACBD\uCC30\uC11C"
-  price: 1000
-  goldProductionRate: 10
-  thumbnail: {fileID: 21300000, guid: 9423ee1b517999a43a90457510188a88, type: 3}
-  prefab: {fileID: 8062390082120548318, guid: 559fed3b47d8e2245ba011e88559fc36, type: 3}
-  tileWidth: 2
-  tileHeight: 2
-  contentId: 
+  buildingName: "\uCCA8\uC131\uB300"
+  price: 5000
+  goldProductionRate: 100
+  thumbnail: {fileID: 21300000, guid: 358a926751a4a974d87d87ad250923a0, type: 3}
+  prefab: {fileID: 1190566658305765996, guid: 841597d2e1b9a254db365c6248196c68, type: 3}
+  tileWidth: 3
+  tileHeight: 3
+  contentId: 126207
   maxTouristIncrease: 1000
-  touristIncrease: 2
-  requiresWaterTile: 0
-  category: 0
+  touristIncrease: 200
