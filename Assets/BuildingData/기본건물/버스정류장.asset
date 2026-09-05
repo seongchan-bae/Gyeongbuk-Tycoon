@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: "\uBC84\uC2A4\uC815\uB958\uC7A5"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   buildingName: "\uBC84\uC2A4\uC815\uB958\uC7A5"
-  price: 0
-  goldProductionRate: 0
+  price: 1000
+  goldProductionRate: 10
   thumbnail: {fileID: 0}
   prefab: {fileID: 815440180195354761, guid: 6c96876a714cb5945881b426ea112988, type: 3}
-  tileWidth: 0
-  tileHeight: 0
+  tileWidth: 2
+  tileHeight: 2
   contentId: 
-  maxTouristIncrease: 0
-  touristIncrease: 0
+  maxTouristIncrease: 2000
+  touristIncrease: 10
   requiresWaterTile: 0
   category: 0
