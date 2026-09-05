@@ -16,10 +16,11 @@ MonoBehaviour:
   price: 0
   goldProductionRate: 0
   thumbnail: {fileID: 0}
-  prefab: {fileID: 0}
+  prefab: {fileID: 3886159231891200504, guid: 55ab4fd7b37b99642b382a32e96be562, type: 3}
   tileWidth: 0
   tileHeight: 0
   contentId: 
   maxTouristIncrease: 0
   touristIncrease: 0
   requiresWaterTile: 0
+  category: 0
