@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
-  m_Name: "\uC18C\uBC29\uC11C 1"
+  m_Name: New Building Data 8
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
-  buildingName: "\uC18C\uBC29\uC11C"
+  buildingName: 
   price: 0
   goldProductionRate: 0
   thumbnail: {fileID: 0}
-  prefab: {fileID: 3429499477455711569, guid: 9652ac1660d679b48a6a1a5e5e9fa285, type: 3}
+  prefab: {fileID: 0}
   tileWidth: 0
   tileHeight: 0
   contentId: 

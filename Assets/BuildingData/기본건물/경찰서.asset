@@ -15,12 +15,12 @@ MonoBehaviour:
   buildingName: "\uACBD\uCC30\uC11C"
   price: 1000
   goldProductionRate: 10
-  thumbnail: {fileID: 21300000, guid: 9423ee1b517999a43a90457510188a88, type: 3}
-  prefab: {fileID: 8062390082120548318, guid: 559fed3b47d8e2245ba011e88559fc36, type: 3}
+  thumbnail: {fileID: 21300000, guid: 778ddb5ff6b488e4bbc85e1d49217fee, type: 3}
+  prefab: {fileID: 5162553351543034144, guid: 6cb9e8374ba02b34e8631cab833c3db7, type: 3}
   tileWidth: 2
   tileHeight: 2
   contentId: 
-  maxTouristIncrease: 1000
-  touristIncrease: 2
+  maxTouristIncrease: 0
+  touristIncrease: 0
   requiresWaterTile: 0
   category: 0

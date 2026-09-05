@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
-  m_Name: "\uD3EC\uC7A5\uB9C8\uCC28"
+  m_Name: New Building Data 9
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
-  buildingName: "\uD3EC\uC7A5\uB9C8\uCC28"
+  buildingName: 
   price: 0
   goldProductionRate: 0
   thumbnail: {fileID: 0}
-  prefab: {fileID: 1651702454425558900, guid: ac37a7d63e609294ea6adb18697cbdea, type: 3}
-  tileWidth: 3
-  tileHeight: 3
+  prefab: {fileID: 0}
+  tileWidth: 0
+  tileHeight: 0
   contentId: 
   maxTouristIncrease: 0
   touristIncrease: 0
