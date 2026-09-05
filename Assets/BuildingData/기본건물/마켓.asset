@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
+  m_Name: "\uB9C8\uCF13"
+  m_EditorClassIdentifier: Assembly-CSharp::BuildingData
+  buildingName: "\uB9C8\uCF13"
+  price: 20000
+  goldProductionRate: 100
+  thumbnail: {fileID: 0}
+  prefab: {fileID: 1788955102538785104, guid: 06cbf332cd4a7b3469d3bb6c2e363ea8, type: 3}
+  tileWidth: 2
+  tileHeight: 2
+  contentId: 
+  maxTouristIncrease: 1500
+  touristIncrease: 15
+  requiresWaterTile: 0
+  category: 0

@@ -13,6 +13,8 @@ public class BuildingInstall : MonoBehaviour
     [Header("타일맵 참조")]
     [SerializeField] private Grid baseGrid;
     [SerializeField] private Tilemap baseTilemap;
+    [SerializeField] private Tilemap waterTilemap;  // 물 타일 전용 레이어
+    [SerializeField] private TileBase waterTile;    // 깔 물 타일 에셋
 
     [Header("설치 대상")]
     [SerializeField] private BuildingData currentBuildingData;
@@ -98,6 +100,9 @@ public class BuildingInstall : MonoBehaviour
                 // 복원된 건물의 관광객 수치도 GameManager에 반영
                 if (gameManager != null)
                     gameManager.AddTourists(matchedData.touristIncrease, matchedData.maxTouristIncrease);
+
+                if (matchedData.requiresWaterTile)
+                    PlaceWaterTiles(cellPos, matchedData);
             }
         }
     }
@@ -575,6 +580,9 @@ public class BuildingInstall : MonoBehaviour
         building.buildingData = currentBuildingData;
         gameManager.AddTourists(currentBuildingData.touristIncrease, currentBuildingData.maxTouristIncrease);
 
+        if (currentBuildingData.requiresWaterTile)
+            PlaceWaterTiles(currentCellPos, currentBuildingData);
+
         // Ghost·하이라이트 숨기고 설치 모드 종료
         if (ghostRenderer != null)
             ghostRenderer.gameObject.SetActive(false);
@@ -629,6 +637,20 @@ public class BuildingInstall : MonoBehaviour
             Rigidbody2D buildingRb = building.AddComponent<Rigidbody2D>();
             buildingRb.bodyType = RigidbodyType2D.Static;
         }
+    }
+
+    void PlaceWaterTiles(Vector3Int center, BuildingData data)
+    {
+        if (waterTilemap == null || waterTile == null) return;
+        foreach (var cell in GetFootprintCells(center, data))
+            waterTilemap.SetTile(cell, waterTile);
+    }
+
+    void RemoveWaterTiles(Vector3Int center, BuildingData data)
+    {
+        if (waterTilemap == null) return;
+        foreach (var cell in GetFootprintCells(center, data))
+            waterTilemap.SetTile(cell, null);
     }
 
     void buildingUninstalling()
