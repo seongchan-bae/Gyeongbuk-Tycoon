@@ -17,6 +17,8 @@ public class BuildingData : ScriptableObject
     public int tileWidth;               // 건물 가로 타일 수
     public int tileHeight;              // 건물 세로 타일 수
     public string contentId;            // 한국관광공사 TourAPI contentId
+    [TextArea(3, 8)]
+    public string manualInfoText;       // contentId 없을 때 직접 입력하는 안내 텍스트
     public int maxTouristIncrease;      // 최대 관광객 한도 증가량
     public int touristIncrease;         // 관광객 수 정적 증가량
     public bool requiresWaterTile;      // 설치 시 물 프리팹 배치 여부

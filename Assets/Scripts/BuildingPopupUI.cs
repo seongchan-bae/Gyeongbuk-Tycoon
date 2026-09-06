@@ -118,7 +118,11 @@ public class BuildingPopupUI : MonoBehaviour
         string contentId = selectedBuilding?.buildingData?.contentId;
         if (string.IsNullOrEmpty(contentId))
         {
-            Debug.LogWarning($"[Popup] {selectedBuilding?.buildingData?.buildingName}에 contentId가 설정되지 않았습니다.");
+            string manual = selectedBuilding?.buildingData?.manualInfoText;
+            if (!string.IsNullOrWhiteSpace(manual))
+                ShowInfoText(manual);
+            else
+                Debug.LogWarning($"[Popup] {selectedBuilding?.buildingData?.buildingName}에 contentId와 manualInfoText가 모두 비어 있습니다.");
             Hide();
             return;
         }
