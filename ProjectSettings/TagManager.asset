@@ -44,6 +44,9 @@ TagManager:
   - name: Tilemap
     uniqueID: 1407747609
     locked: 0
+  - name: watermap
+    uniqueID: 1308394141
+    locked: 0
   - name: Building
     uniqueID: 4278531321
     locked: 0

@@ -13,8 +13,11 @@ public class BuildingInstall : MonoBehaviour
     [Header("타일맵 참조")]
     [SerializeField] private Grid baseGrid;
     [SerializeField] private Tilemap baseTilemap;
-    [SerializeField] private Tilemap waterTilemap;  // 물 타일 전용 레이어
-    [SerializeField] private TileBase waterTile;    // 깔 물 타일 에셋
+
+    // 물 프리팹은 BuildingData.waterTilePrefab 에서 가져옴
+
+    // 건물별 생성된 물 오브젝트 추적 (건물 위치 → 물 오브젝트 목록)
+    private Dictionary<Vector3Int, List<GameObject>> waterObjects = new Dictionary<Vector3Int, List<GameObject>>();
 
     [Header("설치 대상")]
     [SerializeField] private BuildingData currentBuildingData;
@@ -96,6 +99,9 @@ public class BuildingInstall : MonoBehaviour
 
                 b.Initialize(gameManager);
                 b.buildingData = matchedData;
+
+                foreach (var sr in installedBuilding.GetComponentsInChildren<SpriteRenderer>(true))
+                    sr.sortingLayerName = "Building";
 
                 // 복원된 건물의 관광객 수치도 GameManager에 반영
                 if (gameManager != null)
@@ -250,11 +256,13 @@ public class BuildingInstall : MonoBehaviour
         }
 
         // 유니티 2D Isometric 타일 표준 마름모 비율 (2:1)
+        // 인접 건물과 닿아도 충돌로 감지되지 않도록 살짝 줄임
+        float s = 0.9f;
         Vector2[] points = new Vector2[4];
-        points[0] = new Vector2(-w * 0.5f, 0);       // 좌
-        points[1] = new Vector2(0, h * 0.25f);       // 상
-        points[2] = new Vector2(w * 0.5f, 0);        // 우
-        points[3] = new Vector2(0, -h * 0.25f);      // 하
+        points[0] = new Vector2(-w * 0.5f * s, 0);       // 좌
+        points[1] = new Vector2(0, h * 0.25f * s);       // 상
+        points[2] = new Vector2(w * 0.5f * s, 0);        // 우
+        points[3] = new Vector2(0, -h * 0.25f * s);      // 하
         col.points = points;
 
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
@@ -307,6 +315,16 @@ public class BuildingInstall : MonoBehaviour
                 gameManager.destroyingActivation = true;
                 gameManager.installingActivation = false;
                 Debug.Log("모드 변경: 건물 삭제 모드");
+            }
+
+            // 건물 드래그 중 어디서든 마우스를 놓으면 무조건 처리 (UI 위에서 놓아도 정상 종료)
+            if (Input.GetMouseButtonUp(0) && isBuildingMoving && draggedBuilding != null)
+            {
+                FinalizeBuildingMove(draggedBuilding);
+                isDraggingBuilding = false;
+                Building.AnyBuildingDragging = false;
+                draggedBuilding = null;
+                clickConsumedByAction = false;
             }
 
             if (!EventSystem.current.IsPointerOverGameObject())
@@ -366,13 +384,12 @@ public class BuildingInstall : MonoBehaviour
             isCameraDragging = false;
             draggedBuilding = null;
 
-            // 스프라이트 경계 기반 건물 클릭 감지
-            Vector3 clickPos = mouseWorldPos;
+            // 타일 셀 기반 건물 클릭 감지
             foreach (Building b in FindObjectsByType<Building>(FindObjectsSortMode.None))
             {
-                SpriteRenderer sr = b.GetComponent<SpriteRenderer>();
-                if (sr == null) sr = b.GetComponentInChildren<SpriteRenderer>();
-                if (sr != null && sr.bounds.Contains(new Vector3(clickPos.x, clickPos.y, sr.bounds.center.z)))
+                if (b.buildingData == null) continue;
+                Vector3Int bCell = baseGrid.WorldToCell(b.transform.position);
+                if (GetFootprintCells(bCell, b.buildingData).Contains(cellPosition))
                 {
                     draggedBuilding = b;
                     break;
@@ -404,8 +421,10 @@ public class BuildingInstall : MonoBehaviour
                     isDraggingBuilding = true;
                     Building.AnyBuildingDragging = true;
 
-                    // 건물 시각 위치는 마우스 셀 중심으로 이동
-                    draggedBuilding.transform.position = baseGrid.GetCellCenterWorld(cellPosition);
+                    // 건물 시각 위치는 마우스 셀 중심으로 이동 (월드 좌표 명시)
+                    Vector3 targetWorldPos = baseGrid.GetCellCenterWorld(cellPosition);
+                    targetWorldPos.z = draggedBuilding.transform.position.z;
+                    draggedBuilding.transform.position = targetWorldPos;
                 }
             }
             else
@@ -448,6 +467,10 @@ public class BuildingInstall : MonoBehaviour
         currentBuildingData = building.buildingData;
         dragOriginalCell = baseGrid.WorldToCell(building.transform.position);
 
+        // 드래그 시작 시 물타일 제거 (이동 후 새 위치에 다시 배치)
+        if (building.buildingData != null && building.buildingData.requiresWaterTile)
+            RemoveWaterTiles(dragOriginalCell, building.buildingData);
+
         // 드래그 중인 건물의 콜라이더 비활성화 (자기 자신과 충돌 방지)
         var col = building.GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
@@ -463,15 +486,24 @@ public class BuildingInstall : MonoBehaviour
         var col = building.GetComponent<Collider2D>();
         if (col != null) col.enabled = true;
 
+        float origZ = building.transform.position.z;
         if (CannotPlace)
         {
             // 설치 불가 → 원래 위치로 복귀
-            building.transform.position = baseGrid.GetCellCenterWorld(dragOriginalCell);
+            Vector3 restorePos = baseGrid.GetCellCenterWorld(dragOriginalCell);
+            restorePos.z = origZ;
+            building.transform.position = restorePos;
+            if (building.buildingData != null && building.buildingData.requiresWaterTile)
+                PlaceWaterTiles(dragOriginalCell, building.buildingData);
         }
         else
         {
             // 설치 가능 → 현재 위치 확정
-            building.transform.position = baseGrid.GetCellCenterWorld(cellPosition);
+            Vector3 finalPos = baseGrid.GetCellCenterWorld(cellPosition);
+            finalPos.z = origZ;
+            building.transform.position = finalPos;
+            if (building.buildingData != null && building.buildingData.requiresWaterTile)
+                PlaceWaterTiles(cellPosition, building.buildingData);
         }
 
         isCollidingWithBuilding = false;
@@ -570,6 +602,10 @@ public class BuildingInstall : MonoBehaviour
         building.buildingData = currentBuildingData;
         gameManager.AddTourists(currentBuildingData.touristIncrease, currentBuildingData.maxTouristIncrease);
 
+        // 모든 건물 SpriteRenderer를 Building 소팅 레이어로 설정
+        foreach (var sr in installedBuilding.GetComponentsInChildren<SpriteRenderer>(true))
+            sr.sortingLayerName = "Building";
+
         if (currentBuildingData.requiresWaterTile)
             PlaceWaterTiles(currentCellPos, currentBuildingData);
 
@@ -631,16 +667,25 @@ public class BuildingInstall : MonoBehaviour
 
     void PlaceWaterTiles(Vector3Int center, BuildingData data)
     {
-        if (waterTilemap == null || waterTile == null) return;
-        foreach (var cell in GetFootprintCells(center, data))
-            waterTilemap.SetTile(cell, waterTile);
+        if (data.waterTilePrefab == null) return;
+
+        // 발자국 셀 전체의 평균 월드 위치를 중심으로 1개 생성
+        var cells = GetFootprintCells(center, data);
+        Vector3 avgPos = Vector3.zero;
+        foreach (var cell in cells)
+            avgPos += baseGrid.GetCellCenterWorld(cell);
+        avgPos /= cells.Count;
+
+        GameObject water = Instantiate(data.waterTilePrefab, avgPos, Quaternion.identity, baseGrid.transform);
+        waterObjects[center] = new List<GameObject> { water };
     }
 
     void RemoveWaterTiles(Vector3Int center, BuildingData data)
     {
-        if (waterTilemap == null) return;
-        foreach (var cell in GetFootprintCells(center, data))
-            waterTilemap.SetTile(cell, null);
+        if (!waterObjects.ContainsKey(center)) return;
+        foreach (var obj in waterObjects[center])
+            if (obj != null) Destroy(obj);
+        waterObjects.Remove(center);
     }
 
     void buildingUninstalling()
