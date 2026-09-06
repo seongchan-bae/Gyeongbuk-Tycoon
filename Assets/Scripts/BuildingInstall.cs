@@ -291,7 +291,18 @@ public class BuildingInstall : MonoBehaviour
         }
 
         // GridOverlay 범위 밖이면 설치 불가 처리
-        isOutsideGrid = gridOverlay != null && !gridOverlay.Contains(cellPosition);
+        if (gridOverlay != null && currentBuildingData != null)
+        {
+            isOutsideGrid = false;
+            foreach (var cell in GetFootprintCells(cellPosition, currentBuildingData))
+            {
+                if (!gridOverlay.Contains(cell)) { isOutsideGrid = true; break; }
+            }
+        }
+        else
+        {
+            isOutsideGrid = gridOverlay != null && !gridOverlay.Contains(cellPosition);
+        }
 
         // 3. Ghost 색상 업데이트 — 설치 불가: 빨간색 반투명 / 설치 가능: 초록색 반투명
         if (ghostRenderer != null && ghostRenderer.gameObject.activeSelf)
