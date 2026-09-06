@@ -59,4 +59,9 @@ public class Building : MonoBehaviour
         if (sr != null)
             sr.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100) + 5000;
     }
+
+    public void ToggleFlip()
+    {
+        if (sr != null) sr.flipX = !sr.flipX;
+    }
 }

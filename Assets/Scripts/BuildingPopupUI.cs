@@ -13,6 +13,7 @@ public class BuildingPopupUI : MonoBehaviour
     [SerializeField] private Button infoButton;
     [SerializeField] private Button upgradeButton;
     [SerializeField] private Button deleteButton;
+    [SerializeField] private Button flipButton;
     [SerializeField] private TextMeshProUGUI buildingName;
     [SerializeField] private GameManager gameManager;
     [SerializeField] private BuildingData buildingData;
@@ -63,10 +64,12 @@ public class BuildingPopupUI : MonoBehaviour
         infoButton.onClick.RemoveAllListeners();
         upgradeButton.onClick.RemoveAllListeners();
         deleteButton.onClick.RemoveAllListeners();
+        if (flipButton != null) flipButton.onClick.RemoveAllListeners();
 
         infoButton.onClick.AddListener(OnInfoClicked);
         upgradeButton.onClick.AddListener(OnUpgradeClicked);
         deleteButton.onClick.AddListener(OnDeleteClicked);
+        if (flipButton != null) flipButton.onClick.AddListener(OnFlipClicked);
 
         popupPanel.gameObject.SetActive(true);
         if (buildingName != null)
@@ -207,6 +210,11 @@ public class BuildingPopupUI : MonoBehaviour
         {
             Debug.Log($"[TourAPI] {selectedBuilding?.buildingData?.buildingName}: {text}");
         }
+    }
+
+    void OnFlipClicked()
+    {
+        selectedBuilding?.ToggleFlip();
     }
 
     void OnUpgradeClicked()
