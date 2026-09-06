@@ -8,6 +8,12 @@ public class SoundManager : MonoBehaviour
     public AudioSource bgmSource;
     public AudioSource sfxSource;
 
+    [Header("SFX 클립")]
+    public AudioClip clipCardFlip;    // "card flip"
+    public AudioClip clipButtonClick; // "Button Click"
+    public AudioClip clipSuccess;     // "Success"
+    public AudioClip clipGameOver;    // "GameOver"
+
     void Awake()
     {
         // 씬이 넘어가도 파괴되지 않는 싱글톤 구조
@@ -66,5 +72,19 @@ public class SoundManager : MonoBehaviour
     public void SetSFXVolume(float volume)
     {
         if (sfxSource != null) sfxSource.volume = volume;
+    }
+
+    public void PlaySFX(string clipName)
+    {
+        if (sfxSource == null) return;
+        AudioClip clip = clipName switch
+        {
+            "card flip"    => clipCardFlip,
+            "Button Click" => clipButtonClick,
+            "Success"      => clipSuccess,
+            "GameOver"     => clipGameOver,
+            _              => null
+        };
+        if (clip != null) sfxSource.PlayOneShot(clip);
     }
 }
