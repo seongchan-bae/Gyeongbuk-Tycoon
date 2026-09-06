@@ -19,6 +19,11 @@ public class BuildingPopupUI : MonoBehaviour
     [SerializeField] private BuildingData buildingData;
     
 
+    [Header("업그레이드 설정")] // TODO: 수치 기획 후 조정 필요
+    [SerializeField] private float upgradeCostMultiplier  = 2f;   // 업그레이드 비용 = 건물 price * 이 배율
+    [SerializeField] private float upgradeGoldBonus       = 1f;   // 업그레이드당 골드 생산량 추가
+    [SerializeField] private int   upgradeTouristBonus    = 1;    // 업그레이드당 관광객 추가 증가량
+
     [Header("TourAPI 설정")]
     [SerializeField] private string tourApiKey = "616315cd61c155564e9088acbc319ff980ccc75a67ed38601b3876602d23ee9d"; // data.go.kr 디코딩 키 입력
     [SerializeField] private GameObject infoPopupPanel;               // 관광 정보를 표시할 별도 패널
@@ -219,7 +224,25 @@ public class BuildingPopupUI : MonoBehaviour
 
     void OnUpgradeClicked()
     {
-        Debug.Log($"[Popup] 업그레이드: {selectedBuilding?.buildingData?.buildingName}");
+        BuildingData data = selectedBuilding?.buildingData;
+        if (data == null) return;
+
+        int cost = Mathf.RoundToInt(data.price * upgradeCostMultiplier);
+
+        if (!gameManager.SpendMoney(cost))
+        {
+            Debug.LogWarning($"[업그레이드] 골드 부족 (필요: {cost})");
+            return;
+        }
+
+        // 골드 생산량 증가
+        selectedBuilding.bonusGoldRate += upgradeGoldBonus;
+
+        // 관광객 증가
+        selectedBuilding.bonusTourist += upgradeTouristBonus;
+        gameManager.AddTourists(upgradeTouristBonus, 0); // TODO: maxTourist 보너스도 기획 확정 후 추가
+
+        Debug.Log($"[업그레이드] {data.buildingName} | 비용 {cost} | 골드+{upgradeGoldBonus} | 관광객+{upgradeTouristBonus}");
         Hide();
     }
 

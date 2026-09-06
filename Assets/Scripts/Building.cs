@@ -11,6 +11,10 @@ public class Building : MonoBehaviour
 
     public static bool AnyBuildingDragging { get; set; }
 
+    // 업그레이드로 누적된 런타임 보너스 (ScriptableObject 원본은 건드리지 않음)
+    [HideInInspector] public float bonusGoldRate = 0f;       // 골드 생산량 추가
+    [HideInInspector] public int   bonusTourist  = 0;        // 관광객 추가 증가량
+
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -49,7 +53,7 @@ public class Building : MonoBehaviour
             if (goldTimer >= goldInterval)
             {
                 goldTimer = 0f;
-                gameManager.AddMoney((long)buildingData.goldProductionRate);
+                gameManager.AddMoney((long)(buildingData.goldProductionRate + bonusGoldRate));
             }
         }
     }
