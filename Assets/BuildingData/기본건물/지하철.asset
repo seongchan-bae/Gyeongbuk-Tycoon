@@ -10,17 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
-  m_Name: New Building Data 8
+  m_Name: "\uC9C0\uD558\uCCA0"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
-  buildingName: 
-  price: 0
+  buildingName: "\uC9C0\uD558\uCCA0\uC5ED"
+  price: 1000
   goldProductionRate: 0
   thumbnail: {fileID: 0}
-  prefab: {fileID: 0}
-  tileWidth: 0
-  tileHeight: 0
+  prefab: {fileID: 7555759079877854886, guid: 8915d38b29774c84a8ec5109c87f3a3e, type: 3}
+  tileWidth: 2
+  tileHeight: 2
   contentId: 
+  manualInfoText: 
   maxTouristIncrease: 0
   touristIncrease: 0
   requiresWaterTile: 0
+  waterTilePrefab: {fileID: 0}
   category: 0
