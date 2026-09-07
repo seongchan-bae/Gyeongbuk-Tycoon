@@ -14,7 +14,38 @@ public class GridOverlay : MonoBehaviour
     {
         DrawGrid();
     }
-
+    public void changeGridValue(int newWidth, int newHeight)
+    {
+        mapWidth = newWidth;
+        mapHeight = newHeight;
+    }
+    public void changePositionValue(int newX, int newY)
+    {
+        mapCenter.x = newX;
+        mapCenter.y = newY;
+    }
+    public void DeleteGrid()
+{   
+    // transform의 자식 오브젝트(GridLine)들을 역순으로 순회하며 삭제
+    for (int i = transform.childCount - 1; i >= 0; i--)
+    {
+        Transform child = transform.GetChild(i);
+        
+        #if UNITY_EDITOR
+        // 에디터 실행 중이 아닐 때(Edit Mode) 호출될 경우 대응
+        if (!Application.isPlaying)
+        {
+            DestroyImmediate(child.gameObject);
+        }
+        else
+        {
+            Destroy(child.gameObject);
+        }
+        #else
+        Destroy(child.gameObject);
+        #endif
+    }
+}
     // 해당 셀이 그리드 범위 안에 있는지 여부
     public bool Contains(Vector3Int cell)
     {
@@ -27,7 +58,7 @@ public class GridOverlay : MonoBehaviour
         return cell.x >= minX && cell.x <= maxX && cell.y >= minY && cell.y <= maxY;
     }
 
-    void DrawGrid()
+    public void DrawGrid()
     {
         int halfW = mapWidth / 2;
         int halfH = mapHeight / 2;
