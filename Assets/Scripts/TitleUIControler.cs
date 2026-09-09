@@ -32,7 +32,6 @@ public class TitleUIController : MonoBehaviour
     /// </summary>
     public void OnClickStartButton()
     {
-        if (titlePanel != null) titlePanel.SetActive(false);
         SceneTransition.LoadScene(mainGameSceneName);
     }
 

@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>미니게임으로 하루에 얻을 수 있는 지식포인트 상한.</summary>
-    public const long DailyKnowledgePointLimit = 2000L;
+    public const long DailyKnowledgePointLimit = 100L;
 
     /// <summary>오늘 이미 얻은 지식포인트. 날짜가 바뀌었으면 0으로 본다.</summary>
     public static long KnowledgePointEarnedToday

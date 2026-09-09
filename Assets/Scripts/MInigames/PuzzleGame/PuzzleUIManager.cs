@@ -31,7 +31,7 @@ public class PuzzleUIManager : MonoBehaviour
     public TextMeshProUGUI rewardText;
     public Button clearExitButton;
     public int rewardGold = 100;
-    public int rewardKnowledge = 500;
+    public int rewardKnowledge = 30;
 
     [Header("UI Panels")]
     public GameObject clearUI;

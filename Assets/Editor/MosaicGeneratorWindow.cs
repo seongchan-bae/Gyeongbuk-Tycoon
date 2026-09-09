@@ -5,11 +5,11 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// 실루엣 게임용 모자이크 이미지를 원본 사진에서 자동 생성한다.
+/// 원본 사진에서 모자이크 이미지를 자동 생성하는 보조 도구.
 ///
-/// 실루엣 게임은 문제 이미지(mosaic_*.png)와 원본 이미지를 짝으로 요구하는데,
-/// 지금까지 모자이크는 외부 도구로 따로 만들어 넣어야 했다. 이 창을 쓰면
-/// 원본 폴더를 지정하고 버튼 한 번으로 빠진 모자이크를 전부 만들 수 있다.
+/// 주의: 실루엣 게임은 "퀴즈 맞추기" 게임으로 바뀌어 더 이상 모자이크를 쓰지 않는다.
+/// (SilueteGameManager 는 원본 사진과 글 지문만 사용한다.) 이 창은 예전 자산 관리용으로 남겨 둔다.
+/// 아래 "퀴즈 문제 목록에 추가" 버튼은 새 스키마(원본 사진 + 정답 이름)에 맞춰 동작한다.
 ///
 /// 여는 법: 상단 메뉴 Tools > 경북 타이쿤 > 실루엣 모자이크 생성기
 /// </summary>
@@ -87,14 +87,14 @@ public class MosaicGeneratorWindow : EditorWindow
             BuildPreview();
 
         EditorGUILayout.Space(6);
-        EditorGUILayout.LabelField("실루엣 게임 등록", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("퀴즈 게임 등록", EditorStyles.boldLabel);
         EditorGUILayout.HelpBox(
-            "만들어진 모자이크/원본 짝을 열려 있는 씬의 SilueteGameManager 문제 목록에 채워 넣습니다.\n" +
-            "이미 등록된 항목은 건너뛰고, 정답 단어는 원본 파일 이름을 씁니다.",
+            "원본 폴더의 사진을 열려 있는 씬의 SilueteGameManager 문제 목록에 채워 넣습니다.\n" +
+            "이미 등록된 항목은 건너뛰고, 정답 이름은 원본 파일 이름을 씁니다. 글 지문은 QuizDescriptions.cs 에서 관리합니다.",
             MessageType.None);
         using (new EditorGUI.DisabledScope(string.IsNullOrEmpty(srcPath)))
         {
-            if (GUILayout.Button("빠진 짝을 실루엣 문제 목록에 추가", GUILayout.Height(24)))
+            if (GUILayout.Button("빠진 사진을 퀴즈 문제 목록에 추가", GUILayout.Height(24)))
                 RegisterToSilhouetteGame(srcPath, outPath);
         }
 
@@ -378,16 +378,15 @@ public class MosaicGeneratorWindow : EditorWindow
             string name = Path.GetFileNameWithoutExtension(src);
             if (already.Contains(name)) continue;
 
-            string mosaicPath = outPath + "/" + MosaicPrefix + name + ".png";
-            var mosaic = AssetDatabase.LoadAssetAtPath<Sprite>(mosaicPath);
             var original = AssetDatabase.LoadAssetAtPath<Sprite>(src);
-            if (mosaic == null || original == null) continue;
+            if (original == null) continue;
 
             list.InsertArrayElementAtIndex(list.arraySize);
             SerializedProperty el = list.GetArrayElementAtIndex(list.arraySize - 1);
-            el.FindPropertyRelative("quizImage").objectReferenceValue = mosaic;
             el.FindPropertyRelative("originalImage").objectReferenceValue = original;
             el.FindPropertyRelative("correctAnswer").stringValue = name;
+            SerializedProperty descProp = el.FindPropertyRelative("description");
+            if (descProp != null) descProp.stringValue = string.Empty;
 
             added++;
             lines.Add("추가: " + name);

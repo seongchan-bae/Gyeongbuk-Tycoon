@@ -3,53 +3,108 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/// <summary>
+/// 퀴즈 맞추기 게임의 문제 한 개.
+///
+/// 원래는 모자이크 이미지를 보고 맞추는 실루엣 게임이었으나, 모자이크 없이
+/// 원본 사진 또는 글 설명을 보고 4지선다로 장소/유적을 맞추는 방식으로 바뀌었다.
+/// 클래스 이름과 필드 이름(correctAnswer, originalImage)은 씬에 직렬화된
+/// 기존 데이터와의 호환을 위해 그대로 둔다.
+/// </summary>
 [System.Serializable]
 public class SilhouetteQuizData
 {
-    [Tooltip("모자이크/실루엣 처리된 문제 이미지 (예: mosaic_가실성당.jpg)")]
-    public Sprite quizImage;
-    [Tooltip("짝을 이루는 원본 이미지 (예: 가실성당.jpg)")]
-    public Sprite originalImage;
-    [Tooltip("이 이미지의 정답 단어 (예: 가실성당)")]
+    [Tooltip("이 문제의 정답 장소/유적 이름 (예: 첨성대)")]
     public string correctAnswer;
+
+    [Tooltip("이미지 퀴즈에 쓸 원본 사진(모자이크 아님). 비워두면 이 장소는 글 퀴즈로만 출제된다.")]
+    public Sprite originalImage;
+
+    [TextArea(2, 6)]
+    [Tooltip("글 퀴즈 지문. 비워두면 QuizDescriptions 에서 정답 이름으로 찾는다. 둘 다 없으면 이미지 퀴즈로만 출제.")]
+    public string description;
 }
 
 public class SilueteGameManager : MonoBehaviour
 {
-    [Header("UI Components")]
-    public Image targetImage;                  // TargetIamge (퀴즈용 왜곡 이미지)
-    public Button[] answerButtons;             // AnswerText 1~4가 붙어있는 버튼 배열 (4개)
-    public TextMeshProUGUI[] answerTexts;      // AnswerText1 ~ AnswerText4 텍스트 컴포넌트 (4개)
+    // ─────────────────────────────────────────────────────────────
+    // 문제 화면 UI. 모두 씬에 미리 만들어 둔 오브젝트를 연결한다.
+    // 스크립트는 오브젝트를 새로 만들지 않고, 유형에 맞게 켜고/끄고 텍스트만 채운다.
+    // ─────────────────────────────────────────────────────────────
+    [Header("문제 화면")]
+    [Tooltip("문제 이미지 표시용. 글 퀴즈일 때는 지문 배경으로도 쓰인다.")]
+    public Image targetImage;
+    [Tooltip("이미지 문제일 때 켜지는 '질문 문구' 텍스트. 문구 내용은 이 오브젝트에 직접 입력.")]
+    [SerializeField] private TextMeshProUGUI imagePromptText;
+    [Tooltip("글 문제일 때 켜지는 '질문 문구' 텍스트. 문구 내용은 이 오브젝트에 직접 입력.")]
+    [SerializeField] private TextMeshProUGUI textPromptText;
+    [Tooltip("글 문제의 지문(문제 내용)이 채워지는 텍스트.")]
+    [SerializeField] private TextMeshProUGUI descriptionText;
+    [Tooltip("이미지 문제일 때 상단 질문 문구 (스크립트가 imagePromptText 에 채운다)")]
+    [SerializeField] private string imageQuizPrompt = "다음 장소에 해당하는 곳은?";
+    [Tooltip("글 문제일 때 상단 질문 문구 (스크립트가 textPromptText 에 채운다)")]
+    [SerializeField] private string textQuizPrompt = "다음 설명에 해당하는 곳은?";
+    [Tooltip("글 문제에서 targetImage 를 채울 배경색 (한지 느낌).")]
+    [SerializeField] private Color textQuizBackgroundColor = new Color(0.98f, 0.96f, 0.90f, 1f);
 
-    [Header("Unified Result Popup")]
-    public GameObject resultPopupUI;           // 통일된 결과 팝업 GameObject
-    public Image resultImage;                  // 팝업 내부의 원본 사진 표시용 Image 컴포넌트
-    public TextMeshProUGUI resultMessageText;  // 팝업 내부의 안내 텍스트 (정답/오답 및 보상 안내)
-    public Button nextQuizButton;              // 다음 문제 버튼
-    public Button exitGameButton;              // 나가기 버튼
+    [Header("보기 버튼")]
+    public Button[] answerButtons;             // 4지선다 버튼 배열 (4개)
+    public TextMeshProUGUI[] answerTexts;      // 보기 텍스트 컴포넌트 (4개)
 
-    [Header("Reward Settings (Inspector)")]
-    public int rewardGold = 100;               // 정답 시 제공할 n 골드
-    public int rewardKnowledgePoint = 50;      // 정답 시 제공할 m 지식 포인트
+    [Header("결과 팝업")]
+    public GameObject resultPopupUI;
+    [Tooltip("결과창에서 정답 장소/유적의 사진이 채워지는 이미지. 씬의 ResultRelicImage 오브젝트를 연결한다.")]
+    public Image resultImage;
+    [Tooltip("정답/오답 및 보상 안내 텍스트")]
+    public TextMeshProUGUI resultMessageText;
+    public Button nextQuizButton;
+    public Button exitGameButton;
 
-    [Header("Root Panel")]
-    [Tooltip("실루엣 게임 전체를 감싸는 루트 패널 (SilueteGameUI). 나가기 시 이 패널을 끈다.")]
+    [Tooltip("사진이 따로 없는 장소의 결과 이미지를 찾을 Resources 경로. 파일 이름은 정답 이름과 같아야 한다.")]
+    [SerializeField] private string resultImageResourceFolder = "QuizResultImages";
+
+    [Header("Reward Settings")]
+    public int rewardGold = 100;
+    public int rewardKnowledgePoint = 10;      // 하루 상한은 GameManager 가 관리
+
+    [Header("Root / Start Screen")]
+    [Tooltip("게임 전체를 감싸는 루트 패널 (SilueteGameUI). 나가기 시 이 패널을 끈다.")]
     public GameObject rootPanel;
-
-    [Header("Start Screen")]
-    [Tooltip("게임에 들어오면 먼저 보여줄 시작 화면. 비워두면 예전처럼 바로 첫 문제를 낸다.")]
+    [Tooltip("게임에 들어오면 먼저 보여줄 시작 화면. 비워두면 바로 첫 문제를 낸다.")]
     public GameObject startScreen;
     [Tooltip("우측 상단 나가기(X) 버튼. 시작 화면에서는 숨기고 문제가 나오면 보여준다.")]
     public GameObject closeButton;
 
     [Header("Quiz Data Pool")]
-    public List<SilhouetteQuizData> quizList = new List<SilhouetteQuizData>(); // 전체 문제 데이터셋
-    [Tooltip("오답지에 나올 수 있는 전체 단어 후보 리스트")]
-    public List<string> dummyAnswerPool = new List<string>();                  
+    [Tooltip("사진이 있는 장소들. 각 항목은 이미지 퀴즈 + (지문이 있으면) 글 퀴즈로 출제된다.")]
+    public List<SilhouetteQuizData> quizList = new List<SilhouetteQuizData>();
+    [Tooltip("오답 보기로만 등장할 수 있는 추가 장소 이름들")]
+    public List<string> dummyAnswerPool = new List<string>();
 
-    private SilhouetteQuizData currentQuiz;
+    [Header("Quiz Mode")]
+    [Range(0f, 1f)]
+    [Tooltip("사진과 지문이 둘 다 있는 문제에서 '글 퀴즈'로 낼 확률")]
+    public float textQuizChance = 0.5f;
+
+    /// <summary>런타임에서 다루는 문제 표현. 이미지/지문이 하나로 합쳐진 형태.</summary>
+    private class RuntimeQuiz
+    {
+        public string answer;
+        public Sprite image;
+        public string description;
+        public bool HasImage => image != null;
+        public bool HasText => !string.IsNullOrEmpty(description);
+    }
+
+    private readonly List<RuntimeQuiz> pool = new List<RuntimeQuiz>();
+    private readonly List<string> answerNamePool = new List<string>();
+    private readonly Dictionary<string, Sprite> resultImageCache = new Dictionary<string, Sprite>();
+
+    private RuntimeQuiz currentQuiz;
+    private bool currentIsTextQuiz;
     private int currentCorrectIndex;
     private bool isInitialized;
+    private Color targetImageDefaultColor = Color.white;
 
     private void Start()
     {
@@ -72,7 +127,7 @@ public class SilueteGameManager : MonoBehaviour
         NextQuiz();
     }
 
-    /// <summary>문제를 내기 전에 시작 화면을 띄운다. 연결돼 있지 않으면 예전처럼 바로 시작.</summary>
+    /// <summary>문제를 내기 전에 시작 화면을 띄운다. 연결돼 있지 않으면 바로 시작.</summary>
     private void ShowStartScreen()
     {
         if (startScreen == null)
@@ -82,7 +137,6 @@ public class SilueteGameManager : MonoBehaviour
         }
 
         if (resultPopupUI != null) resultPopupUI.SetActive(false);
-        // 제목 + [게임 시작]만 보이는 화면에는 나가기 버튼을 두지 않는다.
         if (closeButton != null) closeButton.SetActive(false);
         startScreen.SetActive(true);
     }
@@ -91,6 +145,10 @@ public class SilueteGameManager : MonoBehaviour
     {
         if (isInitialized) return;
         isInitialized = true;
+
+        if (targetImage != null) targetImageDefaultColor = targetImage.color;
+
+        BuildPool();
 
         // 팝업 버튼 이벤트 1회 연결
         if (nextQuizButton != null) nextQuizButton.onClick.AddListener(NextQuiz);
@@ -106,101 +164,216 @@ public class SilueteGameManager : MonoBehaviour
                 answerButtons[i].onClick.AddListener(() => OnSelectAnswer(index));
             }
         }
+
+        WarnIfUnassigned();
+    }
+
+    private void WarnIfUnassigned()
+    {
+        if (imagePromptText == null) Debug.LogWarning("[SilueteGameManager] imagePromptText 가 연결되지 않았습니다.");
+        if (textPromptText == null) Debug.LogWarning("[SilueteGameManager] textPromptText 가 연결되지 않았습니다.");
+        if (descriptionText == null) Debug.LogWarning("[SilueteGameManager] descriptionText 가 연결되지 않았습니다.");
+        if (resultImage == null) Debug.LogWarning("[SilueteGameManager] resultImage 가 연결되지 않았습니다.");
     }
 
     /// <summary>
-    /// 무작위 문제를 뽑아 4지선다 세팅
+    /// 씬 데이터(quizList) + QuizDescriptions 를 합쳐 출제 가능한 문제 풀과 오답 후보 풀을 만든다.
     /// </summary>
+    private void BuildPool()
+    {
+        pool.Clear();
+        answerNamePool.Clear();
+        var seen = new HashSet<string>();
+
+        if (quizList != null)
+        {
+            foreach (var q in quizList)
+            {
+                if (q == null || string.IsNullOrEmpty(q.correctAnswer)) continue;
+
+                string desc = !string.IsNullOrEmpty(q.description)
+                    ? q.description
+                    : QuizDescriptions.Get(q.correctAnswer);
+
+                var rq = new RuntimeQuiz { answer = q.correctAnswer, image = q.originalImage, description = desc };
+                if (!rq.HasImage && !rq.HasText) continue;   // 낼 방법이 없는 문제는 제외
+
+                pool.Add(rq);
+                if (seen.Add(q.correctAnswer)) answerNamePool.Add(q.correctAnswer);
+            }
+        }
+
+        // 사진은 없지만 지문이 있는 장소 → 글 전용 문제로 추가
+        foreach (var kv in QuizDescriptions.All)
+        {
+            if (!seen.Add(kv.Key)) continue;
+            pool.Add(new RuntimeQuiz { answer = kv.Key, image = null, description = kv.Value });
+            answerNamePool.Add(kv.Key);
+        }
+
+        // 더미 풀은 오답 후보로만 합친다
+        if (dummyAnswerPool != null)
+        {
+            foreach (var name in dummyAnswerPool)
+            {
+                if (!string.IsNullOrEmpty(name) && seen.Add(name)) answerNamePool.Add(name);
+            }
+        }
+
+        if (pool.Count == 0)
+            Debug.LogWarning("[SilueteGameManager] 출제 가능한 퀴즈가 하나도 없습니다. quizList / QuizDescriptions 를 확인하세요.");
+    }
+
+    /// <summary>무작위 문제를 뽑아 4지선다 세팅.</summary>
     public void NextQuiz()
     {
-        // 팝업 비활성화
         if (resultPopupUI != null) resultPopupUI.SetActive(false);
         if (closeButton != null) closeButton.SetActive(true);
 
-        if (quizList == null || quizList.Count == 0)
+        if (pool.Count == 0)
         {
             Debug.LogWarning("[SilueteGameManager] 등록된 퀴즈 데이터가 없습니다.");
             return;
         }
 
-        // 1. n개 이미지 중 무작위 1개 추출
-        int randomIndex = Random.Range(0, quizList.Count);
-        currentQuiz = quizList[randomIndex];
+        currentQuiz = pool[Random.Range(0, pool.Count)];
 
-        // 2. 퀴즈 화면에 왜곡된 이미지 할당
-        if (targetImage != null)
-        {
-            targetImage.sprite = currentQuiz.quizImage;
-        }
+        // 이미지 / 글 모드 결정
+        if (currentQuiz.HasImage && currentQuiz.HasText)
+            currentIsTextQuiz = Random.value < textQuizChance;
+        else
+            currentIsTextQuiz = !currentQuiz.HasImage;
 
-        // 3. 정답 1개 + 오답 3개로 4지선다 목록 만들기
-        List<string> options = GenerateOptions(currentQuiz.correctAnswer);
+        ShowQuestion();
 
-        // 4. UI 버튼에 텍스트 할당 (인덱스 범주 안전 검사)
+        // 정답 1개 + 오답 3개
+        List<string> options = GenerateOptions(currentQuiz.answer);
+
         int maxLoop = Mathf.Min(options.Count, answerButtons != null ? answerButtons.Length : 0);
         maxLoop = Mathf.Min(maxLoop, answerTexts != null ? answerTexts.Length : 0);
 
         for (int i = 0; i < maxLoop; i++)
         {
-            if (answerTexts[i] != null)
-            {
-                answerTexts[i].text = options[i];
-            }
-
-            // 정답 인덱스 기록
-            if (options[i] == currentQuiz.correctAnswer)
-            {
-                currentCorrectIndex = i;
-            }
+            if (answerTexts[i] != null) answerTexts[i].text = options[i];
+            if (options[i] == currentQuiz.answer) currentCorrectIndex = i;
         }
     }
 
     /// <summary>
-    /// 정답 단어 1개와 더미 단어 풀에서 3개를 뽑아 섞은 리스트 생성
+    /// 현재 문제를 이미지/글 모드에 맞게, 미리 만들어 둔 텍스트 오브젝트에 채워 넣는다.
+    /// 오브젝트를 새로 만들지 않는다.
     /// </summary>
+    private void ShowQuestion()
+    {
+        // 질문 문구: 유형에 맞는 것만 켜고, 기본 문구를 채운다.
+        if (imagePromptText != null)
+        {
+            imagePromptText.text = imageQuizPrompt;
+            imagePromptText.gameObject.SetActive(!currentIsTextQuiz);
+        }
+        if (textPromptText != null)
+        {
+            textPromptText.text = textQuizPrompt;
+            textPromptText.gameObject.SetActive(currentIsTextQuiz);
+        }
+
+        // 글 지문 본문
+        if (descriptionText != null)
+        {
+            descriptionText.gameObject.SetActive(currentIsTextQuiz);
+            if (currentIsTextQuiz) descriptionText.text = currentQuiz.description;
+        }
+
+        // 이미지 / 배경
+        if (targetImage != null)
+        {
+            targetImage.enabled = true;
+            if (currentIsTextQuiz)
+            {
+                targetImage.sprite = null;
+                targetImage.preserveAspect = false;
+                targetImage.color = textQuizBackgroundColor;
+            }
+            else
+            {
+                targetImage.sprite = currentQuiz.image;
+                targetImage.preserveAspect = true;
+                targetImage.color = targetImageDefaultColor;
+            }
+        }
+    }
+
+    /// <summary>정답 1개와 오답 후보 풀에서 3개를 뽑아 섞은 4지선다 리스트를 만든다.</summary>
     private List<string> GenerateOptions(string correctAnswer)
     {
         List<string> options = new List<string> { correctAnswer };
 
-        List<string> tempPool = new List<string>(dummyAnswerPool);
+        List<string> tempPool = new List<string>(answerNamePool);
         tempPool.Remove(correctAnswer);
 
         while (options.Count < 4 && tempPool.Count > 0)
         {
-            int randIdx = Random.Range(0, tempPool.Count);
-            options.Add(tempPool[randIdx]);
-            tempPool.RemoveAt(randIdx);
+            int r = Random.Range(0, tempPool.Count);
+            options.Add(tempPool[r]);
+            tempPool.RemoveAt(r);
         }
 
         for (int i = 0; i < options.Count; i++)
         {
-            string temp = options[i];
-            int randIdx = Random.Range(i, options.Count);
-            options[i] = options[randIdx];
-            options[randIdx] = temp;
+            int r = Random.Range(i, options.Count);
+            (options[i], options[r]) = (options[r], options[i]);
         }
 
         return options;
     }
 
     /// <summary>
-    /// 사용자가 4개의 보기 중 하나를 클릭했을 때
+    /// 정답 유적의 결과 이미지를 구한다.
+    /// 1) 문제에 원본 사진이 있으면 그 사진을 그대로 쓴다.
+    /// 2) 없으면 Resources/{resultImageResourceFolder}/{정답 이름} 에서 찾는다.
+    ///    (tourapi 사진 갤러리 링크나 인터넷에서 받아 넣어 둔 이미지)
+    /// 3) 둘 다 없으면 null (결과창에서 이미지 숨김).
     /// </summary>
+    private Sprite ResolveResultImage(RuntimeQuiz quiz)
+    {
+        if (quiz == null) return null;
+        if (quiz.image != null) return quiz.image;
+        if (string.IsNullOrEmpty(quiz.answer)) return null;
+
+        if (resultImageCache.TryGetValue(quiz.answer, out Sprite cached)) return cached;
+
+        string path = string.IsNullOrEmpty(resultImageResourceFolder)
+            ? quiz.answer
+            : $"{resultImageResourceFolder}/{quiz.answer}";
+        Sprite loaded = Resources.Load<Sprite>(path);
+        if (loaded == null)
+            Debug.LogWarning($"[SilueteGameManager] 결과 이미지를 찾지 못했습니다: Resources/{path}");
+        resultImageCache[quiz.answer] = loaded;
+        return loaded;
+    }
+
+    /// <summary>사용자가 4개의 보기 중 하나를 클릭했을 때.</summary>
     private void OnSelectAnswer(int selectedIndex)
     {
-        // 🎯 결과 팝업에 현재 문제와 짝을 이루는 원본 이미지 띄우기
-        if (resultImage != null && currentQuiz != null)
-        {
-            resultImage.sprite = currentQuiz.originalImage;
-        }
+        bool isCorrect = selectedIndex == currentCorrectIndex;
 
         if (resultPopupUI != null) resultPopupUI.SetActive(true);
-        // 결과 화면에서는 우측 상단 나가기 대신 패널 안의 버튼을 쓴다.
         if (closeButton != null) closeButton.SetActive(false);
 
-        if (selectedIndex == currentCorrectIndex)
+        string answerName = currentQuiz != null ? currentQuiz.answer : string.Empty;
+
+        // 정답 장소/유적의 사진 — 미리 만들어 둔 ResultRelicImage 오브젝트에 채운다.
+        // 사진이 있는 문제면 그 사진을, 없으면 Resources 에서 정답 이름으로 찾는다. 둘 다 없으면 숨긴다.
+        if (resultImage != null)
         {
-            // [정답 처리]
+            Sprite relicSprite = ResolveResultImage(currentQuiz);
+            resultImage.sprite = relicSprite;
+            resultImage.preserveAspect = true;
+            resultImage.gameObject.SetActive(relicSprite != null);
+        }
+
+        if (isCorrect)
+        {
             long grantedKnowledge = GameManager.GrantReward(rewardGold, rewardKnowledgePoint);
 
             if (resultMessageText != null)
@@ -212,10 +385,10 @@ public class SilueteGameManager : MonoBehaviour
         }
         else
         {
-            // [오답 처리]
             if (resultMessageText != null)
             {
-                resultMessageText.text = $"<b><color=#FF0000>오답입니다!</color></b>\n정답은 <b>[{currentQuiz.correctAnswer}]</b> 입니다.\n다른 문제에 도전하시겠습니까?";
+                resultMessageText.text =
+                    $"<b><color=#FF0000>오답입니다!</color></b>\n정답은 <b>[{answerName}]</b> 입니다.";
             }
         }
     }
@@ -224,7 +397,6 @@ public class SilueteGameManager : MonoBehaviour
     {
         if (resultPopupUI != null) resultPopupUI.SetActive(false);
 
-        // 매니저 오브젝트만이 아니라 게임 UI 전체(루트 패널)를 닫아야 화면에서 사라진다.
         GameObject root = rootPanel != null ? rootPanel : gameObject;
         root.SetActive(false);
 

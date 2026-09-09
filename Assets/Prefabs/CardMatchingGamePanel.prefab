@@ -966,7 +966,7 @@ MonoBehaviour:
   stagePairCount: 12
   timeLimit: 100
   maxChances: 30
-  rewardKnowledgePoint: 500
+  rewardKnowledgePoint: 30
   rewardGold: 100
   startButton: {fileID: 7294317648383333653}
   cardGrid: {fileID: 322645506548081660}

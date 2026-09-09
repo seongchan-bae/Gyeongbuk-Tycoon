@@ -26,7 +26,7 @@ public class CardMatchingGame : MonoBehaviour
     [Tooltip("최대 기회 (틀릴 수 있는 횟수)")]
     [SerializeField] private int maxChances = 30;
     [Tooltip("게임 성공 시 지급할 지식 포인트")]
-    [SerializeField] private long rewardKnowledgePoint = 500L;
+    [SerializeField] private long rewardKnowledgePoint = 30L;
     [Tooltip("게임 성공 시 지급할 골드")]
     [SerializeField] private long rewardGold = 100L;
 

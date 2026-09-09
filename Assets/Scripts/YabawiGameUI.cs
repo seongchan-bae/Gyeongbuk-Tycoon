@@ -55,9 +55,9 @@ public class YabawiGameUI : MonoBehaviour
 
     private DifficultySetting[] diffSettings = new DifficultySetting[]
     {
-        new DifficultySetting { diffName = "쉬움 (Easy - 3개)", cupCount = 3, shuffleCount = 10, startSpeed = 0.8f, endSpeed = 0.35f, rewardKnowledgePoint = 100 },
-        new DifficultySetting { diffName = "중간 (Normal - 4개)", cupCount = 4, shuffleCount = 15, startSpeed = 0.65f, endSpeed = 0.25f, rewardKnowledgePoint = 200 },
-        new DifficultySetting { diffName = "어려움 (Hard - 5개)", cupCount = 5, shuffleCount = 20, startSpeed = 0.5f, endSpeed = 0.20f, rewardKnowledgePoint = 300 }
+        new DifficultySetting { diffName = "쉬움 (Easy - 3개)", cupCount = 3, shuffleCount = 10, startSpeed = 0.8f, endSpeed = 0.30f, rewardKnowledgePoint = 5 },
+        new DifficultySetting { diffName = "중간 (Normal - 4개)", cupCount = 4, shuffleCount = 15, startSpeed = 0.6f, endSpeed = 0.23f, rewardKnowledgePoint = 10 },
+        new DifficultySetting { diffName = "어려움 (Hard - 5개)", cupCount = 5, shuffleCount = 20, startSpeed = 0.4f, endSpeed = 0.17f, rewardKnowledgePoint = 15 }
     };
 
     private DifficultySetting currentSetting;
