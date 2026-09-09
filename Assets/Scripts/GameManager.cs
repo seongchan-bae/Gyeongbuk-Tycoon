@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
             userMoney = SaveManager.Instance.CurrentData.userMoney;
             userKnowledgePoint = SaveManager.Instance.CurrentData.userKnowledgePoint;
         }
+        SoundManager.Instance.PlayBGM("baseBGM");
         OnMoneyChanged?.Invoke(userMoney);
         OnKnowledgePointChanged?.Invoke(userKnowledgePoint);
     }
@@ -127,7 +128,7 @@ public class GameManager : MonoBehaviour
         if (gold > 0) userMoney += gold;
         if (knowledgePoint > 0) userKnowledgePoint += knowledgePoint;
         SaveCurrency();
-
+        SoundManager.Instance.PlaySFX("coin getting");
         Debug.Log($"[GameManager] 보상 지급: +{gold} 골드 / +{knowledgePoint} 지식포인트  (누적 {userMoney} 골드 / {userKnowledgePoint} 지식포인트)");
     }
 

@@ -216,6 +216,7 @@ public class PuzzleUIManager : MonoBehaviour
         if (rewardText != null)
         {
             rewardText.text = $"퍼즐 완성!\n보상: {rewardGold} 골드 / {rewardKnowledge} 지식 포인트";
+            
         }
 
         if (clearPopup != null) clearPopup.SetActive(true);
