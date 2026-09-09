@@ -251,14 +251,9 @@ public class PuzzleUIManager : MonoBehaviour
 
         if (rewardText != null)
         {
-<<<<<<< HEAD
-            rewardText.text = $"퍼즐 완성!\n보상: {rewardGold} 골드 / {rewardKnowledge} 지식 포인트";
-            
-=======
             string text = $"보상: {rewardGold} 골드 / {grantedKnowledge} 지식 포인트";
             if (grantedKnowledge < rewardKnowledge) text += "\n(오늘 지식포인트 한도를 모두 채웠습니다)";
             rewardText.text = text;
->>>>>>> origin/feature/uimerge-integration
         }
 
         if (closeButton != null) closeButton.SetActive(false);

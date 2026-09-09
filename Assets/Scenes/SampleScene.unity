@@ -324,26 +324,19 @@ MonoBehaviour:
   entries:
   - label: "\uD658\uACBD\uC124\uC815"
     target: {fileID: 655647647}
-    description: "\uD658\uACBD\uC124\uC815\n\uBC30\uACBD\uC74C\xB7\uD6A8\uACFC\uC74C
-      \uD06C\uAE30, \uD14C\uB9C8, \uAC8C\uC784 \uC815\uBCF4\uB97C \uD655\uC778\uD558\uACE0
-      \uBC14\uAFC0 \uC218 \uC788\uC5B4\uC694."
+    description: "\uD658\uACBD\uC124\uC815\n\uBC30\uACBD\uC74C\xB7\uD6A8\uACFC\uC74C \uD06C\uAE30, \uD14C\uB9C8, \uAC8C\uC784 \uC815\uBCF4\uB97C \uD655\uC778\uD558\uACE0 \uBC14\uAFC0 \uC218 \uC788\uC5B4\uC694."
     offset: {x: -170, y: -175}
   - label: "\uAE08\uD654"
     target: {fileID: 573615271}
-    description: "\uAE08\uD654\n\uBCF4\uC720\uD55C \uAE08\uD654\uC785\uB2C8\uB2E4.
-      \uAC74\uBB3C\uC744 \uC0AC\uC11C \uB9C8\uC744\uC5D0 \uBC30\uCE58\uD560 \uB54C
-      \uC0AC\uC6A9\uD574\uC694."
+    description: "\uAE08\uD654\n\uBCF4\uC720\uD55C \uAE08\uD654\uC785\uB2C8\uB2E4. \uAC74\uBB3C\uC744 \uC0AC\uC11C \uB9C8\uC744\uC5D0 \uBC30\uCE58\uD560 \uB54C \uC0AC\uC6A9\uD574\uC694."
     offset: {x: 0, y: -185}
   - label: "\uAD00\uAD11\uAC1D"
     target: {fileID: 1521806239}
-    description: "\uAD00\uAD11\uAC1D\n\uD604\uC7AC \uAD00\uAD11\uAC1D \uC218\uC640
-      \uC218\uC6A9 \uD55C\uB3C4\uC608\uC694. \uD55C\uB3C4\uB97C \uB118\uC73C\uBA74
-      \uAC74\uBB3C\uC744 \uB354 \uC9C0\uC744 \uC218 \uC5C6\uC5B4\uC694."
+    description: "\uAD00\uAD11\uAC1D\n\uD604\uC7AC \uAD00\uAD11\uAC1D \uC218\uC640 \uC218\uC6A9 \uD55C\uB3C4\uC608\uC694. \uD55C\uB3C4\uB97C \uB118\uC73C\uBA74 \uAC74\uBB3C\uC744 \uB354 \uC9C0\uC744 \uC218 \uC5C6\uC5B4\uC694."
     offset: {x: 0, y: -185}
   - label: "\uC0C1\uC810"
     target: {fileID: 633146533}
-    description: "\uC0C1\uC810\n\uC0C8 \uAC74\uBB3C\uC744 \uAD6C\uACBD\uD558\uACE0
-      \uAD6C\uB9E4\uD574 \uB9C8\uC744\uC5D0 \uBC30\uCE58\uD560 \uC218 \uC788\uC5B4\uC694."
+    description: "\uC0C1\uC810\n\uC0C8 \uAC74\uBB3C\uC744 \uAD6C\uACBD\uD558\uACE0 \uAD6C\uB9E4\uD574 \uB9C8\uC744\uC5D0 \uBC30\uCE58\uD560 \uC218 \uC788\uC5B4\uC694."
     offset: {x: -170, y: -300}
   screenPadding: 24
   highlightPadding: 10
@@ -406,6 +399,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -739,6 +733,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -907,7 +902,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -1044,7 +1039,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -1181,7 +1176,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -1295,7 +1290,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &97365366
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1352,6 +1347,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!4 &97365367
 Transform:
   m_ObjectHideFlags: 0
@@ -1386,7 +1382,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &104122733
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1443,6 +1439,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!4 &104122734
 Transform:
   m_ObjectHideFlags: 0
@@ -1720,6 +1717,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -1874,7 +1872,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -2148,7 +2146,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -2497,7 +2495,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -2653,7 +2651,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -2849,7 +2847,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -3327,6 +3325,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -3785,6 +3784,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -4654,6 +4654,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -5023,7 +5024,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -5160,7 +5161,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -5396,7 +5397,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335675632}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
@@ -5448,7 +5449,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -5748,8 +5749,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD37C\uC990 \uC644\uC131!\n\uBCF4\uC0C1: 100 \uACE8\uB4DC / 50 \uC9C0\uC2DD
-    \uD3EC\uC778\uD2B8"
+  m_text: "\uD37C\uC990 \uC644\uC131!\n\uBCF4\uC0C1: 100 \uACE8\uB4DC / 50 \uC9C0\uC2DD \uD3EC\uC778\uD2B8"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 48a3b8fd432b1cf4ca5742bc15c25a79, type: 2}
   m_sharedMaterial: {fileID: 1633751167211098501, guid: 48a3b8fd432b1cf4ca5742bc15c25a79, type: 2}
@@ -5799,7 +5799,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -6752,7 +6752,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -7058,7 +7058,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552e286bf6b5a48a499cbf0610cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCardUI
-  buildingData: {fileID: 11400000, guid: a44512b9303e705408efd17b802cc619, type: 2}
+  buildingData: {fileID: 0}
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
@@ -7653,7 +7653,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -7790,7 +7790,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -7927,7 +7927,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -8649,6 +8649,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -9178,7 +9179,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &535163548
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -9235,6 +9236,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!4 &535163549
 Transform:
   m_ObjectHideFlags: 0
@@ -9446,7 +9448,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -10191,7 +10193,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -10347,7 +10349,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -10795,7 +10797,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -10932,7 +10934,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -11147,7 +11149,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -11320,7 +11322,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &624488649
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -11377,6 +11379,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!1 &628323975
 GameObject:
   m_ObjectHideFlags: 0
@@ -12021,7 +12024,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -12599,7 +12602,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -12736,7 +12739,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -12873,7 +12876,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -13016,7 +13019,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &681763041
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -13073,6 +13076,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!4 &681763042
 Transform:
   m_ObjectHideFlags: 0
@@ -13181,7 +13185,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -13259,7 +13263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552e286bf6b5a48a499cbf0610cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCardUI
-  buildingData: {fileID: 11400000, guid: 3129fd96226f4e54b867ddf49c5f570c, type: 2}
+  buildingData: {fileID: 0}
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
@@ -13694,6 +13698,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -13963,7 +13968,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -14427,7 +14432,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -15043,6 +15048,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -15279,7 +15285,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -15819,7 +15825,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -15956,7 +15962,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -16299,7 +16305,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -16425,6 +16431,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -16648,7 +16655,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552e286bf6b5a48a499cbf0610cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCardUI
-  buildingData: {fileID: 11400000, guid: d6afa11bc609710418a526c2dccffdc3, type: 2}
+  buildingData: {fileID: 0}
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
@@ -16694,7 +16701,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &896161518
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -16751,6 +16758,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!4 &896161519
 Transform:
   m_ObjectHideFlags: 0
@@ -17264,7 +17272,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -17682,7 +17690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552e286bf6b5a48a499cbf0610cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCardUI
-  buildingData: {fileID: 11400000, guid: d470ba4e8402e9b4a8dc664d1afa9e62, type: 2}
+  buildingData: {fileID: 0}
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
@@ -17782,7 +17790,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -18090,7 +18098,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &950113500
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -18147,6 +18155,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!4 &950113501
 Transform:
   m_ObjectHideFlags: 0
@@ -18250,7 +18259,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -18406,7 +18415,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -18710,7 +18719,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -19093,7 +19102,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -19822,7 +19831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552e286bf6b5a48a499cbf0610cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCardUI
-  buildingData: {fileID: 11400000, guid: 98291900444596843b683e4fd0afe433, type: 2}
+  buildingData: {fileID: 0}
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
@@ -19903,7 +19912,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &1096058095
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -19960,6 +19969,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!4 &1096058096
 Transform:
   m_ObjectHideFlags: 0
@@ -20063,7 +20073,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -20163,7 +20173,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &1104484172
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -20220,6 +20230,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!4 &1104484173
 Transform:
   m_ObjectHideFlags: 0
@@ -20342,7 +20353,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -20715,6 +20726,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -21291,7 +21303,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -21492,6 +21504,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -21742,7 +21755,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -21926,6 +21939,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -22019,7 +22033,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -22183,7 +22197,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -22368,7 +22382,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -22505,7 +22519,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -22949,7 +22963,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -23474,7 +23488,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &1238938862
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -23531,6 +23545,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!4 &1238938863
 Transform:
   m_ObjectHideFlags: 0
@@ -23925,7 +23940,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -24629,7 +24644,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -25195,7 +25210,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -25368,7 +25383,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -25546,6 +25561,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -25639,7 +25655,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -25765,6 +25781,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -26478,7 +26495,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -26591,7 +26608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552e286bf6b5a48a499cbf0610cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCardUI
-  buildingData: {fileID: 11400000, guid: 092bc46591eb9a149808cbeaa3f7ee3e, type: 2}
+  buildingData: {fileID: 0}
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
@@ -26735,6 +26752,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -27378,7 +27396,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -27666,7 +27684,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -27715,7 +27733,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &1475480255
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -27772,6 +27790,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!4 &1475480256
 Transform:
   m_ObjectHideFlags: 0
@@ -28210,7 +28229,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -28574,8 +28593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2006450491848469916, guid: ae55cfe12c91048439b83be38835d911, type: 3}
       propertyPath: m_text
-      value: "\uAC8C\uC784 \uC885\uB8CC!\n\uB9DE\uCD98 \uD69F\uC218: 2 / 3\n\uD68D\uB4DD
-        \uBCF4\uC0C1: 100 \uACE8\uB4DC / 40 \uC9C0\uC2DD \uD3EC\uC778\uD2B8"
+      value: "\uAC8C\uC784 \uC885\uB8CC!\n\uB9DE\uCD98 \uD69F\uC218: 2 / 3\n\uD68D\uB4DD \uBCF4\uC0C1: 100 \uACE8\uB4DC / 40 \uC9C0\uC2DD \uD3EC\uC778\uD2B8"
       objectReference: {fileID: 0}
     - target: {fileID: 2006450491848469916, guid: ae55cfe12c91048439b83be38835d911, type: 3}
       propertyPath: m_fontSize
@@ -29065,7 +29083,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552e286bf6b5a48a499cbf0610cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCardUI
-  buildingData: {fileID: 11400000, guid: d0d33c36911a0fe41b0b51a1ca898d28, type: 2}
+  buildingData: {fileID: 0}
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
@@ -29274,7 +29292,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -29392,7 +29410,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -29569,8 +29587,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e6e584f408da834da8cce8d9eb99d74, type: 2}
   baseGrid: {fileID: 911259985}
   baseTilemap: {fileID: 180523459}
-  waterTilemap: {fileID: 0}
-  waterTile: {fileID: 0}
   currentBuildingData: {fileID: 0}
   tileAsset: {fileID: 0}
   gameManager: {fileID: 361643058}
@@ -29621,9 +29637,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<b><color=#00FF00>\uC815\uB2F5\uC785\uB2C8\uB2E4!</color></b>\n\uBCF4\uC0C1:
-    <color=#FFEE00>100 \uACE8\uB4DC</color> / <color=#00FFFF>10 \uC9C0\uC2DD \uD3EC\uC778\uD2B8</color>\uB97C
-    \uD68D\uB4DD\uD588\uC2B5\uB2C8\uB2E4."
+  m_text: "<b><color=#00FF00>\uC815\uB2F5\uC785\uB2C8\uB2E4!</color></b>\n\uBCF4\uC0C1: <color=#FFEE00>100 \uACE8\uB4DC</color> / <color=#00FFFF>10 \uC9C0\uC2DD \uD3EC\uC778\uD2B8</color>\uB97C \uD68D\uB4DD\uD588\uC2B5\uB2C8\uB2E4."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 48a3b8fd432b1cf4ca5742bc15c25a79, type: 2}
   m_sharedMaterial: {fileID: 1633751167211098501, guid: 48a3b8fd432b1cf4ca5742bc15c25a79, type: 2}
@@ -29673,7 +29687,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -30350,7 +30364,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 00000000u
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -30543,7 +30557,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -30701,7 +30715,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &1673612248
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -30758,6 +30772,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!4 &1673612249
 Transform:
   m_ObjectHideFlags: 0
@@ -30845,7 +30860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552e286bf6b5a48a499cbf0610cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCardUI
-  buildingData: {fileID: 11400000, guid: 2a3d27a9d634ece4ea627b0da90ba875, type: 2}
+  buildingData: {fileID: 0}
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
@@ -31298,7 +31313,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -31435,7 +31450,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -31898,7 +31913,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552e286bf6b5a48a499cbf0610cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCardUI
-  buildingData: {fileID: 11400000, guid: 72a5458a03108af4aad4d8105656f835, type: 2}
+  buildingData: {fileID: 0}
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
@@ -32113,8 +32128,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC0C1\uC810\n\uC0C8 \uAC74\uBB3C\uC744 \uAD6C\uACBD\uD558\uACE0 \uAD6C\uB9E4\uD574
-    \uB9C8\uC744\uC5D0 \uBC30\uCE58\uD560 \uC218 \uC788\uC5B4\uC694."
+  m_text: "\uC0C1\uC810\n\uC0C8 \uAC74\uBB3C\uC744 \uAD6C\uACBD\uD558\uACE0 \uAD6C\uB9E4\uD574 \uB9C8\uC744\uC5D0 \uBC30\uCE58\uD560 \uC218 \uC788\uC5B4\uC694."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a210622961a51444aa63071001bf69fb, type: 2}
   m_sharedMaterial: {fileID: 7660630627658350193, guid: a210622961a51444aa63071001bf69fb, type: 2}
@@ -32164,7 +32178,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -32320,7 +32334,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -32528,7 +32542,7 @@ Animator:
   m_WriteDefaultValuesOnDisable: 0
 --- !u!212 &1823548792
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -32585,6 +32599,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!1 &1824874256
 GameObject:
   m_ObjectHideFlags: 0
@@ -33034,6 +33049,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -33221,7 +33237,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -33438,7 +33454,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &1873994911
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -33495,6 +33511,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!4 &1873994912
 Transform:
   m_ObjectHideFlags: 0
@@ -33562,9 +33579,13 @@ MonoBehaviour:
   infoButton: {fileID: 754869023}
   upgradeButton: {fileID: 1647664220}
   deleteButton: {fileID: 431308747}
+  flipButton: {fileID: 0}
   buildingName: {fileID: 909595471}
   gameManager: {fileID: 361643058}
   buildingData: {fileID: 11400000, guid: 4e6e584f408da834da8cce8d9eb99d74, type: 2}
+  upgradeCostMultiplier: 2
+  upgradeGoldBonus: 1
+  upgradeTouristBonus: 1
   tourApiKey: 616315cd61c155564e9088acbc319ff980ccc75a67ed38601b3876602d23ee9d
   infoPopupPanel: {fileID: 185689336}
   infoText: {fileID: 1143900799}
@@ -33806,7 +33827,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -34143,7 +34164,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -34523,7 +34544,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -34660,7 +34681,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -34904,7 +34925,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -35065,13 +35086,16 @@ Tilemap:
   m_Tiles: {}
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 0
+  - serializedVersion: 2
+    m_RefCount: 0
     m_Data: {fileID: 0}
   m_TileSpriteArray:
-  - m_RefCount: 0
+  - serializedVersion: 2
+    m_RefCount: 0
     m_Data: {fileID: 0}
   m_TileMatrixArray:
-  - m_RefCount: 0
+  - serializedVersion: 2
+    m_RefCount: 0
     m_Data:
       e00: 1.83671e-40
       e01: 0
@@ -35090,7 +35114,8 @@ Tilemap:
       e32: 6.82e-43
       e33: 6.8e-43
   m_TileColorArray:
-  - m_RefCount: 0
+  - serializedVersion: 2
+    m_RefCount: 0
     m_Data: {r: 4.7018044e-31, g: 4.7018044e-31, b: 4.7018044e-31, a: 4.7018044e-31}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -35715,7 +35740,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -36088,6 +36113,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -36224,7 +36250,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -36939,7 +36965,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -37017,7 +37043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552e286bf6b5a48a499cbf0610cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCardUI
-  buildingData: {fileID: 11400000, guid: fcdedb4ac1ece914bb00a8dd529465ef, type: 2}
+  buildingData: {fileID: 0}
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
@@ -37207,7 +37233,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -37497,7 +37523,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -37754,7 +37780,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -37891,7 +37917,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -38103,7 +38129,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -38504,8 +38530,7 @@ PrefabInstance:
       objectReference: {fileID: 1633751167211098501, guid: 48a3b8fd432b1cf4ca5742bc15c25a79, type: 2}
     - target: {fileID: 2006450491848469916, guid: ae55cfe12c91048439b83be38835d911, type: 3}
       propertyPath: m_text
-      value: "\uC131\uACF5!\n\uBAA8\uB4E0 \uC720\uC801\uC9C0 \uC9DD\uC744 \uB9DE\uCD94\uC168\uC2B5\uB2C8\uB2E4!\n(+50
-        \uC9C0\uC2DD \uD3EC\uC778\uD2B8)"
+      value: "\uC131\uACF5!\n\uBAA8\uB4E0 \uC720\uC801\uC9C0 \uC9DD\uC744 \uB9DE\uCD94\uC168\uC2B5\uB2C8\uB2E4!\n(+50 \uC9C0\uC2DD \uD3EC\uC778\uD2B8)"
       objectReference: {fileID: 0}
     - target: {fileID: 2006450491848469916, guid: ae55cfe12c91048439b83be38835d911, type: 3}
       propertyPath: m_fontSize
@@ -39329,7 +39354,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1

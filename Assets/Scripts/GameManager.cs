@@ -163,10 +163,6 @@ public class GameManager : MonoBehaviour
             RecordDailyKnowledge(grantedKnowledge);
         }
         SaveCurrency();
-<<<<<<< HEAD
-        SoundManager.Instance.PlaySFX("coin getting");
-        Debug.Log($"[GameManager] 보상 지급: +{gold} 골드 / +{knowledgePoint} 지식포인트  (누적 {userMoney} 골드 / {userKnowledgePoint} 지식포인트)");
-=======
 
         Debug.Log($"[GameManager] 보상 지급: +{gold} 골드 / +{grantedKnowledge} 지식포인트 (요청 {knowledgePoint}) (누적 {userMoney} 골드 / {userKnowledgePoint} 지식포인트)");
         return grantedKnowledge;
@@ -183,7 +179,6 @@ public class GameManager : MonoBehaviour
             data.knowledgeEarnedToday = 0L;
         }
         data.knowledgeEarnedToday += amount;
->>>>>>> origin/feature/uimerge-integration
     }
 
     /// <summary>
