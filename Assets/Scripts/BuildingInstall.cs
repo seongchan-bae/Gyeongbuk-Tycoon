@@ -628,6 +628,7 @@ public class BuildingInstall : MonoBehaviour
         isCollidingWithBuilding = false;
         gameManager.installingActivation = false; // 설치 완료 후 모드 자동 종료
         baseUI.ShowStoreButton();
+        SoundManager.Instance.PlaySFX("install sound");
         Debug.Log("건물 설치 완료!");
     }
 

@@ -89,6 +89,7 @@ public class JigsawPiece : MonoBehaviour, IDragHandler, IEndDragHandler, IPointe
             CheckAndMerge(p, p.leftPiece);
             CheckAndMerge(p, p.rightPiece);
         }
+        SoundManager.Instance.PlaySFX("Puzzle snap sound");
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -121,7 +122,11 @@ public class JigsawPiece : MonoBehaviour, IDragHandler, IEndDragHandler, IPointe
                 piece.isLocked = true; // 잠금 처리
                 
                 // 🎯 스냅 카운트 증가
-                if (manager != null) manager.RegisterLockedPiece();
+                if (manager != null) 
+                {
+                    SoundManager.Instance.PlaySFX("Puzzle snap sound");
+                    manager.RegisterLockedPiece();
+                }
             }
         }
         return;
