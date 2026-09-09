@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
   m_Name: New Building Data 4
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
+<<<<<<< HEAD:Assets/BuildingData/기본건물/New Building Data 4.asset
   buildingName: 
   price: 0
   goldProductionRate: 0
@@ -19,8 +20,17 @@ MonoBehaviour:
   prefab: {fileID: 0}
   tileWidth: 0
   tileHeight: 0
+=======
+  buildingName: "\uC2DD\uB2F9"
+  price: 20000
+  goldProductionRate: 80
+  thumbnail: {fileID: 0}
+  prefab: {fileID: 3886159231891200504, guid: 55ab4fd7b37b99642b382a32e96be562, type: 3}
+  tileWidth: 2
+  tileHeight: 2
+>>>>>>> origin/feature/uimerge-integration:Assets/BuildingData/기본건물/식당.asset
   contentId: 
-  maxTouristIncrease: 0
-  touristIncrease: 0
+  maxTouristIncrease: 2000
+  touristIncrease: 20
   requiresWaterTile: 0
   category: 0

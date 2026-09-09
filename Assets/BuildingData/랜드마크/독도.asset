@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
   m_Name: "\uB3C5\uB3C4"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
-  buildingName: 
-  price: 0
-  goldProductionRate: 0
+  buildingName: "\uB3C5\uB3C4"
+  price: 100000
+  goldProductionRate: 400
+  thumbnail: {fileID: 0}
   prefab: {fileID: 0}
-  tileWidth: 0
-  tileHeight: 0
+  tileWidth: 2
+  tileHeight: 2
   contentId: 
-  maxTouristIncrease: 0
-  touristIncrease: 0
+  maxTouristIncrease: 4000
+  touristIncrease: 25
+  requiresWaterTile: 0
+  category: 0
