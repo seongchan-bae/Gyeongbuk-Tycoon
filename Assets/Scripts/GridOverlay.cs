@@ -83,7 +83,7 @@ public class GridOverlay : MonoBehaviour
 
         int halfW = mapWidth / 2;
         int halfH = mapHeight / 2;
-        int minX = mapCenter.x - halfW;
+        int minX = mapCenter.x - halfW  ;
         int maxX = mapCenter.x + (mapWidth - halfW) - 1;
         int minY = mapCenter.y - halfH;
         int maxY = mapCenter.y + (mapHeight - halfH) - 1;
