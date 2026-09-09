@@ -15,6 +15,45 @@ public class GameManager : MonoBehaviour
     public int MaxTourists => maxTourists;
     public event System.Action<int, int> OnTouristsChanged;
 
+    // 건물 설치 제한
+    [Header("게임 단계 (0~3 → 기본건물 최대 10/20/30/40개)")]
+    [SerializeField] private int currentStage = 0;
+    private static readonly int[] stageLimits = { 10, 20, 30, 40 };
+
+    private int basicBuildingCount = 0;
+    private System.Collections.Generic.HashSet<string> installedLandmarks = new System.Collections.Generic.HashSet<string>();
+    public int BasicBuildingCount => basicBuildingCount;
+    public int CurrentStage => currentStage;
+    public int MaxBasicBuildings => stageLimits[Mathf.Clamp(currentStage, 0, stageLimits.Length - 1)];
+    public event System.Action OnBuildingCountChanged;
+
+    public void SetStage(int stage)
+    {
+        currentStage = Mathf.Clamp(stage, 0, stageLimits.Length - 1);
+        OnBuildingCountChanged?.Invoke();
+    }
+
+    public bool CanInstallBasic() => basicBuildingCount < MaxBasicBuildings;
+    public bool IsLandmarkInstalled(string buildingName) => installedLandmarks.Contains(buildingName);
+
+    public void RegisterBuilding(BuildingData data)
+    {
+        if (data.category == BuildingCategory.Basic)
+            basicBuildingCount++;
+        else if (data.category == BuildingCategory.Landmark)
+            installedLandmarks.Add(data.buildingName);
+        OnBuildingCountChanged?.Invoke();
+    }
+
+    public void UnregisterBuilding(BuildingData data)
+    {
+        if (data.category == BuildingCategory.Basic)
+            basicBuildingCount = Mathf.Max(0, basicBuildingCount - 1);
+        else if (data.category == BuildingCategory.Landmark)
+            installedLandmarks.Remove(data.buildingName);
+        OnBuildingCountChanged?.Invoke();
+    }
+
     [Header("미니게임 UI 참조 (미니게임 씬에서만 연결)")]
     [SerializeField] private GameObject puzzleUI;
     [SerializeField] private GameObject mainUI;

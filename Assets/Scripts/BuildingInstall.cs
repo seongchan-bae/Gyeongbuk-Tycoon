@@ -103,9 +103,12 @@ public class BuildingInstall : MonoBehaviour
                 foreach (var sr in installedBuilding.GetComponentsInChildren<SpriteRenderer>(true))
                     sr.sortingLayerName = "Building";
 
-                // 복원된 건물의 관광객 수치도 GameManager에 반영
+                // 복원된 건물의 관광객 수치 및 건물 수 GameManager에 반영
                 if (gameManager != null)
+                {
                     gameManager.AddTourists(matchedData.touristIncrease, matchedData.maxTouristIncrease);
+                    gameManager.RegisterBuilding(matchedData);
+                }
 
                 if (matchedData.requiresWaterTile)
                     PlaceWaterTiles(cellPos, matchedData);
@@ -596,6 +599,18 @@ public class BuildingInstall : MonoBehaviour
             return;
         }
 
+        // 건물 수 제한 체크
+        if (currentBuildingData.category == BuildingCategory.Basic && !gameManager.CanInstallBasic())
+        {
+            Debug.LogWarning($"기본 건물은 최대 {gameManager.MaxBasicBuildings}개까지만 설치할 수 있습니다!");
+            return;
+        }
+        if (currentBuildingData.category == BuildingCategory.Landmark && gameManager.IsLandmarkInstalled(currentBuildingData.buildingName))
+        {
+            Debug.LogWarning($"{currentBuildingData.buildingName}은(는) 이미 설치되어 있습니다!");
+            return;
+        }
+
         // 현재 감지 마름모가 위치한 정확한 중심점에 건물 소환
         Vector3 spawnPos = baseGrid.GetCellCenterWorld(currentCellPos);
         GameObject installedBuilding = Instantiate(currentBuildingData.prefab, spawnPos, Quaternion.identity);
@@ -612,6 +627,7 @@ public class BuildingInstall : MonoBehaviour
         building.Initialize(gameManager);
         building.buildingData = currentBuildingData;
         gameManager.AddTourists(currentBuildingData.touristIncrease, currentBuildingData.maxTouristIncrease);
+        gameManager.RegisterBuilding(currentBuildingData);
 
         // 모든 건물 SpriteRenderer를 Building 소팅 레이어로 설정
         foreach (var sr in installedBuilding.GetComponentsInChildren<SpriteRenderer>(true))

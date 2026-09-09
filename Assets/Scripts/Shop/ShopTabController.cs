@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ShopTabController : MonoBehaviour
 {
@@ -12,12 +13,36 @@ public class ShopTabController : MonoBehaviour
     [SerializeField] private Button mapTabButton;
 
     [Header("탭 버튼 스프라이트")]
-    [SerializeField] private Sprite activeSprite;   // 초록 버튼
-    [SerializeField] private Sprite inactiveSprite; // 회색 버튼
+    [SerializeField] private Sprite activeSprite;
+    [SerializeField] private Sprite inactiveSprite;
+
+    [Header("기본건물 건물 수 표기")]
+    [SerializeField] private TextMeshProUGUI buildingCountText; // "현재 / 최대" 표시 텍스트
+    [SerializeField] private GameManager gameManager;
 
     void Start()
     {
+        if (gameManager != null)
+            gameManager.OnBuildingCountChanged += UpdateBuildingCountText;
+
         ShowBasicShop();
+    }
+
+    void OnEnable()
+    {
+        UpdateBuildingCountText();
+    }
+
+    void OnDestroy()
+    {
+        if (gameManager != null)
+            gameManager.OnBuildingCountChanged -= UpdateBuildingCountText;
+    }
+
+    void UpdateBuildingCountText()
+    {
+        if (buildingCountText == null || gameManager == null) return;
+        buildingCountText.text = $"{gameManager.BasicBuildingCount} / {gameManager.MaxBasicBuildings}";
     }
 
     public void ShowBasicShop()
