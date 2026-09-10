@@ -13,13 +13,16 @@ MonoBehaviour:
   m_Name: "\uAD50\uCD0C\uD55C\uC625\uB9C8\uC744"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   buildingName: "\uAD50\uCD0C\uD55C\uC625\uB9C8\uC744"
-  price: 20000
-  goldProductionRate: 500
+  price: 100
+  goldProductionRate: 18
   thumbnail: {fileID: 0}
-  prefab: {fileID: 4119108367356186960, guid: 963afcac4aebf2b4e9ca17e745fbb9b0, type: 3}
-  tileWidth: 4
-  tileHeight: 4
+  prefab: {fileID: 6281664484794241589, guid: f78c5cd67704d434d8dcf35539f6fb73, type: 3}
+  tileWidth: 3
+  tileHeight: 3
   contentId: 128676
-  maxTouristIncrease: 0
-  touristIncrease: 0
+  manualInfoText: 
+  maxTouristIncrease: 320
+  touristIncrease: 5
   requiresWaterTile: 0
+  waterTilePrefab: {fileID: 0}
+  category: 1
