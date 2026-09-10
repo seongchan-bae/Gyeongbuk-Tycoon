@@ -70,19 +70,37 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
-
     #region BGM Methods
-    public void PlayBGM(string clipName, float volume = 1.0f)
+    //인스펙터 호출용
+public void PlayBGM(string clipName)
+{
+    PlayBGM(clipName, 1.0f);
+}
+public void PlayBGM(string clipName, float volume = 1.0f)
+{
+    if (bgmDictionary.TryGetValue(clipName, out AudioClip clip))
     {
-        if (bgmDictionary.TryGetValue(clipName, out AudioClip clip))
+        // 1. 이미 같은 BGM이 재생 중이라면 중복 재생 방지 후 종료
+        if (bgmSource.isPlaying && bgmSource.clip == clip) return;
+
+        // 2. 다른 BGM이 재생 중이라면 명시적으로 정지
+        if (bgmSource.isPlaying)
         {
-            if (bgmSource.clip == clip && bgmSource.isPlaying) return;
-            bgmSource.clip = clip;
-            bgmSource.volume = volume;
-            bgmSource.loop = true;
-            bgmSource.Play();
+            bgmSource.Stop();
         }
+
+        // 3. 새 BGM 클립 할당 및 재생
+        bgmSource.clip = clip;
+        bgmSource.volume = volume;
+        bgmSource.loop = true;
+        bgmSource.Play();
     }
+    else
+    {
+        Debug.LogWarning($"[SoundManager] BGM 클립을 찾을 수 없습니다: {clipName}");
+    }
+}
+#endregion
 
     public void StopBGM()
     {
@@ -102,7 +120,7 @@ public class SoundManager : MonoBehaviour
             bgmSource.volume = Mathf.Clamp01(volume);
         }
     }
-    #endregion
+    
 
     #region SFX Methods
     public void PlaySFX(string clipName, float volume = 1.0f)
