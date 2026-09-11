@@ -5,7 +5,11 @@
       "Bash(Select-Object FullName)",
       "Bash(Sort-Object FullName)",
       "Bash(find Assets/Scenes -name \"*.unity\")",
-      "Bash(dir /s /b \"Assets\\\\Scenes\\\\*.unity\")"
+      "Bash(dir /s /b \"Assets\\\\Scenes\\\\*.unity\")",
+      "Bash(Get-ChildItem -Path \"Assets\\\\Scripts\" -Recurse -Filter \"*.cs\")",
+      "Bash(Measure-Object)",
+      "Bash(Select-Object -ExpandProperty Count)",
+      "Bash(xargs -I {} basename {})"
     ]
   }
 }

@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private long userMoney = 10000L;
 
     // 유저가 가지고 있는 지식포인트(GameManager에서만 관리)
-    private long userKnowledgePoint = 0L;
+    [SerializeField] private long userKnowledgePoint = 0L;
 
     // 관광객 수치
     private int currentTourists = 0;
@@ -116,6 +116,15 @@ public class GameManager : MonoBehaviour
         if (userMoney < money) return false;
         userMoney -= money;
         OnMoneyChanged?.Invoke(userMoney);
+        return true;
+    }
+
+    // 지식포인트 차감 — 부족하면 false 반환
+    public bool SpendKnowledgePoint(long amount)
+    {
+        if (userKnowledgePoint < amount) return false;
+        userKnowledgePoint -= amount;
+        OnKnowledgePointChanged?.Invoke(userKnowledgePoint);
         return true;
     }
 

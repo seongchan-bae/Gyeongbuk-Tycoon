@@ -23,6 +23,7 @@ public class BuildingCardUI : MonoBehaviour
     [SerializeField] private TMP_Text touristIncreaseText;
     [SerializeField] private TMP_Text maxTouristText;
     [SerializeField] private TMP_Text priceText;
+    [SerializeField] private TMP_Text knowledgePriceText;
 
     [Header("구매 불가 잠금")]
     [SerializeField] private GameObject lockImage;
@@ -41,6 +42,7 @@ public class BuildingCardUI : MonoBehaviour
         if (gameManager != null)
         {
             gameManager.OnMoneyChanged += UpdateLockState;
+            gameManager.OnKnowledgePointChanged += _ => RefreshLockState();
             gameManager.OnBuildingCountChanged += RefreshLockState;
         }
     }
@@ -51,6 +53,7 @@ public class BuildingCardUI : MonoBehaviour
         {
             gameManager.OnMoneyChanged -= UpdateLockState;
             gameManager.OnBuildingCountChanged -= RefreshLockState;
+            // OnKnowledgePointChanged는 람다로 등록되어 자동 해제됨
         }
     }
 
@@ -68,6 +71,8 @@ public class BuildingCardUI : MonoBehaviour
         }
 
         bool notEnoughMoney = currentMoney < buildingData.price;
+        // TODO: 테스트 완료 후 재활성화
+        // bool notEnoughKP = gameManager != null && gameManager.UserKnowledgePoint < buildingData.knowledgePrice;
         bool limitReached = buildingData.category == BuildingCategory.Basic
             && gameManager != null
             && !gameManager.CanInstallBasic();
@@ -96,12 +101,13 @@ public class BuildingCardUI : MonoBehaviour
 
         if (buildingData == null) return;
 
-        if (buildingThumbnail   != null) buildingThumbnail.sprite  = buildingData.thumbnail;
-        if (buildingNameText    != null) buildingNameText.text    = buildingData.buildingName;
-        if (goldProductionText  != null) goldProductionText.text  = buildingData.goldProductionRate.ToString("#,##0.##");
-        if (touristIncreaseText != null) touristIncreaseText.text = buildingData.touristIncrease.ToString("N0");
-        if (maxTouristText      != null) maxTouristText.text      = buildingData.maxTouristIncrease.ToString("N0");
-        if (priceText           != null) priceText.text           = buildingData.price.ToString("N0");
+        if (buildingThumbnail    != null) buildingThumbnail.sprite   = buildingData.thumbnail;
+        if (buildingNameText     != null) buildingNameText.text     = buildingData.buildingName;
+        if (goldProductionText   != null) goldProductionText.text   = buildingData.goldProductionRate.ToString("#,##0.##");
+        if (touristIncreaseText  != null) touristIncreaseText.text  = buildingData.touristIncrease.ToString("N0");
+        if (maxTouristText       != null) maxTouristText.text       = buildingData.maxTouristIncrease.ToString("N0");
+        if (priceText            != null) priceText.text            = buildingData.price.ToString("N0");
+        if (knowledgePriceText   != null) knowledgePriceText.text   = buildingData.knowledgePrice.ToString("N0");
     }
 
     void ApplyCardSprite(string childName, Sprite sprite)
@@ -131,12 +137,19 @@ public class BuildingCardUI : MonoBehaviour
             return;
         }
 
-        // 골드 부족 시 구매 차단
+        // 골드 또는 지식포인트 부족 시 구매 차단
         if (gameManager != null && !gameManager.SpendMoney(buildingData.price))
         {
             Debug.Log("골드가 부족합니다!");
             return;
         }
+        // TODO: 테스트 완료 후 재활성화
+        // if (gameManager != null && !gameManager.SpendKnowledgePoint(buildingData.knowledgePrice))
+        // {
+        //     gameManager.AddMoney(buildingData.price);
+        //     Debug.Log("지식포인트가 부족합니다!");
+        //     return;
+        // }
 
         // BuildingData 전달 — 프리팹 및 타일 크기 정보 포함
         buildingInstall.SelectBuilding(buildingData);

@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: "\uADFC\uB300\uBB38\uC5ED\uC0AC\uAC70\uB9AC"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   buildingName: "\uADFC\uB300\uBB38\uD654\uC5ED\uC0AC\uAC70\uB9AC"
-  price: 100
+  price: 100000
+  knowledgePrice: 100
   goldProductionRate: 22
   thumbnail: {fileID: 0}
   prefab: {fileID: 8605087747992315724, guid: dca18a99913e7d944b4b1b9e4b426926, type: 3}

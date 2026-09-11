@@ -10,7 +10,8 @@ public enum BuildingCategory
 public class BuildingData : ScriptableObject
 {
     public string buildingName;         // 상점에서 표시될 건물 이름
-    public int price;                   // 구매 비용
+    public int price;                   // 구매 비용 (골드)
+    public int knowledgePrice;          // 구매 비용 (지식포인트)
     public float goldProductionRate;    // 골드 생산량
     public Sprite thumbnail;            // 상점 카드에 표시될 이미지
     public GameObject prefab;           // 실제 설치될 건물 프리팹
