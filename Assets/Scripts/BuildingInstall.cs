@@ -48,6 +48,14 @@ public class BuildingInstall : MonoBehaviour
         return false;
     }
 
+    public void FreeOccupiedCells(Vector3 worldPos, BuildingData data)
+    {
+        if (baseGrid == null || data == null) return;
+        Vector3Int cell = baseGrid.WorldToCell(worldPos);
+        foreach (var c in GetFootprintCells(cell, data))
+            occupiedCells.Remove(c);
+    }
+
     // 건물 미리보기용 Ghost 스프라이트
     private SpriteRenderer ghostRenderer;
     private Rigidbody2D rb;

@@ -266,6 +266,11 @@ public class BuildingPopupUI : MonoBehaviour
         gameManager.AddMoney(data.price / 2);
         gameManager.RemoveTourists(data.touristIncrease, data.maxTouristIncrease);
         gameManager.UnregisterBuilding(data);
+
+        var buildingInstall = FindFirstObjectByType<BuildingInstall>();
+        if (buildingInstall != null)
+            buildingInstall.FreeOccupiedCells(selectedBuilding.transform.position, data);
+
         Destroy(selectedBuilding.gameObject);
         Hide();
     }

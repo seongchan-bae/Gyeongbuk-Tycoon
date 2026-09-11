@@ -137,13 +137,12 @@ public class BuildingCardUI : MonoBehaviour
             Debug.Log("골드가 부족합니다!");
             return;
         }
-        // TODO: 테스트 완료 후 재활성화
-        // if (gameManager != null && !gameManager.SpendKnowledgePoint(buildingData.knowledgePrice))
-        // {
-        //     gameManager.AddMoney(buildingData.price);
-        //     Debug.Log("지식포인트가 부족합니다!");
-        //     return;
-        // }
+        if (gameManager != null && !gameManager.SpendKnowledgePoint(buildingData.knowledgePrice))
+        {
+            gameManager.AddMoney(buildingData.price);
+            Debug.Log("지식포인트가 부족합니다!");
+            return;
+        }
 
         // BuildingData 전달 — 프리팹 및 타일 크기 정보 포함
         buildingInstall.SelectBuilding(buildingData);
