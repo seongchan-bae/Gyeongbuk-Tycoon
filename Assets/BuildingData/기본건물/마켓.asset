@@ -13,17 +13,10 @@ MonoBehaviour:
   m_Name: "\uB9C8\uCF13"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   buildingName: "\uB9C8\uCF13"
-<<<<<<< HEAD
   price: 1000
   goldProductionRate: 0
   thumbnail: {fileID: 21300000, guid: 5b8d0e3cf5d612847a56f7bf3b1f9070, type: 3}
   prefab: {fileID: 856843055514353564, guid: 9fdabf6dbe8db674b854a998e497f940, type: 3}
-=======
-  price: 20000
-  goldProductionRate: 100
-  thumbnail: {fileID: 0}
-  prefab: {fileID: 1788955102538785104, guid: 06cbf332cd4a7b3469d3bb6c2e363ea8, type: 3}
->>>>>>> origin/feature/uimerge-integration
   tileWidth: 2
   tileHeight: 2
   contentId: 

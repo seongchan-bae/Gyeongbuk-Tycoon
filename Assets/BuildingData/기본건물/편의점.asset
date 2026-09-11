@@ -10,17 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
-  m_Name: New Building Data 7
+  m_Name: "\uD3B8\uC758\uC810"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
-<<<<<<< HEAD:Assets/BuildingData/기본건물/New Building Data 7.asset
-  buildingName: 
-  price: 0
-  goldProductionRate: 0
-  thumbnail: {fileID: 0}
-  prefab: {fileID: 0}
-  tileWidth: 0
-  tileHeight: 0
-=======
   buildingName: "\uD3B8\uC758\uC810"
   price: 1000
   goldProductionRate: 20
@@ -28,7 +19,6 @@ MonoBehaviour:
   prefab: {fileID: 3204602580085148136, guid: 4227c4a3a8d307b4d82094d5073a9da1, type: 3}
   tileWidth: 2
   tileHeight: 2
->>>>>>> origin/feature/uimerge-integration:Assets/BuildingData/기본건물/편의점.asset
   contentId: 
   maxTouristIncrease: 500
   touristIncrease: 5
