@@ -11,8 +11,11 @@ public class GameManager : MonoBehaviour
     // 관광객 수치
     private int currentTourists = 0;
     private int maxTourists = 0;
+    private int touristRatePerSecond = 0;
+    private float touristTimer = 0f;
     public int CurrentTourists => currentTourists;
     public int MaxTourists => maxTourists;
+    public int TouristRatePerSecond => touristRatePerSecond;
     public event System.Action<int, int> OnTouristsChanged;
 
     // 건물 설치 제한
@@ -76,30 +79,49 @@ public class GameManager : MonoBehaviour
         destroyingActivation = false;
     }
 
+    void Update()
+    {
+        if (touristRatePerSecond > 0 && currentTourists < maxTourists)
+        {
+            touristTimer += Time.deltaTime;
+            if (touristTimer >= 1f)
+            {
+                touristTimer = 0f;
+                int delta = Mathf.Min(touristRatePerSecond, maxTourists - currentTourists);
+                currentTourists += delta;
+                OnTouristsChanged?.Invoke(currentTourists, maxTourists);
+            }
+        }
+    }
+
     void Start()
     {
         if (SaveManager.Instance != null)
         {
             userMoney = SaveManager.Instance.CurrentData.userMoney;
             userKnowledgePoint = SaveManager.Instance.CurrentData.userKnowledgePoint;
+            currentTourists = SaveManager.Instance.CurrentData.currentTourists;
         }
         OnMoneyChanged?.Invoke(userMoney);
         OnKnowledgePointChanged?.Invoke(userKnowledgePoint);
     }
 
-    // 건물 설치 시 관광객 수치 추가
-    public void AddTourists(int tourist, int maxTourist)
+    // 건물 설치 시 관광객 수치 추가 (rate = 초당 증가량 기여분)
+    public void AddTourists(int tourist, int maxTourist, int rate = 0)
     {
         currentTourists += tourist;
         maxTourists += maxTourist;
+        touristRatePerSecond += rate;
         OnTouristsChanged?.Invoke(currentTourists, maxTourists);
     }
 
     // 건물 삭제 시 관광객 수치 차감
-    public void RemoveTourists(int tourist, int maxTourist)
+    public void RemoveTourists(int tourist, int maxTourist, int rate = 0)
     {
         currentTourists -= tourist;
         maxTourists -= maxTourist;
+        touristRatePerSecond -= rate;
+        if (currentTourists > maxTourists) currentTourists = maxTourists;
         OnTouristsChanged?.Invoke(currentTourists, maxTourists);
     }
 

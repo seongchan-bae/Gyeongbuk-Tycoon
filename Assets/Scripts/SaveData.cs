@@ -25,6 +25,7 @@ public class GameSaveData
     // 2. 인게임 재화 데이터
     public long userMoney = 10000L;
     public long userKnowledgePoint = 0L;
+    public int currentTourists = 0;
 
     // 3. 인게임 건물 및 해금 상태
     public List<string> unlockedBuildingList = new List<string>();

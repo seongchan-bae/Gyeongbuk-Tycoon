@@ -139,7 +139,7 @@ public class BuildingInstall : MonoBehaviour
                 // 복원된 건물의 관광객 수치 및 건물 수 GameManager에 반영
                 if (gameManager != null)
                 {
-                    gameManager.AddTourists(0, matchedData.maxTouristIncrease);
+                    gameManager.AddTourists(0, matchedData.maxTouristIncrease, matchedData.touristIncrease);
                     gameManager.RegisterBuilding(matchedData);
                 }
 
@@ -606,7 +606,7 @@ public class BuildingInstall : MonoBehaviour
         foreach (var sr in installedBuilding.GetComponentsInChildren<SpriteRenderer>(true))
             sr.sortingLayerName = "Building";
 
-        gameManager.AddTourists(0, data.maxTouristIncrease);
+        gameManager.AddTourists(0, data.maxTouristIncrease, data.touristIncrease);
         gameManager.RegisterBuilding(data);
 
         if (data.requiresWaterTile)
@@ -724,7 +724,7 @@ public class BuildingInstall : MonoBehaviour
 
         building.Initialize(gameManager);
         building.buildingData = currentBuildingData;
-        gameManager.AddTourists(0, currentBuildingData.maxTouristIncrease);
+        gameManager.AddTourists(0, currentBuildingData.maxTouristIncrease, currentBuildingData.touristIncrease);
         gameManager.RegisterBuilding(currentBuildingData);
 
         // 모든 건물 SpriteRenderer를 Building 소팅 레이어로 설정

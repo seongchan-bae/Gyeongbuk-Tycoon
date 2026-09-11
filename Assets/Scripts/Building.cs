@@ -7,14 +7,9 @@ public class Building : MonoBehaviour
     private SpriteRenderer sr;
     private GameManager gameManager;
     private float goldTimer = 0f;
-    private float touristTimer = 0f;
     private const float productionInterval = 1f;
 
     public static bool AnyBuildingDragging { get; set; }
-
-
-    private int currentTourists = 0;
-    public int CurrentTourists => currentTourists;
 
     void Awake()
     {
@@ -50,25 +45,11 @@ public class Building : MonoBehaviour
         if (gameManager != null && buildingData != null)
         {
             goldTimer += Time.deltaTime;
-            touristTimer += Time.deltaTime;
 
             if (goldTimer >= productionInterval)
             {
                 goldTimer = 0f;
                 gameManager.AddMoney((long)buildingData.goldProductionRate);
-            }
-
-            if (touristTimer >= productionInterval)
-            {
-                touristTimer = 0f;
-                int max = buildingData.maxTouristIncrease;
-                int rate = buildingData.touristIncrease;
-                if (currentTourists < max)
-                {
-                    int delta = Mathf.Min(rate, max - currentTourists);
-                    currentTourists += delta;
-                    gameManager.AddTourists(delta, 0);
-                }
             }
         }
     }

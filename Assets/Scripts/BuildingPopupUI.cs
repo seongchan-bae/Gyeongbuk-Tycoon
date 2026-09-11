@@ -282,7 +282,7 @@ public class BuildingPopupUI : MonoBehaviour
         Vector3Int cellPos = install.BaseGrid.WorldToCell(selectedBuilding.transform.position);
 
         // 기존 건물 제거
-        gameManager.RemoveTourists(selectedBuilding.CurrentTourists, data.maxTouristIncrease);
+        gameManager.RemoveTourists(0, data.maxTouristIncrease, data.touristIncrease);
         gameManager.UnregisterBuilding(data);
         install.FreeOccupiedCells(selectedBuilding.transform.position, data);
 
@@ -300,16 +300,8 @@ public class BuildingPopupUI : MonoBehaviour
     {
         BuildingData data = selectedBuilding.buildingData;
 
-        int newCurrent = gameManager.CurrentTourists - selectedBuilding.CurrentTourists;
-        int newMax = gameManager.MaxTourists - data.maxTouristIncrease;
-        if (newCurrent > newMax)
-        {
-            Debug.LogWarning("이 건물을 삭제하면 관광객이 한도를 초과합니다!");
-            return;
-        }
-
         gameManager.AddMoney(data.price / 2);
-        gameManager.RemoveTourists(selectedBuilding.CurrentTourists, data.maxTouristIncrease);
+        gameManager.RemoveTourists(0, data.maxTouristIncrease, data.touristIncrease);
         gameManager.UnregisterBuilding(data);
 
         var buildingInstall = FindFirstObjectByType<BuildingInstall>();
