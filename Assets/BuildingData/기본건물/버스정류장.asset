@@ -14,30 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   buildingName: "\uBC84\uC2A4\uC815\uB958\uC7A5"
   price: 1000
-<<<<<<< HEAD
-<<<<<<< HEAD
-  goldProductionRate: 0
-  thumbnail: {fileID: 21300000, guid: 24a04707daa55504b8c9e01045e527e7, type: 3}
-  prefab: {fileID: 7782787874791133382, guid: c9add56fae940d34493e6c23817de9a2, type: 3}
-  tileWidth: 2
-  tileHeight: 2
-  contentId: 
-  maxTouristIncrease: 0
-  touristIncrease: 0
-  requiresWaterTile: 1
-  waterTilePrefab: {fileID: 1272902386735649774, guid: 3b4aea36ae465934e8b8d46cd6a1df4e, type: 3}
-=======
-  goldProductionRate: 10
-  thumbnail: {fileID: 0}
-  prefab: {fileID: 815440180195354761, guid: 6c96876a714cb5945881b426ea112988, type: 3}
-  tileWidth: 2
-  tileHeight: 2
-  contentId: 
-  maxTouristIncrease: 2000
-  touristIncrease: 10
-  requiresWaterTile: 0
->>>>>>> origin/feature/uimerge-integration
-=======
   knowledgePrice: 0
   goldProductionRate: 2
   thumbnail: {fileID: 0}
@@ -50,7 +26,6 @@ MonoBehaviour:
   touristIncrease: 6
   requiresWaterTile: 0
   waterTilePrefab: {fileID: 0}
->>>>>>> origin/feature/uimerge3
   category: 0
   upgradeTarget: {fileID: 11400000, guid: 55b94544dc387074d9fb31728ef805ce, type: 2}
   upgradeCost: 600000

@@ -14,21 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   buildingName: "\uACBD\uCC30\uC11C"
   price: 1000
-<<<<<<< HEAD
-  goldProductionRate: 10
-<<<<<<< HEAD
-  thumbnail: {fileID: 21300000, guid: 778ddb5ff6b488e4bbc85e1d49217fee, type: 3}
-  prefab: {fileID: 5162553351543034144, guid: 6cb9e8374ba02b34e8631cab833c3db7, type: 3}
-=======
-  thumbnail: {fileID: 21300000, guid: 9423ee1b517999a43a90457510188a88, type: 3}
-  prefab: {fileID: 8062390082120548318, guid: 559fed3b47d8e2245ba011e88559fc36, type: 3}
->>>>>>> origin/feature/uimerge-integration
-  tileWidth: 2
-  tileHeight: 2
-  contentId: 
-  maxTouristIncrease: 1000
-  touristIncrease: 2
-=======
   goldProductionRate: 2
   thumbnail: {fileID: 0}
   prefab: {fileID: 5170499734783053363, guid: d4f1641dc6162bd47ab7a97157752d0e, type: 3}
@@ -38,7 +23,6 @@ MonoBehaviour:
   manualInfoText: 
   maxTouristIncrease: 200
   touristIncrease: 1
->>>>>>> origin/feature/uimerge3
   requiresWaterTile: 0
   waterTilePrefab: {fileID: 0}
   category: 0

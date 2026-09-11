@@ -12,20 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
   m_Name: "\uC774\uAC00\uB9AC\uB2FB\uC804\uB9DD\uB300"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
-<<<<<<< HEAD:Assets/BuildingData/랜드마크/이가리 닻 전망대.asset
-  buildingName: "\uC774\uAC00\uB9AC\uB2FB\uC804\uB9DD\uB300"
-  price: 100000
-  goldProductionRate: 800
-  thumbnail: {fileID: 0}
-  prefab: {fileID: 0}
-  tileWidth: 3
-  tileHeight: 3
-  contentId: 2708154
-  maxTouristIncrease: 3000
-  touristIncrease: 5
-  requiresWaterTile: 0
-  category: 0
-=======
   buildingName: "\uC774\uAC00\uB9AC \uB2FB \uC804\uB9DD\uB300"
   price: 100000
   knowledgePrice: 100
@@ -41,4 +27,3 @@ MonoBehaviour:
   requiresWaterTile: 0
   waterTilePrefab: {fileID: 0}
   category: 1
->>>>>>> origin/feature/uimerge3:Assets/BuildingData/랜드마크/이가리닻전망대.asset

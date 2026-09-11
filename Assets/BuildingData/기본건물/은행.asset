@@ -12,25 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
   m_Name: "\uC740\uD589"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
-<<<<<<< HEAD:Assets/BuildingData/기본건물/New Building Data 5.asset
-<<<<<<< HEAD:Assets/BuildingData/기본건물/New Building Data 5.asset
-  buildingName: 
-  price: 0
-  goldProductionRate: 0
-  thumbnail: {fileID: 0}
-  prefab: {fileID: 0}
-  tileWidth: 0
-  tileHeight: 0
-=======
-  buildingName: "\uC740\uD589"
-  price: 20000
-  goldProductionRate: 200
-  thumbnail: {fileID: 0}
-  prefab: {fileID: 5567177228231135214, guid: 0d42367ca2d3fa242984f895e7deea59, type: 3}
-  tileWidth: 2
-  tileHeight: 2
->>>>>>> origin/feature/uimerge-integration:Assets/BuildingData/기본건물/은행.asset
-=======
   buildingName: "\uC740\uD589"
   price: 5000
   goldProductionRate: 14
@@ -38,7 +19,6 @@ MonoBehaviour:
   prefab: {fileID: 4416780101656681060, guid: 3ce83611f2372194192af106086b75ad, type: 3}
   tileWidth: 2
   tileHeight: 2
->>>>>>> origin/feature/uimerge3:Assets/BuildingData/기본건물/은행.asset
   contentId: 
   manualInfoText: 
   maxTouristIncrease: 180

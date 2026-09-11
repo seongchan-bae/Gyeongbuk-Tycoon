@@ -14,18 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   buildingName: "\uADFC\uB300\uBB38\uD654\uC5ED\uC0AC\uAC70\uB9AC"
   price: 100000
-<<<<<<< HEAD:Assets/BuildingData/랜드마크/근대문화역사거리.asset
-  goldProductionRate: 800
-  thumbnail: {fileID: 0}
-  prefab: {fileID: 0}
-  tileWidth: 3
-  tileHeight: 3
-  contentId: 
-  maxTouristIncrease: 3000
-  touristIncrease: 5
-  requiresWaterTile: 0
-  category: 0
-=======
   knowledgePrice: 100
   goldProductionRate: 22
   thumbnail: {fileID: 0}
@@ -39,4 +27,3 @@ MonoBehaviour:
   requiresWaterTile: 0
   waterTilePrefab: {fileID: 0}
   category: 1
->>>>>>> origin/feature/uimerge3:Assets/BuildingData/랜드마크/근대문역사거리.asset

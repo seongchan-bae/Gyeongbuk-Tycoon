@@ -12,28 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
   m_Name: "\uC9C0\uD558\uCCA0\uC5ED"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
-<<<<<<< HEAD:Assets/BuildingData/기본건물/New Building Data 7.asset
-<<<<<<< HEAD:Assets/BuildingData/기본건물/New Building Data 7.asset
-  buildingName: 
-  price: 0
-  goldProductionRate: 0
-  thumbnail: {fileID: 0}
-  prefab: {fileID: 0}
-  tileWidth: 0
-  tileHeight: 0
-=======
-  buildingName: "\uD3B8\uC758\uC810"
-  price: 1000
-  goldProductionRate: 20
-  thumbnail: {fileID: 0}
-  prefab: {fileID: 3204602580085148136, guid: 4227c4a3a8d307b4d82094d5073a9da1, type: 3}
-  tileWidth: 2
-  tileHeight: 2
->>>>>>> origin/feature/uimerge-integration:Assets/BuildingData/기본건물/편의점.asset
-  contentId: 
-  maxTouristIncrease: 500
-  touristIncrease: 5
-=======
   buildingName: "\uC9C0\uD558\uCCA0\uC5ED"
   price: 5000
   goldProductionRate: 6
@@ -45,7 +23,6 @@ MonoBehaviour:
   manualInfoText: 
   maxTouristIncrease: 300
   touristIncrease: 14
->>>>>>> origin/feature/uimerge3:Assets/BuildingData/기본건물/지하철역.asset
   requiresWaterTile: 0
   waterTilePrefab: {fileID: 0}
   category: 0
