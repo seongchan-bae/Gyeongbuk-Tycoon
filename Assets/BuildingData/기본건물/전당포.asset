@@ -15,7 +15,7 @@ MonoBehaviour:
   buildingName: "\uC804\uB2F9\uD3EC"
   price: 1000
   goldProductionRate: 30
-  thumbnail: {fileID: 0}
+  thumbnail: {fileID: 21300000, guid: 4a371bc542698604fa6dfe7eb939eabe, type: 3}
   prefab: {fileID: 1077016933681474087, guid: 49504c67860a0444a8ba932174807e0b, type: 3}
   tileWidth: 2
   tileHeight: 2
