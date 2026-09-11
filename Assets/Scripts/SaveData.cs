@@ -25,6 +25,7 @@ public class GameSaveData
     // 2. 인게임 재화 데이터
     public long userMoney = 10000L;
     public long userKnowledgePoint = 0L;
+    public int currentTourists = 0;
 
     // 미니게임 지식포인트 일일 획득량 (날짜가 바뀌면 0부터 다시 쌓인다)
     public string knowledgeEarnedDate = "";

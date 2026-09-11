@@ -7,13 +7,9 @@ public class Building : MonoBehaviour
     private SpriteRenderer sr;
     private GameManager gameManager;
     private float goldTimer = 0f;
-    private const float goldInterval = 1f; // 1초마다 골드 생산
+    private const float productionInterval = 1f;
 
     public static bool AnyBuildingDragging { get; set; }
-
-    // 업그레이드로 누적된 런타임 보너스 (ScriptableObject 원본은 건드리지 않음)
-    [HideInInspector] public float bonusGoldRate = 0f;       // 골드 생산량 추가
-    [HideInInspector] public int   bonusTourist  = 0;        // 관광객 추가 증가량
 
     void Awake()
     {
@@ -46,14 +42,14 @@ public class Building : MonoBehaviour
     {
         UpdateSortingOrder();
 
-        // 1초마다 goldProductionRate만큼 골드 생산
         if (gameManager != null && buildingData != null)
         {
             goldTimer += Time.deltaTime;
-            if (goldTimer >= goldInterval)
+
+            if (goldTimer >= productionInterval)
             {
                 goldTimer = 0f;
-                gameManager.AddMoney((long)(buildingData.goldProductionRate + bonusGoldRate));
+                gameManager.AddMoney((long)buildingData.goldProductionRate);
             }
         }
     }

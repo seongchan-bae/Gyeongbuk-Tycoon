@@ -19,15 +19,21 @@ public class BuildingPopupUI : MonoBehaviour
     [SerializeField] private BuildingData buildingData;
     
 
-    [Header("업그레이드 설정")] // TODO: 수치 기획 후 조정 필요
-    [SerializeField] private float upgradeCostMultiplier  = 2f;   // 업그레이드 비용 = 건물 price * 이 배율
-    [SerializeField] private float upgradeGoldBonus       = 1f;   // 업그레이드당 골드 생산량 추가
-    [SerializeField] private int   upgradeTouristBonus    = 1;    // 업그레이드당 관광객 추가 증가량
+    [SerializeField] private BuildingInstall buildingInstall;
 
     [Header("TourAPI 설정")]
     [SerializeField] private string tourApiKey = "616315cd61c155564e9088acbc319ff980ccc75a67ed38601b3876602d23ee9d"; // data.go.kr 디코딩 키 입력
     [SerializeField] private GameObject infoPopupPanel;               // 관광 정보를 표시할 별도 패널
     [SerializeField] private TextMeshProUGUI infoText;                // 관광 정보 텍스트
+
+    [Header("건물 스탯 텍스트")]
+    [SerializeField] private TextMeshProUGUI statGoldText;
+    [SerializeField] private TextMeshProUGUI statTouristText;
+
+    [Header("APIBoard 열릴 때 숨길 HUD")]
+    [SerializeField] private GameObject goldUI;
+    [SerializeField] private GameObject touristUI;
+    [SerializeField] private GameObject knowledgeUI;
     
 
     private Building selectedBuilding;
@@ -76,6 +82,10 @@ public class BuildingPopupUI : MonoBehaviour
         deleteButton.onClick.AddListener(OnDeleteClicked);
         if (flipButton != null) flipButton.onClick.AddListener(OnFlipClicked);
 
+        // upgradeTarget이 없으면 업그레이드 버튼 숨김
+        bool canUpgrade = building != null && building.buildingData != null && building.buildingData.upgradeTarget != null;
+        if (upgradeButton != null) upgradeButton.gameObject.SetActive(canUpgrade);
+
         popupPanel.gameObject.SetActive(true);
         if (buildingName != null)
         {
@@ -95,7 +105,11 @@ public class BuildingPopupUI : MonoBehaviour
     {
         popupPanel.gameObject.SetActive(false);
         selectedBuilding = null;
-        if (infoPopupPanel != null) infoPopupPanel.SetActive(false);
+        if (infoPopupPanel != null)
+        {
+            infoPopupPanel.SetActive(false);
+            SetHudVisible(true);
+        }
     }
 
     void UpdatePosition()
@@ -116,18 +130,22 @@ public class BuildingPopupUI : MonoBehaviour
     void OnInfoClicked()
     {
         string contentId = selectedBuilding?.buildingData?.contentId;
-        if (string.IsNullOrEmpty(contentId))
+
+        // 액션 팝업만 먼저 닫기 (info 패널은 건드리지 않음)
+        popupPanel.gameObject.SetActive(false);
+
+        if (!string.IsNullOrEmpty(contentId))
+        {
+            selectedBuilding = null;
+            StartCoroutine(FetchTourInfo(contentId));
+        }
+        else
         {
             string manual = selectedBuilding?.buildingData?.manualInfoText;
-            if (!string.IsNullOrWhiteSpace(manual))
-                ShowInfoText(manual);
-            else
-                Debug.LogWarning($"[Popup] {selectedBuilding?.buildingData?.buildingName}에 contentId와 manualInfoText가 모두 비어 있습니다.");
-            Hide();
-            return;
+            // selectedBuilding을 null로 바꾸기 전에 ShowInfoText 호출
+            ShowInfoText(!string.IsNullOrWhiteSpace(manual) ? manual : "");
+            selectedBuilding = null;
         }
-        StartCoroutine(FetchTourInfo(contentId));
-        Hide();
     }
 
     IEnumerator FetchTourInfo(string contentId)
@@ -200,11 +218,29 @@ public class BuildingPopupUI : MonoBehaviour
     }
 
     
+    void PopulateStats()
+    {
+        BuildingData data = selectedBuilding?.buildingData;
+        if (data == null) return;
+
+        if (statGoldText      != null) statGoldText.text    = data.goldProductionRate.ToString("#,##0.##");
+        if (statTouristText   != null) statTouristText.text = $"{data.touristIncrease:N0} / {data.maxTouristIncrease:N0}";
+    }
+
+    void SetHudVisible(bool visible)
+    {
+        if (goldUI     != null) goldUI.SetActive(visible);
+        if (touristUI  != null) touristUI.SetActive(visible);
+        if (knowledgeUI != null) knowledgeUI.SetActive(visible);
+    }
+
     void ShowInfoText(string text)
     {
         if (infoPopupPanel != null)
         {
             infoPopupPanel.SetActive(true);
+            SetHudVisible(false);
+            PopulateStats();
             if (infoText != null)
             {
                 infoText.text = "\n" + text;
@@ -229,43 +265,60 @@ public class BuildingPopupUI : MonoBehaviour
     void OnUpgradeClicked()
     {
         BuildingData data = selectedBuilding?.buildingData;
-        if (data == null) return;
+        if (data == null || data.upgradeTarget == null) return;
 
-        int cost = Mathf.RoundToInt(data.price * upgradeCostMultiplier);
+        BuildingData target = data.upgradeTarget;
 
-        if (!gameManager.SpendMoney(cost))
+        if (!gameManager.SpendMoney(data.upgradeCost))
         {
-            Debug.LogWarning($"[업그레이드] 골드 부족 (필요: {cost})");
+            Debug.LogWarning($"[업그레이드] 골드 부족 (필요: {data.upgradeCost})");
             return;
         }
 
-        // 골드 생산량 증가
-        selectedBuilding.bonusGoldRate += upgradeGoldBonus;
+        // 현재 건물 위치 기록
+        var install = buildingInstall != null ? buildingInstall : FindFirstObjectByType<BuildingInstall>();
+        if (install == null) { Debug.LogError("[업그레이드] BuildingInstall을 찾을 수 없습니다."); return; }
 
-        // 관광객 증가
-        selectedBuilding.bonusTourist += upgradeTouristBonus;
-        gameManager.AddTourists(upgradeTouristBonus, 0); // TODO: maxTourist 보너스도 기획 확정 후 추가
+        Vector3Int cellPos = install.BaseGrid.WorldToCell(selectedBuilding.transform.position);
 
-        Debug.Log($"[업그레이드] {data.buildingName} | 비용 {cost} | 골드+{upgradeGoldBonus} | 관광객+{upgradeTouristBonus}");
+        // 기존 건물 제거
+        gameManager.RemoveTourists(0, data.maxTouristIncrease, data.touristIncrease);
+        gameManager.UnregisterBuilding(data);
+        install.FreeOccupiedCells(selectedBuilding.transform.position, data);
+
+        Destroy(selectedBuilding.gameObject);
+        selectedBuilding = null;
         Hide();
+
+        // 새 건물 설치
+        install.InstallBuildingAt(target, cellPos);
+
+        Debug.Log($"[업그레이드] {data.buildingName} → {target.buildingName} (비용 {data.upgradeCost})");
     }
 
     void OnDeleteClicked()
     {
         BuildingData data = selectedBuilding.buildingData;
 
-        // 삭제 후 현재 관광객이 새 최대치를 초과하면 삭제 불가
-        int newCurrent = gameManager.CurrentTourists - data.touristIncrease;
-        int newMax = gameManager.MaxTourists - data.maxTouristIncrease;
-        if (newCurrent > newMax)
-        {
-            Debug.LogWarning("이 건물을 삭제하면 관광객이 한도를 초과합니다!");
-            return;
-        }
-
         gameManager.AddMoney(data.price / 2);
-        gameManager.RemoveTourists(data.touristIncrease, data.maxTouristIncrease);
+        gameManager.RemoveTourists(0, data.maxTouristIncrease, data.touristIncrease);
+        gameManager.UnregisterBuilding(data);
+
+        var buildingInstall = FindFirstObjectByType<BuildingInstall>();
+        if (buildingInstall != null)
+            buildingInstall.FreeOccupiedCells(selectedBuilding.transform.position, data);
+
+#if UNITY_EDITOR
+        UnityEditor.Selection.activeGameObject = null;
+#endif
         Destroy(selectedBuilding.gameObject);
         Hide();
+        StartCoroutine(SaveAfterDestroy());
+    }
+
+    IEnumerator SaveAfterDestroy()
+    {
+        yield return null; // Destroy가 실제로 반영된 다음 프레임에 저장
+        SaveManager.Instance?.SaveGameData();
     }
 }

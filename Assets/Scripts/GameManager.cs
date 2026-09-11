@@ -6,14 +6,56 @@ public class GameManager : MonoBehaviour
     [SerializeField] private long userMoney = 10000L;
 
     // 유저가 가지고 있는 지식포인트(GameManager에서만 관리)
-    private long userKnowledgePoint = 0L;
+    [SerializeField] private long userKnowledgePoint = 0L;
 
     // 관광객 수치
     private int currentTourists = 0;
     private int maxTourists = 0;
+    private int touristRatePerSecond = 0;
+    private float touristTimer = 0f;
     public int CurrentTourists => currentTourists;
     public int MaxTourists => maxTourists;
+    public int TouristRatePerSecond => touristRatePerSecond;
     public event System.Action<int, int> OnTouristsChanged;
+
+    // 건물 설치 제한
+    [Header("게임 단계 (0~3 → 기본건물 최대 10/20/30/40개)")]
+    [SerializeField] private int currentStage = 0;
+    private static readonly int[] stageLimits = { 10, 20, 30, 40 };
+
+    private int basicBuildingCount = 0;
+    private System.Collections.Generic.HashSet<string> installedLandmarks = new System.Collections.Generic.HashSet<string>();
+    public int BasicBuildingCount => basicBuildingCount;
+    public int CurrentStage => currentStage;
+    public int MaxBasicBuildings => stageLimits[Mathf.Clamp(currentStage, 0, stageLimits.Length - 1)];
+    public event System.Action OnBuildingCountChanged;
+
+    public void SetStage(int stage)
+    {
+        currentStage = Mathf.Clamp(stage, 0, stageLimits.Length - 1);
+        OnBuildingCountChanged?.Invoke();
+    }
+
+    public bool CanInstallBasic() => basicBuildingCount < MaxBasicBuildings;
+    public bool IsLandmarkInstalled(string buildingName) => installedLandmarks.Contains(buildingName);
+
+    public void RegisterBuilding(BuildingData data)
+    {
+        if (data.category == BuildingCategory.Basic)
+            basicBuildingCount++;
+        else if (data.category == BuildingCategory.Landmark)
+            installedLandmarks.Add(data.buildingName);
+        OnBuildingCountChanged?.Invoke();
+    }
+
+    public void UnregisterBuilding(BuildingData data)
+    {
+        if (data.category == BuildingCategory.Basic)
+            basicBuildingCount = Mathf.Max(0, basicBuildingCount - 1);
+        else if (data.category == BuildingCategory.Landmark)
+            installedLandmarks.Remove(data.buildingName);
+        OnBuildingCountChanged?.Invoke();
+    }
 
     [Header("미니게임 UI 참조 (미니게임 씬에서만 연결)")]
     [SerializeField] private GameObject puzzleUI;
@@ -37,31 +79,50 @@ public class GameManager : MonoBehaviour
         destroyingActivation = false;
     }
 
+    void Update()
+    {
+        if (touristRatePerSecond > 0 && currentTourists < maxTourists)
+        {
+            touristTimer += Time.deltaTime;
+            if (touristTimer >= 1f)
+            {
+                touristTimer = 0f;
+                int delta = Mathf.Min(touristRatePerSecond, maxTourists - currentTourists);
+                currentTourists += delta;
+                OnTouristsChanged?.Invoke(currentTourists, maxTourists);
+            }
+        }
+    }
+
     void Start()
     {
         if (SaveManager.Instance != null)
         {
             userMoney = SaveManager.Instance.CurrentData.userMoney;
             userKnowledgePoint = SaveManager.Instance.CurrentData.userKnowledgePoint;
+            currentTourists = SaveManager.Instance.CurrentData.currentTourists;
         }
         SoundManager.Instance.PlayBGM("baseBGM");
         OnMoneyChanged?.Invoke(userMoney);
         OnKnowledgePointChanged?.Invoke(userKnowledgePoint);
     }
 
-    // 건물 설치 시 관광객 수치 추가
-    public void AddTourists(int tourist, int maxTourist)
+    // 건물 설치 시 관광객 수치 추가 (rate = 초당 증가량 기여분)
+    public void AddTourists(int tourist, int maxTourist, int rate = 0)
     {
         currentTourists += tourist;
         maxTourists += maxTourist;
+        touristRatePerSecond += rate;
         OnTouristsChanged?.Invoke(currentTourists, maxTourists);
     }
 
     // 건물 삭제 시 관광객 수치 차감
-    public void RemoveTourists(int tourist, int maxTourist)
+    public void RemoveTourists(int tourist, int maxTourist, int rate = 0)
     {
         currentTourists -= tourist;
         maxTourists -= maxTourist;
+        touristRatePerSecond -= rate;
+        if (currentTourists > maxTourists) currentTourists = maxTourists;
         OnTouristsChanged?.Invoke(currentTourists, maxTourists);
     }
 
@@ -78,6 +139,15 @@ public class GameManager : MonoBehaviour
         if (userMoney < money) return false;
         userMoney -= money;
         OnMoneyChanged?.Invoke(userMoney);
+        return true;
+    }
+
+    // 지식포인트 차감 — 부족하면 false 반환
+    public bool SpendKnowledgePoint(long amount)
+    {
+        if (userKnowledgePoint < amount) return false;
+        userKnowledgePoint -= amount;
+        OnKnowledgePointChanged?.Invoke(userKnowledgePoint);
         return true;
     }
 

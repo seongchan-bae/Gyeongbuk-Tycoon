@@ -58,6 +58,7 @@ public class SaveManager : MonoBehaviour
         {
             CurrentData.userMoney = GameManager.Instance.UserMoney;
             CurrentData.userKnowledgePoint = GameManager.Instance.UserKnowledgePoint;
+            CurrentData.currentTourists = GameManager.Instance.CurrentTourists;
         }
 
         // 2. 맵에 설치된 건물 위치 동기화

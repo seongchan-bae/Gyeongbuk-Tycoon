@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
+  m_Name: "\uC804\uB2F9\uD3EC"
+  m_EditorClassIdentifier: Assembly-CSharp::BuildingData
+  buildingName: "\uC804\uB2F9\uD3EC"
+  price: 1000
+  knowledgePrice: 0
+  goldProductionRate: 6
+  thumbnail: {fileID: 0}
+  prefab: {fileID: 6093366963836056713, guid: 8fe93cb242e8e4147b1af6152b8d211a, type: 3}
+  tileWidth: 2
+  tileHeight: 2
+  contentId: 
+  manualInfoText: 
+  maxTouristIncrease: 60
+  touristIncrease: 1
+  requiresWaterTile: 0
+  waterTilePrefab: {fileID: 0}
+  category: 0
+  upgradeTarget: {fileID: 11400000, guid: 83d6f393e3d442744a3d82951041ca2f, type: 2}
+  upgradeCost: 600000

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   buildingName: "\uC11D\uAD74\uC554"
   price: 100000
+<<<<<<< HEAD
   goldProductionRate: 500
   thumbnail: {fileID: 0}
   prefab: {fileID: 0}
@@ -24,3 +25,18 @@ MonoBehaviour:
   touristIncrease: 10
   requiresWaterTile: 0
   category: 0
+=======
+  knowledgePrice: 100
+  goldProductionRate: 12
+  thumbnail: {fileID: 0}
+  prefab: {fileID: 6828297288754380859, guid: 14103f9a87c1b3a4fb6adda4784c6bcb, type: 3}
+  tileWidth: 2
+  tileHeight: 2
+  contentId: 126216
+  manualInfoText: 
+  maxTouristIncrease: 480
+  touristIncrease: 7
+  requiresWaterTile: 0
+  waterTilePrefab: {fileID: 0}
+  category: 1
+>>>>>>> origin/feature/uimerge3

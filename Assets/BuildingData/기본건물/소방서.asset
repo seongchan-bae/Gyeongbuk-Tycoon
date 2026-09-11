@@ -15,6 +15,7 @@ MonoBehaviour:
   buildingName: "\uC18C\uBC29\uC11C"
   price: 1000
 <<<<<<< HEAD
+<<<<<<< HEAD
   goldProductionRate: 0
   thumbnail: {fileID: 21300000, guid: 0ccb3c3878b516a4c8c2952085b66c7b, type: 3}
   prefab: {fileID: 7759365720417162852, guid: d4067051df41be04090fc83b09044abd, type: 3}
@@ -28,6 +29,17 @@ MonoBehaviour:
   contentId: 
   maxTouristIncrease: 1000
   touristIncrease: 2
+=======
+  goldProductionRate: 2
+  thumbnail: {fileID: 0}
+  prefab: {fileID: 5959755977675870338, guid: 4a1f5a9c65568e44b897d2157e7b3403, type: 3}
+  tileWidth: 2
+  tileHeight: 2
+  contentId: 
+  manualInfoText: 
+  maxTouristIncrease: 200
+  touristIncrease: 1
+>>>>>>> origin/feature/uimerge3
   requiresWaterTile: 0
   waterTilePrefab: {fileID: 0}
   category: 0

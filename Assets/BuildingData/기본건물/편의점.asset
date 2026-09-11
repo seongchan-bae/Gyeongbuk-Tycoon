@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
+  m_Name: "\uD3B8\uC758\uC810"
+  m_EditorClassIdentifier: Assembly-CSharp::BuildingData
+<<<<<<< HEAD:Assets/BuildingData/기본건물/New Building Data 6.asset
+<<<<<<< HEAD:Assets/BuildingData/기본건물/New Building Data 6.asset
+  buildingName: 
+  price: 0
+  goldProductionRate: 0
+  thumbnail: {fileID: 0}
+  prefab: {fileID: 0}
+  tileWidth: 0
+  tileHeight: 0
+=======
+  buildingName: "\uC804\uB2F9\uD3EC"
+  price: 1000
+  goldProductionRate: 30
+  thumbnail: {fileID: 0}
+  prefab: {fileID: 1077016933681474087, guid: 49504c67860a0444a8ba932174807e0b, type: 3}
+  tileWidth: 2
+  tileHeight: 2
+>>>>>>> origin/feature/uimerge-integration:Assets/BuildingData/기본건물/전당포.asset
+=======
+  buildingName: "\uD3B8\uC758\uC810"
+  price: 1000
+  goldProductionRate: 4
+  thumbnail: {fileID: 0}
+  prefab: {fileID: 6155012932828860074, guid: 951bca7a94b738c4fafbe70299e6a883, type: 3}
+  tileWidth: 2
+  tileHeight: 2
+>>>>>>> origin/feature/uimerge3:Assets/BuildingData/기본건물/편의점.asset
+  contentId: 
+  manualInfoText: 
+  maxTouristIncrease: 100
+  touristIncrease: 2
+  requiresWaterTile: 0
+  waterTilePrefab: {fileID: 0}
+  category: 0
