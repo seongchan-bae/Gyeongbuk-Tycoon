@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   buildingName: "\uD3EC\uC7A5\uB9C8\uCC28"
   price: 1000
+  knowledgePrice: 0
   goldProductionRate: 3
   thumbnail: {fileID: 0}
   prefab: {fileID: 7012735200276077162, guid: df516fd5a9c61b14e9d13cdff043532b, type: 3}
@@ -26,3 +27,5 @@ MonoBehaviour:
   requiresWaterTile: 0
   waterTilePrefab: {fileID: 0}
   category: 0
+  upgradeTarget: {fileID: 11400000, guid: d4faeed30b7233d4d945af19b8e9cbd4, type: 2}
+  upgradeCost: 600000

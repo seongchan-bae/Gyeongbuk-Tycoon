@@ -25,4 +25,8 @@ public class BuildingData : ScriptableObject
     public bool requiresWaterTile;      // 설치 시 물 프리팹 배치 여부
     public GameObject waterTilePrefab;  // 건물 크기에 맞는 물 프리팹
     public BuildingCategory category;   // 상점 필터 카테고리
+
+    [Header("업그레이드")]
+    public BuildingData upgradeTarget;  // 업그레이드 시 대체될 건물 (null이면 업그레이드 불가)
+    public int upgradeCost;             // 업그레이드 비용 (골드)
 }

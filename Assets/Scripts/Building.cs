@@ -12,9 +12,6 @@ public class Building : MonoBehaviour
 
     public static bool AnyBuildingDragging { get; set; }
 
-    // 업그레이드로 누적된 런타임 보너스 (ScriptableObject 원본은 건드리지 않음)
-    [HideInInspector] public float bonusGoldRate = 0f;
-    [HideInInspector] public int   bonusTourist  = 0;        // 초당 관광객 추가 생산량
 
     private int currentTourists = 0;
     public int CurrentTourists => currentTourists;
@@ -58,14 +55,14 @@ public class Building : MonoBehaviour
             if (goldTimer >= productionInterval)
             {
                 goldTimer = 0f;
-                gameManager.AddMoney((long)(buildingData.goldProductionRate + bonusGoldRate));
+                gameManager.AddMoney((long)buildingData.goldProductionRate);
             }
 
             if (touristTimer >= productionInterval)
             {
                 touristTimer = 0f;
                 int max = buildingData.maxTouristIncrease;
-                int rate = buildingData.touristIncrease + bonusTourist;
+                int rate = buildingData.touristIncrease;
                 if (currentTourists < max)
                 {
                     int delta = Mathf.Min(rate, max - currentTourists);

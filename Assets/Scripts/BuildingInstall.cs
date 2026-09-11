@@ -70,6 +70,23 @@ public class BuildingInstall : MonoBehaviour
     private Sprite   tileHighlightSprite;
     private GameObject highlightContainer;
 
+#if UNITY_EDITOR
+    void OnValidate()
+    {
+        if (Application.isPlaying) return;
+        var guids = UnityEditor.AssetDatabase.FindAssets("t:BuildingData");
+        var list = new System.Collections.Generic.List<BuildingData>();
+        foreach (var guid in guids)
+        {
+            string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+            var data = UnityEditor.AssetDatabase.LoadAssetAtPath<BuildingData>(path);
+            if (data != null) list.Add(data);
+        }
+        allBuildingDataList = list.ToArray();
+        UnityEditor.EditorUtility.SetDirty(this);
+    }
+#endif
+
     void Start()
     {
         SetupTriggerCollider();
@@ -560,6 +577,7 @@ public class BuildingInstall : MonoBehaviour
                 occupiedCells.Add(cell);
             if (building.buildingData != null && building.buildingData.requiresWaterTile)
                 PlaceWaterTiles(cellPosition, building.buildingData);
+            SaveManager.Instance?.SaveGameData();
         }
         isOutsideGrid = false;
         isBuildingMoving = false;
@@ -569,6 +587,73 @@ public class BuildingInstall : MonoBehaviour
         SetupTriggerCollider(); // 콜라이더 크기 1x1 기본값으로 복원
     }
 
+
+    // 업그레이드 등 특정 셀에 직접 건물을 설치할 때 호출
+    public Building InstallBuildingAt(BuildingData data, Vector3Int cellPos)
+    {
+        Vector3 spawnPos = baseGrid.GetCellCenterWorld(cellPos);
+        GameObject installedBuilding = Instantiate(data.prefab, spawnPos, Quaternion.identity);
+        installedBuilding.transform.SetParent(baseGrid.transform);
+
+        SetupBuildingColliderForData(installedBuilding, data);
+
+        Building b = installedBuilding.GetComponent<Building>();
+        if (b == null) b = installedBuilding.AddComponent<Building>();
+
+        b.Initialize(gameManager);
+        b.buildingData = data;
+
+        foreach (var sr in installedBuilding.GetComponentsInChildren<SpriteRenderer>(true))
+            sr.sortingLayerName = "Building";
+
+        gameManager.AddTourists(0, data.maxTouristIncrease);
+        gameManager.RegisterBuilding(data);
+
+        if (data.requiresWaterTile)
+            PlaceWaterTiles(cellPos, data);
+
+        foreach (var cell in GetFootprintCells(cellPos, data))
+            occupiedCells.Add(cell);
+
+        SaveManager.Instance?.SaveGameData();
+        return b;
+    }
+
+    void SetupBuildingColliderForData(GameObject building, BuildingData data)
+    {
+        if (building.GetComponent<Collider2D>() == null)
+        {
+            float w = data != null ? data.tileWidth : 1f;
+            float h = data != null ? data.tileHeight : 1f;
+
+            PolygonCollider2D col = building.AddComponent<PolygonCollider2D>();
+            col.points = new Vector2[]
+            {
+                new Vector2(-w * 0.5f, 0),
+                new Vector2(0,  h * 0.25f),
+                new Vector2( w * 0.5f, 0),
+                new Vector2(0, -h * 0.25f)
+            };
+        }
+
+        if (buildingLayer.value != 0)
+        {
+            for (int i = 0; i < 32; i++)
+            {
+                if ((buildingLayer.value & (1 << i)) != 0)
+                {
+                    building.layer = i;
+                    break;
+                }
+            }
+        }
+
+        if (building.GetComponent<Rigidbody2D>() == null)
+        {
+            Rigidbody2D buildingRb = building.AddComponent<Rigidbody2D>();
+            buildingRb.bodyType = RigidbodyType2D.Static;
+        }
+    }
 
     // 상점 건물 카드에서 호출 — BuildingData 교체 후 Ghost 표시 + 설치 모드 ON
     public void SelectBuilding(BuildingData data)
@@ -660,51 +745,12 @@ public class BuildingInstall : MonoBehaviour
         gameManager.installingActivation = false; // 설치 완료 후 모드 자동 종료
         baseUI.ShowStoreButton();
         Debug.Log("건물 설치 완료!");
+        SaveManager.Instance?.SaveGameData();
     }
 
     void SetupBuildingCollider(GameObject building)
     {
-        // 이미 Collider2D가 있으면 레이어만 설정
-        if (building.GetComponent<Collider2D>() == null)
-        {
-            float w = currentBuildingData != null ? currentBuildingData.tileWidth : 1f;
-            float h = currentBuildingData != null ? currentBuildingData.tileHeight : 1f;
-
-            PolygonCollider2D col = building.AddComponent<PolygonCollider2D>();
-            col.points = new Vector2[]
-            {
-                new Vector2(-w * 0.5f, 0),
-                new Vector2(0,  h * 0.25f),
-                new Vector2( w * 0.5f, 0),
-                new Vector2(0, -h * 0.25f)
-            };
-            Debug.Log($"[BuildingInstall] {building.name} → PolygonCollider2D 추가됨 (w={w}, h={h})");
-        }
-
-        // buildingLayer 마스크에서 첫 번째 레이어를 꺼내 건물 레이어로 설정
-        if (buildingLayer.value != 0)
-        {
-            for (int i = 0; i < 32; i++)
-            {
-                if ((buildingLayer.value & (1 << i)) != 0)
-                {
-                    building.layer = i;
-                    Debug.Log($"[BuildingInstall] {building.name} → layer = {i} ({LayerMask.LayerToName(i)})");
-                    break;
-                }
-            }
-        }
-        else
-        {
-            Debug.LogWarning("[BuildingInstall] buildingLayer가 Inspector에 설정되지 않았습니다. 충돌 감지가 작동하지 않을 수 있습니다.");
-        }
-
-        // Rigidbody2D(Static)이 없으면 추가 — 없으면 트리거 이벤트가 발생하지 않음
-        if (building.GetComponent<Rigidbody2D>() == null)
-        {
-            Rigidbody2D buildingRb = building.AddComponent<Rigidbody2D>();
-            buildingRb.bodyType = RigidbodyType2D.Static;
-        }
+        SetupBuildingColliderForData(building, currentBuildingData);
     }
 
     void PlaceWaterTiles(Vector3Int center, BuildingData data)
