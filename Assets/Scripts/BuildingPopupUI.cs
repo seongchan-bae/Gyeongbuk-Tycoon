@@ -282,8 +282,7 @@ public class BuildingPopupUI : MonoBehaviour
     {
         BuildingData data = selectedBuilding.buildingData;
 
-        // 삭제 후 현재 관광객이 새 최대치를 초과하면 삭제 불가
-        int newCurrent = gameManager.CurrentTourists - data.touristIncrease;
+        int newCurrent = gameManager.CurrentTourists - selectedBuilding.CurrentTourists;
         int newMax = gameManager.MaxTourists - data.maxTouristIncrease;
         if (newCurrent > newMax)
         {
@@ -292,13 +291,16 @@ public class BuildingPopupUI : MonoBehaviour
         }
 
         gameManager.AddMoney(data.price / 2);
-        gameManager.RemoveTourists(data.touristIncrease, data.maxTouristIncrease);
+        gameManager.RemoveTourists(selectedBuilding.CurrentTourists, data.maxTouristIncrease);
         gameManager.UnregisterBuilding(data);
 
         var buildingInstall = FindFirstObjectByType<BuildingInstall>();
         if (buildingInstall != null)
             buildingInstall.FreeOccupiedCells(selectedBuilding.transform.position, data);
 
+#if UNITY_EDITOR
+        UnityEditor.Selection.activeGameObject = null;
+#endif
         Destroy(selectedBuilding.gameObject);
         Hide();
     }
