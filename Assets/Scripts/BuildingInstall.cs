@@ -243,6 +243,7 @@ public class BuildingInstall : MonoBehaviour
     {
         if (ghostRenderer != null) ghostRenderer.gameObject.SetActive(false);
         ClearTileHighlights();
+        if (gridOverlay != null) gridOverlay.gameObject.SetActive(false);
         if (gameManager != null)
         {
             gameManager.installingActivation = false;
@@ -516,6 +517,7 @@ public class BuildingInstall : MonoBehaviour
         // 이동 중인 건물의 셀을 점유 목록에서 제거 (자기 자신과 충돌 방지)
         foreach (var cell in GetFootprintCells(dragOriginalCell, building.buildingData))
             occupiedCells.Remove(cell);
+        if (gridOverlay != null) gridOverlay.gameObject.SetActive(true);
 
         // 드래그 시작 시 물타일 제거 (이동 후 새 위치에 다시 배치)
         if (building.buildingData != null && building.buildingData.requiresWaterTile)
@@ -563,6 +565,7 @@ public class BuildingInstall : MonoBehaviour
         isBuildingMoving = false;
         currentBuildingData = null;
         ClearTileHighlights();
+        if (gridOverlay != null) gridOverlay.gameObject.SetActive(false);
         SetupTriggerCollider(); // 콜라이더 크기 1x1 기본값으로 복원
     }
 
@@ -589,6 +592,7 @@ public class BuildingInstall : MonoBehaviour
             gameManager.installingActivation = true;
             baseUI.CloseStoreButton();
         }
+        if (gridOverlay != null) gridOverlay.gameObject.SetActive(true);
     }
 
     void buildingInstalling(Vector3Int currentCellPos)
@@ -652,6 +656,7 @@ public class BuildingInstall : MonoBehaviour
 
         foreach (var cell in GetFootprintCells(currentCellPos, currentBuildingData))
             occupiedCells.Add(cell);
+        if (gridOverlay != null) gridOverlay.gameObject.SetActive(false);
         gameManager.installingActivation = false; // 설치 완료 후 모드 자동 종료
         baseUI.ShowStoreButton();
         Debug.Log("건물 설치 완료!");

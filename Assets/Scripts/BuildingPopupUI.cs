@@ -28,6 +28,15 @@ public class BuildingPopupUI : MonoBehaviour
     [SerializeField] private string tourApiKey = "616315cd61c155564e9088acbc319ff980ccc75a67ed38601b3876602d23ee9d"; // data.go.kr 디코딩 키 입력
     [SerializeField] private GameObject infoPopupPanel;               // 관광 정보를 표시할 별도 패널
     [SerializeField] private TextMeshProUGUI infoText;                // 관광 정보 텍스트
+
+    [Header("건물 스탯 텍스트")]
+    [SerializeField] private TextMeshProUGUI statGoldText;
+    [SerializeField] private TextMeshProUGUI statTouristText;
+
+    [Header("APIBoard 열릴 때 숨길 HUD")]
+    [SerializeField] private GameObject goldUI;
+    [SerializeField] private GameObject touristUI;
+    [SerializeField] private GameObject knowledgeUI;
     
 
     private Building selectedBuilding;
@@ -95,7 +104,11 @@ public class BuildingPopupUI : MonoBehaviour
     {
         popupPanel.gameObject.SetActive(false);
         selectedBuilding = null;
-        if (infoPopupPanel != null) infoPopupPanel.SetActive(false);
+        if (infoPopupPanel != null)
+        {
+            infoPopupPanel.SetActive(false);
+            SetHudVisible(true);
+        }
     }
 
     void UpdatePosition()
@@ -119,10 +132,7 @@ public class BuildingPopupUI : MonoBehaviour
         if (string.IsNullOrEmpty(contentId))
         {
             string manual = selectedBuilding?.buildingData?.manualInfoText;
-            if (!string.IsNullOrWhiteSpace(manual))
-                ShowInfoText(manual);
-            else
-                Debug.LogWarning($"[Popup] {selectedBuilding?.buildingData?.buildingName}에 contentId와 manualInfoText가 모두 비어 있습니다.");
+            ShowInfoText(!string.IsNullOrWhiteSpace(manual) ? manual : "");
             Hide();
             return;
         }
@@ -200,11 +210,29 @@ public class BuildingPopupUI : MonoBehaviour
     }
 
     
+    void PopulateStats()
+    {
+        BuildingData data = selectedBuilding?.buildingData;
+        if (data == null) return;
+
+        if (statGoldText      != null) statGoldText.text    = data.goldProductionRate.ToString("#,##0.##");
+        if (statTouristText   != null) statTouristText.text = $"{data.touristIncrease:N0} / {data.maxTouristIncrease:N0}";
+    }
+
+    void SetHudVisible(bool visible)
+    {
+        if (goldUI     != null) goldUI.SetActive(visible);
+        if (touristUI  != null) touristUI.SetActive(visible);
+        if (knowledgeUI != null) knowledgeUI.SetActive(visible);
+    }
+
     void ShowInfoText(string text)
     {
         if (infoPopupPanel != null)
         {
             infoPopupPanel.SetActive(true);
+            SetHudVisible(false);
+            PopulateStats();
             if (infoText != null)
             {
                 infoText.text = "\n" + text;

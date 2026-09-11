@@ -13,6 +13,7 @@ public class GridOverlay : MonoBehaviour
     void Start()
     {
         DrawGrid();
+        gameObject.SetActive(false);
     }
 
     // 해당 셀이 그리드 범위 안에 있는지 여부
