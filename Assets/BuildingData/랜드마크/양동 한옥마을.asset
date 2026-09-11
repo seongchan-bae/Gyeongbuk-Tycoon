@@ -15,15 +15,15 @@ MonoBehaviour:
   buildingName: "\uC591\uB3D9 \uD55C\uC625\uB9C8\uC744"
   price: 100000
   knowledgePrice: 100
-  goldProductionRate: 0
+  goldProductionRate: 8
   thumbnail: {fileID: 0}
   prefab: {fileID: 6011159975665312514, guid: 4ebf73d88db79b848b6842f75881ca5e, type: 3}
   tileWidth: 3
   tileHeight: 3
   contentId: 127855
   manualInfoText: 
-  maxTouristIncrease: 0
-  touristIncrease: 0
+  maxTouristIncrease: 1000
+  touristIncrease: 5
   requiresWaterTile: 0
   waterTilePrefab: {fileID: 0}
-  category: 0
+  category: 1

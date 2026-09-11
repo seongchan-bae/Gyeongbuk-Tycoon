@@ -61,23 +61,17 @@ public class BuildingCardUI : MonoBehaviour
     {
         if (buildingData == null) return;
 
-        // 랜드마크는 설치되는 순간 슬롯 자체를 비활성화
-        if (buildingData.category == BuildingCategory.Landmark
+        bool alreadyInstalled = buildingData.category == BuildingCategory.Landmark
             && gameManager != null
-            && gameManager.IsLandmarkInstalled(buildingData.buildingName))
-        {
-            gameObject.SetActive(false);
-            return;
-        }
+            && gameManager.IsLandmarkInstalled(buildingData.buildingName);
 
         bool notEnoughMoney = currentMoney < buildingData.price;
-        // TODO: 테스트 완료 후 재활성화
-        // bool notEnoughKP = gameManager != null && gameManager.UserKnowledgePoint < buildingData.knowledgePrice;
+        bool notEnoughKP = gameManager != null && gameManager.UserKnowledgePoint < buildingData.knowledgePrice;
         bool limitReached = buildingData.category == BuildingCategory.Basic
             && gameManager != null
             && !gameManager.CanInstallBasic();
 
-        bool locked = notEnoughMoney || limitReached;
+        bool locked = alreadyInstalled || notEnoughMoney || notEnoughKP || limitReached;
         if (lockImage != null) lockImage.SetActive(locked);
         if (buyButton != null) buyButton.interactable = !locked;
     }

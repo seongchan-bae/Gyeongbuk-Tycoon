@@ -606,12 +606,11 @@ public class BuildingInstall : MonoBehaviour
             Debug.LogWarning($"기본 건물은 최대 {gameManager.MaxBasicBuildings}개까지만 설치할 수 있습니다!");
             return;
         }
-        // TODO: 상점 UI 완성 후 재활성화
-        // if (currentBuildingData.category == BuildingCategory.Landmark && gameManager.IsLandmarkInstalled(currentBuildingData.buildingName))
-        // {
-        //     Debug.LogWarning($"{currentBuildingData.buildingName}은(는) 이미 설치되어 있습니다!");
-        //     return;
-        // }
+        if (currentBuildingData.category == BuildingCategory.Landmark && gameManager.IsLandmarkInstalled(currentBuildingData.buildingName))
+        {
+            Debug.LogWarning($"{currentBuildingData.buildingName}은(는) 이미 설치되어 있습니다!");
+            return;
+        }
 
         // 현재 감지 마름모가 위치한 정확한 중심점에 건물 소환
         Vector3 spawnPos = baseGrid.GetCellCenterWorld(currentCellPos);
