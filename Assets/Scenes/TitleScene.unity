@@ -1479,8 +1479,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 1353663799}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b78a9e49f858e047b77c1131bc85a88, type: 3}
-  m_Name: 
+  m_Script: {fileID: 11500000, guid: 5090ee604319fbb4095df3ee02ec3fd3, type: 3}
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   bgmSource: {fileID: 1353663800}
   sfxSource: {fileID: 0}
