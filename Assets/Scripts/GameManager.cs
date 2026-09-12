@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
             userKnowledgePoint = SaveManager.Instance.CurrentData.userKnowledgePoint;
             currentTourists = SaveManager.Instance.CurrentData.currentTourists;
         }
-        SoundManager.Instance.PlayBGM("baseBGM");
+        if (SoundManager.Instance != null) SoundManager.Instance.PlayBGM("baseBGM");
         OnMoneyChanged?.Invoke(userMoney);
         OnKnowledgePointChanged?.Invoke(userKnowledgePoint);
     }

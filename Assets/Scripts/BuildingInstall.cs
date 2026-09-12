@@ -754,7 +754,7 @@ public class BuildingInstall : MonoBehaviour
         if (gridOverlay != null) gridOverlay.gameObject.SetActive(false);
         gameManager.installingActivation = false; // 설치 완료 후 모드 자동 종료
         baseUI.ShowStoreButton();
-        SoundManager.Instance.PlaySFX("install sound");
+        if (SoundManager.Instance != null) SoundManager.Instance.PlaySFX("install sound");
         Debug.Log("건물 설치 완료!");
         SaveManager.Instance?.SaveGameData();
     }

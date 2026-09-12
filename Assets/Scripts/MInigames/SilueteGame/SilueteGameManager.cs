@@ -44,8 +44,14 @@ public class SilueteGameManager : MonoBehaviour
     [SerializeField] private string imageQuizPrompt = "다음 장소에 해당하는 곳은?";
     [Tooltip("글 문제일 때 상단 질문 문구 (스크립트가 textPromptText 에 채운다)")]
     [SerializeField] private string textQuizPrompt = "다음 설명에 해당하는 곳은?";
-    [Tooltip("글 문제에서 targetImage 를 채울 배경색 (한지 느낌).")]
+    [Tooltip("글 문제에서 targetImage 에 깔 배경 이미지 (칠판). 비워두면 아래 배경색으로 채운다.")]
+    [SerializeField] private Sprite textQuizBackgroundSprite;
+    [Tooltip("글 문제에서 targetImage 를 채울 배경색. textQuizBackgroundSprite 가 없을 때만 쓰인다.")]
     [SerializeField] private Color textQuizBackgroundColor = new Color(0.98f, 0.96f, 0.90f, 1f);
+    [Tooltip("글 문제(칠판)일 때 targetImage 의 크기(width, height). (0,0)이면 이미지 문제와 같은 크기를 쓴다.")]
+    [SerializeField] private Vector2 textQuizImageSize = new Vector2(900f, 520f);
+    [Tooltip("글 문제(칠판)일 때 칠판 이미지를 프레임에 꽉 채울지 여부. 끄면 비율을 유지한다.")]
+    [SerializeField] private bool textQuizImageStretch = true;
 
     [Header("보기 버튼")]
     public Button[] answerButtons;             // 4지선다 버튼 배열 (4개)
@@ -105,6 +111,7 @@ public class SilueteGameManager : MonoBehaviour
     private int currentCorrectIndex;
     private bool isInitialized;
     private Color targetImageDefaultColor = Color.white;
+    private Vector2 targetImageDefaultSize = new Vector2(900f, 400f);
 
     private void Start()
     {
@@ -146,7 +153,11 @@ public class SilueteGameManager : MonoBehaviour
         if (isInitialized) return;
         isInitialized = true;
 
-        if (targetImage != null) targetImageDefaultColor = targetImage.color;
+        if (targetImage != null)
+        {
+            targetImageDefaultColor = targetImage.color;
+            targetImageDefaultSize = targetImage.rectTransform.sizeDelta;
+        }
 
         BuildPool();
 
@@ -290,12 +301,26 @@ public class SilueteGameManager : MonoBehaviour
             targetImage.enabled = true;
             if (currentIsTextQuiz)
             {
-                targetImage.sprite = null;
-                targetImage.preserveAspect = false;
-                targetImage.color = textQuizBackgroundColor;
+                // 글 문제일 때는 칠판 크기를 별도로 지정한다. (0,0)이면 이미지 문제와 동일.
+                targetImage.rectTransform.sizeDelta =
+                    textQuizImageSize == Vector2.zero ? targetImageDefaultSize : textQuizImageSize;
+
+                if (textQuizBackgroundSprite != null)
+                {
+                    targetImage.sprite = textQuizBackgroundSprite;
+                    targetImage.preserveAspect = !textQuizImageStretch;
+                    targetImage.color = Color.white;
+                }
+                else
+                {
+                    targetImage.sprite = null;
+                    targetImage.preserveAspect = false;
+                    targetImage.color = textQuizBackgroundColor;
+                }
             }
             else
             {
+                targetImage.rectTransform.sizeDelta = targetImageDefaultSize;
                 targetImage.sprite = currentQuiz.image;
                 targetImage.preserveAspect = true;
                 targetImage.color = targetImageDefaultColor;

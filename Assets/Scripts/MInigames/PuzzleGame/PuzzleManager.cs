@@ -70,7 +70,7 @@ public class PuzzleManager : MonoBehaviour
     public void RegisterLockedPiece()
     {
         lockedPieceCount++;
-        SoundManager.Instance.PlaySFX("Puzzle snap sound");
+        if (SoundManager.Instance != null) SoundManager.Instance.PlaySFX("Puzzle snap sound");
         Debug.Log($"[PuzzleManager] Lock 카운트: {lockedPieceCount} / {pieces.Count}");
     }
 

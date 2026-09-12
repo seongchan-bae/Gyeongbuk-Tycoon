@@ -16,6 +16,20 @@ public class SoundManager : MonoBehaviour
     private Dictionary<string, AudioClip> bgmDictionary;
     private Dictionary<string, AudioClip> sfxDictionary;
 
+    // 설정 창에서 정한 값. 음소거는 음량과 따로 기억해 둬야
+    // 음소거를 풀었을 때 원래 음량으로 돌아온다.
+    private float bgmVolume = 0.5f;
+    private float sfxVolume = 0.8f;
+    private bool bgmMuted;
+    private bool sfxMuted;
+
+    // 씬 안의 버튼들이 OnClick 에서 직접 가리키는 효과음 AudioSource.
+    // SoundManager 는 DontDestroyOnLoad 라 씬 오브젝트가 참조할 수 없어, 씬 쪽에서 등록해 준다.
+    private AudioSource sceneSfxSource;
+
+    private float EffectiveBgmVolume { get { return bgmMuted ? 0f : bgmVolume; } }
+    private float EffectiveSfxVolume { get { return sfxMuted ? 0f : sfxVolume; } }
+
     private void Awake()
     {
         if (Instance == null)
@@ -48,6 +62,8 @@ public class SoundManager : MonoBehaviour
 
         bgmSource.loop = true;
 
+        LoadSavedVolumes();
+
         // BGM 딕셔너리 초기화
         bgmDictionary = new Dictionary<string, AudioClip>();
         if (bgmClips != null)
@@ -70,14 +86,44 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
+    /// <summary>세이브에 기록된 음량/음소거를 읽어 실제 AudioSource 에 반영한다.</summary>
+    private void LoadSavedVolumes()
+    {
+        if (SaveManager.Instance == null) return;
+
+        GameSaveData data = SaveManager.Instance.CurrentData;
+        bgmVolume = Mathf.Clamp01(data.bgmVolume);
+        sfxVolume = Mathf.Clamp01(data.sfxVolume);
+        bgmMuted = data.bgmMuted;
+        sfxMuted = data.sfxMuted;
+
+        SetBGMVolume(EffectiveBgmVolume);
+        SetSFXVolume(EffectiveSfxVolume);
+    }
+
+    /// <summary>
+    /// 씬에 놓인 효과음 AudioSource 를 등록한다.
+    /// 버튼 OnClick 의 AudioSource.PlayOneShot 이 이 AudioSource 를 직접 호출하므로,
+    /// 설정 창에서 정한 효과음 음량이 그쪽에도 그대로 걸리게 해 준다.
+    /// </summary>
+    public void AttachSceneSfxSource(AudioSource source)
+    {
+        sceneSfxSource = source;
+        if (sceneSfxSource != null) sceneSfxSource.volume = EffectiveSfxVolume;
+    }
+
     #region BGM Methods
     //인스펙터 호출용
 public void PlayBGM(string clipName)
 {
-    PlayBGM(clipName, 1.0f);
+    // 설정 창에서 정한 음량을 무시하고 항상 1.0 으로 재생하면
+    // BGM 이 바뀔 때마다 소리가 최대로 돌아가 버린다.
+    PlayBGM(clipName, EffectiveBgmVolume);
 }
 public void PlayBGM(string clipName, float volume = 1.0f)
 {
+    if (bgmDictionary == null) return;
+
     if (bgmDictionary.TryGetValue(clipName, out AudioClip clip))
     {
         // 1. 이미 같은 BGM이 재생 중이라면 중복 재생 방지 후 종료
@@ -108,9 +154,11 @@ public void PlayBGM(string clipName, float volume = 1.0f)
     }
 
     // 설정창/UI 호출용 BGM 볼륨 적용 메서드
-    public void ApplyBGM(float volume, bool bgmMuted)
+    public void ApplyBGM(float volume, bool muted)
     {
-        SetBGMVolume(volume);
+        bgmVolume = Mathf.Clamp01(volume);
+        bgmMuted = muted;
+        SetBGMVolume(EffectiveBgmVolume);
     }
 
     public void SetBGMVolume(float volume)
@@ -125,6 +173,8 @@ public void PlayBGM(string clipName, float volume = 1.0f)
     #region SFX Methods
     public void PlaySFX(string clipName, float volume = 1.0f)
     {
+        if (sfxDictionary == null || sfxSource == null) return;
+
         if (sfxDictionary.TryGetValue(clipName, out AudioClip clip))
         {
             sfxSource.PlayOneShot(clip, volume);
@@ -133,24 +183,28 @@ public void PlayBGM(string clipName, float volume = 1.0f)
 
     public void PlaySFX(AudioClip clip, float volume = 1.0f)
     {
-        if (clip != null)
+        if (clip != null && sfxSource != null)
         {
             sfxSource.PlayOneShot(clip, volume);
         }
     }
 
     // 설정창/UI 호출용 SFX 볼륨 적용 메서드
-    public void ApplySFX(float volume, bool sfxMuted )
+    public void ApplySFX(float volume, bool muted)
     {
-        SetSFXVolume(volume);
+        sfxVolume = Mathf.Clamp01(volume);
+        sfxMuted = muted;
+        SetSFXVolume(EffectiveSfxVolume);
     }
 
     public void SetSFXVolume(float volume)
     {
-        if (sfxSource != null)
-        {
-            sfxSource.volume = Mathf.Clamp01(volume);
-        }
+        float v = Mathf.Clamp01(volume);
+
+        if (sfxSource != null) sfxSource.volume = v;
+
+        // 버튼 클릭음은 씬 쪽 AudioSource 가 내므로 같이 맞춰 준다.
+        if (sceneSfxSource != null) sceneSfxSource.volume = v;
     }
     #endregion
 }

@@ -35,8 +35,17 @@ public class MiniGameHubUI : MonoBehaviour
 
     [Header("화면 전환 대상")]
     [SerializeField] private GameObject mainUI;
+    [Tooltip("허브/게임이 열려 있는 동안 같이 숨길 메인화면 HUD. 골드·지식포인트·관광객 표시처럼 "
+           + "정렬 순서가 높아 미니게임 위에 그대로 그려지는 캔버스들을 넣는다.")]
+    [SerializeField] private List<GameObject> extraMainUI = new List<GameObject>();
     [Tooltip("미니게임 4종을 고르는 선택 패널")]
     [SerializeField] private GameObject hubPanel;
+
+    [Header("배경음악")]
+    [Tooltip("미니게임 화면에서 재생할 BGM 이름. 비우면 BGM을 바꾸지 않는다.")]
+    [SerializeField] private string miniGameBgmName = "MinigameBGM";
+    [Tooltip("메인화면으로 돌아왔을 때 되돌릴 BGM 이름. 비우면 되돌리지 않는다.")]
+    [SerializeField] private string mainBgmName = "baseBGM";
 
     [Header("허브 버튼")]
     [Tooltip("메인화면에 두는 [미니게임] 버튼")]
@@ -103,9 +112,30 @@ public class MiniGameHubUI : MonoBehaviour
     public void OpenHub()
     {
         CloseAllGamePanels();
-        if (mainUI != null) mainUI.SetActive(false);
+        SetMainUIActive(false);
         if (hubPanel != null) hubPanel.SetActive(true);
         RefreshCurrency();
+        PlayBgm(miniGameBgmName);
+    }
+
+    /// <summary>메인화면 HUD 전체를 한 번에 켜고 끈다.</summary>
+    private void SetMainUIActive(bool active)
+    {
+        if (mainUI != null) mainUI.SetActive(active);
+
+        for (int i = 0; i < extraMainUI.Count; i++)
+        {
+            if (extraMainUI[i] != null) extraMainUI[i].SetActive(active);
+        }
+    }
+
+    /// <summary>SoundManager가 없는 씬에서도 조용히 넘어가도록 감싼다.</summary>
+    private void PlayBgm(string clipName)
+    {
+        if (string.IsNullOrEmpty(clipName)) return;
+        if (SoundManager.Instance == null) return;
+
+        SoundManager.Instance.PlayBGM(clipName);
     }
 
     /// <summary>선택 패널의 보유 재화 표시를 최신 값으로 갱신한다.</summary>
@@ -127,7 +157,8 @@ public class MiniGameHubUI : MonoBehaviour
     {
         CloseAllGamePanels();
         if (hubPanel != null) hubPanel.SetActive(false);
-        if (mainUI != null) mainUI.SetActive(true);
+        SetMainUIActive(true);
+        PlayBgm(mainBgmName);
     }
 
     /// <summary>게임 중 [나가기]에서 호출. 선택 패널로 복귀</summary>
@@ -136,7 +167,7 @@ public class MiniGameHubUI : MonoBehaviour
         if (isSwitching) return;
 
         CloseAllGamePanels();
-        if (mainUI != null) mainUI.SetActive(false);
+        SetMainUIActive(false);
         if (hubPanel != null) hubPanel.SetActive(true);
         RefreshCurrency(); // 방금 얻은 보상이 바로 반영되도록
     }
@@ -157,7 +188,7 @@ public class MiniGameHubUI : MonoBehaviour
         }
 
         CloseAllGamePanels();
-        if (mainUI != null) mainUI.SetActive(false);
+        SetMainUIActive(false);
         if (hubPanel != null) hubPanel.SetActive(false);
 
         hasRunningGame = true;

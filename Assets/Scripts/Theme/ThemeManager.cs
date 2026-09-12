@@ -35,8 +35,13 @@ public class ThemeManager : MonoBehaviour
 
         if (backgroundRenderer == null)
         {
-            GameObject found = GameObject.Find("배경화면");
-            if (found != null) backgroundRenderer = found.GetComponent<SpriteRenderer>();
+            // GameObject.Find 는 꺼져 있는 오브젝트를 못 찾는다.
+            // 배경은 테마가 적용되기 전까지 꺼져 있을 수 있으므로 비활성까지 뒤진다.
+            SpriteRenderer[] all = FindObjectsByType<SpriteRenderer>(FindObjectsInactive.Include);
+            for (int i = 0; i < all.Length; i++)
+            {
+                if (all[i].gameObject.name == "배경화면") { backgroundRenderer = all[i]; break; }
+            }
         }
 
         // 켜 둔 채로 잊어버리는 일이 없도록 눈에 띄게 남긴다.
@@ -94,6 +99,12 @@ public class ThemeManager : MonoBehaviour
         if (backgroundRenderer != null && theme.backgroundSprite != null)
         {
             backgroundRenderer.sprite = theme.backgroundSprite;
+
+            // 테마마다 배경 오브젝트를 따로 두던 시절의 흔적으로 배경이 꺼진 채 저장돼 있을 수 있다.
+            // 스프라이트만 갈아끼우고 끝내면 화면에는 아무것도 안 나오므로 여기서 확실히 켠다.
+            backgroundRenderer.enabled = true;
+            if (!backgroundRenderer.gameObject.activeSelf)
+                backgroundRenderer.gameObject.SetActive(true);
         }
         else if (backgroundRenderer == null)
         {
