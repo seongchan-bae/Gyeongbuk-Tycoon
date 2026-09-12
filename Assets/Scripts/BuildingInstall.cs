@@ -436,6 +436,7 @@ public class BuildingInstall : MonoBehaviour
     // 기존 건물 이동 모드
     private bool isBuildingMoving = false;
     private Vector3Int dragOriginalCell;
+    private SpriteRenderer draggedBuildingSR;
 
     void HandleBuildingInteraction()
     {
@@ -554,6 +555,18 @@ public class BuildingInstall : MonoBehaviour
         var col = building.GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
+        // 고스트 설정 — 드래그 중인 건물 스프라이트를 고스트에 복사하고 원본 숨김
+        draggedBuildingSR = building.GetComponentInChildren<SpriteRenderer>();
+        if (draggedBuildingSR != null && ghostRenderer != null)
+        {
+            ghostRenderer.sprite = draggedBuildingSR.sprite;
+            ghostRenderer.sortingLayerName = draggedBuildingSR.sortingLayerName;
+            ghostRenderer.sortingOrder = draggedBuildingSR.sortingOrder + 1;
+            ghostRenderer.transform.localScale = building.transform.localScale;
+            ghostRenderer.gameObject.SetActive(true);
+            draggedBuildingSR.enabled = false;
+        }
+
         // 트리거 콜라이더를 이 건물 크기에 맞게 재설정
         SetupTriggerCollider();
     }
@@ -564,6 +577,11 @@ public class BuildingInstall : MonoBehaviour
         // 건물 콜라이더 복원
         var col = building.GetComponent<Collider2D>();
         if (col != null) col.enabled = true;
+
+        // 고스트 숨기고 원본 스프라이트 복원
+        if (ghostRenderer != null) ghostRenderer.gameObject.SetActive(false);
+        if (draggedBuildingSR != null) draggedBuildingSR.enabled = true;
+        draggedBuildingSR = null;
 
         float origZ = building.transform.position.z;
         if (CannotPlace)
@@ -587,6 +605,7 @@ public class BuildingInstall : MonoBehaviour
                 occupiedCells.Add(cell);
             if (building.buildingData != null && building.buildingData.requiresWaterTile)
                 PlaceWaterTiles(cellPosition, building.buildingData);
+            if (SoundManager.Instance != null) SoundManager.Instance.PlaySFX("install sound");
             SaveManager.Instance?.SaveGameData();
         }
         isOutsideGrid = false;

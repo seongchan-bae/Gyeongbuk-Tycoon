@@ -295,6 +295,9 @@ public class BuildingPopupUI : MonoBehaviour
 
         Vector3Int cellPos = install.BaseGrid.WorldToCell(selectedBuilding.transform.position);
 
+        // 업그레이드 전 관광객 수 보존
+        int prevTourists = gameManager.CurrentTourists;
+
         // 기존 건물 제거
         gameManager.RemoveTourists(0, data.maxTouristIncrease, data.touristIncrease);
         gameManager.UnregisterBuilding(data);
@@ -307,6 +310,9 @@ public class BuildingPopupUI : MonoBehaviour
         // 새 건물 설치
         install.InstallBuildingAt(target, cellPos);
 
+        // 이전 관광객 수 복원 (새 최대치 초과 안 되게 SetCurrentTourists 내부에서 클램프)
+        gameManager.SetCurrentTourists(prevTourists);
+
         Debug.Log($"[업그레이드] {data.buildingName} → {target.buildingName} (비용 {data.upgradeCost})");
     }
 
@@ -314,7 +320,6 @@ public class BuildingPopupUI : MonoBehaviour
     {
         BuildingData data = selectedBuilding.buildingData;
 
-        gameManager.AddMoney(data.price / 2);
         gameManager.RemoveTourists(0, data.maxTouristIncrease, data.touristIncrease);
         gameManager.UnregisterBuilding(data);
 
