@@ -25495,6 +25495,7 @@ GameObject:
   - component: {fileID: 771000011}
   - component: {fileID: 771000012}
   - component: {fileID: 771000013}
+  - component: {fileID: 771000014}
   m_Layer: 0
   m_Name: SfxSource
   m_TagString: Untagged
@@ -25626,6 +25627,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b9f2c7d5a4e41f0ab86d2c1e7f40913, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneSfxSource
+--- !u!114 &771000014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771000010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5090ee604319fbb4095df3ee02ec3fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+  bgmSource: {fileID: 3268845438914368753}
+  sfxSource: {fileID: 771000012}
+  bgmClips:
+  - {fileID: 8300000, guid: a72394d47d686a14397520ae0a1e9a74, type: 3}
+  - {fileID: 8300000, guid: b2698d9e8f9dc5b458a93c52f7d60197, type: 3}
+  sfxClips:
+  - {fileID: 8300000, guid: cd168c1a9acc99e4b8f64fc6b6714c93, type: 3}
+  - {fileID: 8300000, guid: 54e321edc9dfec647ab68906047a8d0c, type: 3}
+  - {fileID: 8300000, guid: 02e412a4e58c1724e861aa75b1cc3324, type: 3}
 --- !u!1 &772838674
 GameObject:
   m_ObjectHideFlags: 0
@@ -66174,8 +66196,8 @@ MonoBehaviour:
   tourApiKey: 616315cd61c155564e9088acbc319ff980ccc75a67ed38601b3876602d23ee9d
   infoPopupPanel: {fileID: 185689336}
   infoText: {fileID: 1143900799}
-  statGoldText: {fileID: 1263179686}
-  statTouristText: {fileID: 1226120882}
+  statGoldText: {fileID: 0}
+  statTouristText: {fileID: 0}
   goldUI: {fileID: 1930311432}
   touristUI: {fileID: 1861538708}
   knowledgeUI: {fileID: 811000100}
