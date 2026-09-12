@@ -71,7 +71,12 @@ public class SilueteGameManager : MonoBehaviour
 
     [Header("Reward Settings")]
     public int rewardGold = 100;
-    public int rewardKnowledgePoint = 10;      // 하루 상한은 GameManager 가 관리
+
+    [Tooltip("정답을 맞혔을 때 얻는 지식포인트. 하루 상한은 GameManager 가 관리한다.")]
+    public int rewardKnowledgePoint = 3;
+
+    [Tooltip("틀렸을 때 잃는 지식포인트. 잃은 만큼 하루 상한도 되돌아가므로 그만큼 다시 벌 수 있다.")]
+    public int penaltyKnowledgePoint = 1;
 
     [Header("Root / Start Screen")]
     [Tooltip("게임 전체를 감싸는 루트 패널 (SilueteGameUI). 나가기 시 이 패널을 끈다.")]
@@ -410,10 +415,21 @@ public class SilueteGameManager : MonoBehaviour
         }
         else
         {
+            // 틀리면 지식포인트를 깎는다. 보유량이 0이면 깎이지 않으므로 실제로 잃은 양을 받아서 보여준다.
+            long lostKnowledge = GameManager.DeductKnowledgePoint(penaltyKnowledgePoint);
+
             if (resultMessageText != null)
             {
-                resultMessageText.text =
-                    $"<b><color=#FF0000>오답입니다!</color></b>\n정답은 <b>[{answerName}]</b> 입니다.";
+                string text = $"<b><color=#FF0000>오답입니다!</color></b>\n정답은 <b>[{answerName}]</b> 입니다.";
+                if (lostKnowledge > 0)
+                {
+                    text += $"\n<color=#FF8080>지식 포인트 {lostKnowledge}을 잃었습니다.</color>";
+                }
+                else if (penaltyKnowledgePoint > 0)
+                {
+                    text += "\n<size=80%>(지식 포인트가 없어 더 깎이지 않았습니다)</size>";
+                }
+                resultMessageText.text = text;
             }
         }
     }
