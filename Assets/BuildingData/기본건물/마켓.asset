@@ -27,5 +27,5 @@ MonoBehaviour:
   requiresWaterTile: 0
   waterTilePrefab: {fileID: 0}
   category: 0
-  upgradeTarget: {fileID: 11400000, guid: 5be6f9a8e3c62f243907bfd2815d880b, type: 2}
-  upgradeCost: 600000
+  upgradeTarget: {fileID: 0}
+  upgradeCost: 0

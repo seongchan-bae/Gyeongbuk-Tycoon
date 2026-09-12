@@ -135,6 +135,15 @@ public class GameManager : MonoBehaviour
         OnTouristsChanged?.Invoke(currentTourists, maxTourists);
     }
 
+    // 업그레이드 시 이전 관광객 수 보존용
+    public void SetCurrentTourists(int value)
+    {
+        currentTourists = Mathf.Clamp(value, 0, maxTourists);
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.CurrentData.currentTourists = currentTourists;
+        OnTouristsChanged?.Invoke(currentTourists, maxTourists);
+    }
+
     //유저머니 추가
     public void AddMoney(long money)
     {
