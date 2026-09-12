@@ -69,6 +69,7 @@ public class BaseUI : MonoBehaviour
     public void CloseAPIBoard()
     {
         APIboard.SetActive(false);
+        BuildingPopupUI.Instance?.ShowHUD();
     }
     //연구소화면
     void laboratoryUI()
