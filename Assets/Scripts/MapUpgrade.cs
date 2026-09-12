@@ -17,6 +17,11 @@ public class MapUpgrade : MonoBehaviour
     [SerializeField] private Button step3Button;
     [SerializeField] private Button step4Button;
 
+    [Header("단계별 잠금 이미지")]
+    [SerializeField] private GameObject step2LockImage;
+    [SerializeField] private GameObject step3LockImage;
+    [SerializeField] private GameObject step4LockImage;
+
     [Header("단계별 비용 텍스트")]
     [SerializeField] private TextMeshProUGUI step2CostText;
     [SerializeField] private TextMeshProUGUI step3CostText;
@@ -31,8 +36,9 @@ public class MapUpgrade : MonoBehaviour
 
     void Start()
     {
-        if (SaveManager.Instance != null)
-            currentStep = SaveManager.Instance.CurrentData.mapUpgradeStep;
+        currentStep = (SaveManager.Instance != null)
+            ? SaveManager.Instance.CurrentData.mapUpgradeStep
+            : 1;
 
         RestoreGrid();
 
@@ -69,28 +75,68 @@ public class MapUpgrade : MonoBehaviour
         UpdateButtons();
     }
 
+    void OnEnable()
+    {
+        UpdateButtons();
+    }
+
     void UpdateButtons()
     {
-        // 현재 단계 다음 버튼만 활성화, 나머지는 비활성화
-        if (step2Button != null) step2Button.gameObject.SetActive(currentStep == 1);
-        if (step3Button != null) step3Button.gameObject.SetActive(currentStep == 2);
-        if (step4Button != null) step4Button.gameObject.SetActive(currentStep == 3);
+        SetButtonLock(step2Button, step2LockImage, currentStep != 1);
+        SetButtonLock(step3Button, step3LockImage, currentStep != 2);
+        SetButtonLock(step4Button, step4LockImage, currentStep != 3);
+    }
+
+    void SetButtonLock(Button btn, GameObject lockImage, bool locked)
+    {
+        if (btn != null)
+        {
+            btn.interactable = !locked;
+            // CanvasGroup으로 raycast 자체 차단 (interactable만으로 안 막히는 경우 대비)
+            CanvasGroup cg = btn.GetComponent<CanvasGroup>();
+            if (cg == null) cg = btn.gameObject.AddComponent<CanvasGroup>();
+            cg.interactable = !locked;
+            cg.blocksRaycasts = !locked;
+        }
+        if (lockImage != null) lockImage.SetActive(locked);
     }
 
     void RestoreGrid()
     {
+        gridOverlay.DeleteGrid();
+
         if (currentStep == 1)
         {
-            // 1단계 초기 그리드 (원본 주석 코드 활용)
-            gridOverlay.DeleteGrid();
             gridOverlay.changeGridValue(17, 17);
             gridOverlay.changePositionValue(-9, 21);
-            gridOverlay.DrawGrid();
         }
         else
         {
-            UpgradingMap(currentStep);
+            // 2단계부터 현재 단계까지 순회 — 구름 전부 숨기고 그리드는 마지막 값으로 확장
+            for (int step = 2; step <= currentStep; step++)
+            {
+                switch (step)
+                {
+                    case 2:
+                        gridOverlay.changeGridValue(22, 22);
+                        gridOverlay.changePositionValue(-12, 18);
+                        deletedClouds.transform.Find("DeletedAt2Step")?.gameObject.SetActive(false);
+                        break;
+                    case 3:
+                        gridOverlay.changeGridValue(27, 27);
+                        gridOverlay.changePositionValue(-14, 16);
+                        deletedClouds.transform.Find("DeletedAt3Step")?.gameObject.SetActive(false);
+                        break;
+                    case 4:
+                        gridOverlay.changeGridValue(32, 32);
+                        gridOverlay.changePositionValue(-17, 13);
+                        deletedClouds.transform.Find("DeletedAt4Step")?.gameObject.SetActive(false);
+                        break;
+                }
+            }
         }
+
+        gridOverlay.DrawGrid();
     }
 
     public void UpgradingMap(int step)
@@ -106,17 +152,17 @@ public class MapUpgrade : MonoBehaviour
             case 2:
                 gridOverlay.changeGridValue(22,22);
                 gridOverlay.changePositionValue(-12,18);
-                deletedClouds.transform.Find("DeletedAt2Step").gameObject.SetActive(false);
+                deletedClouds.transform.Find("DeletedAt2Step")?.gameObject.SetActive(false);
                 break;
             case 3:
                 gridOverlay.changeGridValue(27,27);
                 gridOverlay.changePositionValue(-14,16);
-                deletedClouds.transform.Find("DeletedAt3Step").gameObject.SetActive(false);
+                deletedClouds.transform.Find("DeletedAt3Step")?.gameObject.SetActive(false);
                 break;
             case 4:
                 gridOverlay.changeGridValue(32,32);
                 gridOverlay.changePositionValue(-17,13);
-                deletedClouds.transform.Find("DeletedAt4Step").gameObject.SetActive(false);
+                deletedClouds.transform.Find("DeletedAt4Step")?.gameObject.SetActive(false);
                 break;
         }
         gridOverlay.DrawGrid();

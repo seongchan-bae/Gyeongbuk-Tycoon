@@ -29,6 +29,8 @@ public class SaveManager : MonoBehaviour
 
     public GameSaveData CurrentData { get; private set; } = new GameSaveData();
     private string saveFilePath;
+    private float autoSaveTimer = 0f;
+    private const float AutoSaveInterval = 5f;
 
     void Awake()
     {
@@ -44,6 +46,16 @@ public class SaveManager : MonoBehaviour
         // 모바일/PC 로컬 단일 저장 경로 지정
         saveFilePath = Path.Combine(Application.persistentDataPath, "GyeongbukTycoonSave.json");
         LoadGameData();
+    }
+
+    void Update()
+    {
+        autoSaveTimer += Time.deltaTime;
+        if (autoSaveTimer >= AutoSaveInterval)
+        {
+            autoSaveTimer = 0f;
+            SaveGameData();
+        }
     }
 
     void OnDestroy()

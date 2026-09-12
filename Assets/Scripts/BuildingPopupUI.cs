@@ -28,6 +28,7 @@ public class BuildingPopupUI : MonoBehaviour
 
     [Header("업그레이드 비용 텍스트")]
     [SerializeField] private TextMeshProUGUI upgradeCostText;
+    [SerializeField] private GameObject upgradeCostGoldImage;
 
     [Header("건물 스탯 텍스트")]
     [SerializeField] private TextMeshProUGUI statGoldText;
@@ -37,6 +38,7 @@ public class BuildingPopupUI : MonoBehaviour
     [SerializeField] private GameObject goldUI;
     [SerializeField] private GameObject touristUI;
     [SerializeField] private GameObject knowledgeUI;
+    [SerializeField] private GameObject safeAreaButtons; // Canvas-SafeArea-Buttons
     
 
     private Building selectedBuilding;
@@ -93,6 +95,7 @@ public class BuildingPopupUI : MonoBehaviour
             upgradeCostText.gameObject.SetActive(canUpgrade);
             if (canUpgrade) upgradeCostText.text = $"{building.buildingData.upgradeCost:N0} G";
         }
+        if (upgradeCostGoldImage != null) upgradeCostGoldImage.SetActive(canUpgrade);
 
         popupPanel.gameObject.SetActive(true);
         if (buildingName != null)
@@ -235,11 +238,14 @@ public class BuildingPopupUI : MonoBehaviour
         if (statTouristText   != null) statTouristText.text = $"{data.touristIncrease:N0} / {data.maxTouristIncrease:N0}";
     }
 
+    public void ShowHUD() => SetHudVisible(true);
+
     void SetHudVisible(bool visible)
     {
-        if (goldUI     != null) goldUI.SetActive(visible);
-        if (touristUI  != null) touristUI.SetActive(visible);
-        if (knowledgeUI != null) knowledgeUI.SetActive(visible);
+        if (goldUI          != null) goldUI.SetActive(visible);
+        if (touristUI       != null) touristUI.SetActive(visible);
+        if (knowledgeUI     != null) knowledgeUI.SetActive(visible);
+        if (safeAreaButtons != null) safeAreaButtons.SetActive(visible);
     }
 
     void ShowInfoText(string text)

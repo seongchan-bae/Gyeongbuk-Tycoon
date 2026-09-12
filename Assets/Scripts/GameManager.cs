@@ -89,6 +89,8 @@ public class GameManager : MonoBehaviour
                 touristTimer = 0f;
                 int delta = Mathf.Min(touristRatePerSecond, maxTourists - currentTourists);
                 currentTourists += delta;
+                if (SaveManager.Instance != null)
+                    SaveManager.Instance.CurrentData.currentTourists = currentTourists;
                 OnTouristsChanged?.Invoke(currentTourists, maxTourists);
             }
         }
@@ -130,6 +132,8 @@ public class GameManager : MonoBehaviour
     public void AddMoney(long money)
     {
         userMoney += money;
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.CurrentData.userMoney = userMoney;
         OnMoneyChanged?.Invoke(userMoney);
     }
 
@@ -138,6 +142,8 @@ public class GameManager : MonoBehaviour
     {
         if (userMoney < money) return false;
         userMoney -= money;
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.CurrentData.userMoney = userMoney;
         OnMoneyChanged?.Invoke(userMoney);
         return true;
     }
@@ -147,6 +153,8 @@ public class GameManager : MonoBehaviour
     {
         if (userKnowledgePoint < amount) return false;
         userKnowledgePoint -= amount;
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.CurrentData.userKnowledgePoint = userKnowledgePoint;
         OnKnowledgePointChanged?.Invoke(userKnowledgePoint);
         return true;
     }
@@ -160,6 +168,8 @@ public class GameManager : MonoBehaviour
     void addUserKnowledgePoint(long knowledgePoint)
     {
         userKnowledgePoint += knowledgePoint;
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.CurrentData.userKnowledgePoint = userKnowledgePoint;
         OnKnowledgePointChanged?.Invoke(userKnowledgePoint);
     }
     //유저 지식포인트 차감
