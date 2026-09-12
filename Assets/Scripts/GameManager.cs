@@ -74,6 +74,13 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Debug.LogWarning($"[GameManager] 씬에 중복된 GameManager({gameObject.name})가 있어 무시합니다.");
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
         installingActivation = false;
         destroyingActivation = false;

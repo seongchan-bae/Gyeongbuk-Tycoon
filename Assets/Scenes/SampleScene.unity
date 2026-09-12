@@ -83581,23 +83581,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 617179694211917740, guid: 07f8e17f9f954034792db55255fca5b5, type: 3}
   m_PrefabInstance: {fileID: 4364897769250143905}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4369296363028483696
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7863255170407244393}
-  - component: {fileID: 6301630245844364314}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!222 &4395221170365313322
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -86671,26 +86654,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &6301630245844364314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4369296363028483696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4365401504b02143b6ed1d0991d19d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  userMoney: 10000
-  userKnowledgePoint: 0
-  currentStage: 0
-  puzzleUI: {fileID: 3555456614800485592}
-  mainUI: {fileID: 0}
-  HintPopupUI: {fileID: 0}
-  installingActivation: 0
-  destroyingActivation: 0
 --- !u!224 &6305029122661979138
 RectTransform:
   m_ObjectHideFlags: 0
@@ -89750,21 +89713,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7863255170407244393
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4369296363028483696}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.737732, y: 1873.9183, z: -90}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8403226376256700640}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!222 &7881447966407290153
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -90542,7 +90490,6 @@ RectTransform:
   - {fileID: 7826426623794309093}
   - {fileID: 4310237239842570343}
   - {fileID: 2580653083196566228}
-  - {fileID: 7863255170407244393}
   - {fileID: 5083350385229024593}
   - {fileID: 8581151027382125555}
   m_Father: {fileID: 5138516647531478844}
