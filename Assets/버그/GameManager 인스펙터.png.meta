@@ -55,17 +55,11 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-<<<<<<< HEAD:Assets/BuildingData/기본건물/전당포_투명배경.png.meta
   alphaIsTransparency: 1
   spriteTessellationMethod: 0
   spriteTessellationDetail: -1
   spriteGeometrySubdivision: -1
   textureType: 8
-=======
-  alphaIsTransparency: 0
-  spriteTessellationDetail: -1
-  textureType: 0
->>>>>>> origin/feature/uimerge3:Assets/버그/GameManager 인스펙터.png.meta
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1

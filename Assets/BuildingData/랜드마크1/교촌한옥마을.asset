@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
   m_Name: "\uAD50\uCD0C\uD55C\uC625\uB9C8\uC744"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
-<<<<<<< HEAD:Assets/BuildingData/랜드마크1/교촌한옥마을.asset
   buildingName: "\uAD50\uCD0C\uD55C\uC625\uB9C8\uC744"
   price: 20000
   goldProductionRate: 500
@@ -23,16 +22,4 @@ MonoBehaviour:
   contentId: 128676
   maxTouristIncrease: 0
   touristIncrease: 0
-=======
-  buildingName: "\uC9C0\uD558\uCCA0\uC5ED"
-  price: 20000
-  goldProductionRate: 50
-  thumbnail: {fileID: 0}
-  prefab: {fileID: 2858952770365817525, guid: bc3e3c9973b86e042a3b83033dc8d88c, type: 3}
-  tileWidth: 2
-  tileHeight: 2
-  contentId: 
-  maxTouristIncrease: 5000
-  touristIncrease: 30
->>>>>>> origin/feature/uimerge-integration:Assets/BuildingData/기본건물/지하철역.asset
   requiresWaterTile: 0
