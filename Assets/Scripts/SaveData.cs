@@ -39,6 +39,9 @@ public class GameSaveData
     public string currentThemeId = "";
     public List<string> unlockedThemeIds = new List<string>();
 
+    // 맵 업그레이드 단계 (1~4)
+    public int mapUpgradeStep = 1;
+
     // (선택) 마지막 접속 시간 기록
     public string lastSavedTime = "";
 }

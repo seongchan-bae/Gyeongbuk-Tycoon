@@ -26,6 +26,9 @@ public class BuildingPopupUI : MonoBehaviour
     [SerializeField] private GameObject infoPopupPanel;               // 관광 정보를 표시할 별도 패널
     [SerializeField] private TextMeshProUGUI infoText;                // 관광 정보 텍스트
 
+    [Header("업그레이드 비용 텍스트")]
+    [SerializeField] private TextMeshProUGUI upgradeCostText;
+
     [Header("건물 스탯 텍스트")]
     [SerializeField] private TextMeshProUGUI statGoldText;
     [SerializeField] private TextMeshProUGUI statTouristText;
@@ -82,9 +85,14 @@ public class BuildingPopupUI : MonoBehaviour
         deleteButton.onClick.AddListener(OnDeleteClicked);
         if (flipButton != null) flipButton.onClick.AddListener(OnFlipClicked);
 
-        // upgradeTarget이 없으면 업그레이드 버튼 숨김
+        // upgradeTarget이 없으면 업그레이드 버튼/비용 텍스트 숨김
         bool canUpgrade = building != null && building.buildingData != null && building.buildingData.upgradeTarget != null;
         if (upgradeButton != null) upgradeButton.gameObject.SetActive(canUpgrade);
+        if (upgradeCostText != null)
+        {
+            upgradeCostText.gameObject.SetActive(canUpgrade);
+            if (canUpgrade) upgradeCostText.text = $"{building.buildingData.upgradeCost:N0} G";
+        }
 
         popupPanel.gameObject.SetActive(true);
         if (buildingName != null)
