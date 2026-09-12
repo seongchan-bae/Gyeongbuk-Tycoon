@@ -238,6 +238,45 @@ public class GameManager : MonoBehaviour
         return grantedKnowledge;
     }
 
+    /// <summary>
+    /// 오답 같은 벌점으로 지식포인트를 깎는다. 실제로 깎인 양을 돌려준다.
+    ///
+    /// 깎인 만큼 '오늘 얻은 양' 도 함께 되돌린다. 그래서 하루 상한 100을 이미 채운 뒤
+    /// 문제를 틀려 1포인트를 잃으면, 그 1포인트는 다시 미니게임으로 벌 수 있다.
+    /// 보유량이 0이면 더 깎지 않으므로 상한도 되돌리지 않는다. 잃은 것이 없기 때문이다.
+    /// </summary>
+    public long SubtractKnowledgePoint(long amount)
+    {
+        if (amount <= 0) return 0L;
+
+        long taken = System.Math.Min(amount, userKnowledgePoint);
+        if (taken <= 0) return 0L;
+
+        userKnowledgePoint -= taken;
+        RefundDailyKnowledge(taken);
+        SaveCurrency();
+
+        Debug.Log($"[GameManager] 지식포인트 차감: -{taken} (요청 {amount}) (남은 {userKnowledgePoint} 지식포인트 / 오늘 획득 {KnowledgePointEarnedToday})");
+        return taken;
+    }
+
+    /// <summary>
+    /// 미니게임에서 부르는 진입점. GameManager 를 직접 참조하지 않아도 벌점을 적용할 수 있다.
+    /// </summary>
+    public static long DeductKnowledgePoint(long amount)
+    {
+        GameManager gm = Instance;
+        if (gm == null) gm = FindFirstObjectByType<GameManager>(FindObjectsInactive.Include);
+
+        if (gm == null)
+        {
+            Debug.LogWarning("[GameManager] 씬에서 GameManager를 찾지 못해 지식포인트를 깎지 못했습니다.");
+            return 0L;
+        }
+
+        return gm.SubtractKnowledgePoint(amount);
+    }
+
     private static void RecordDailyKnowledge(long amount)
     {
         if (SaveManager.Instance == null) return;
@@ -249,6 +288,22 @@ public class GameManager : MonoBehaviour
             data.knowledgeEarnedToday = 0L;
         }
         data.knowledgeEarnedToday += amount;
+    }
+
+    /// <summary>깎인 만큼 오늘 획득량을 되돌려, 그만큼 다시 벌 수 있게 한다.</summary>
+    private static void RefundDailyKnowledge(long amount)
+    {
+        if (SaveManager.Instance == null) return;
+
+        GameSaveData data = SaveManager.Instance.CurrentData;
+        if (data.knowledgeEarnedDate != Today)
+        {
+            // 날짜가 바뀌었으면 오늘 얻은 양은 애초에 0이다. 되돌릴 것이 없다.
+            data.knowledgeEarnedDate = Today;
+            data.knowledgeEarnedToday = 0L;
+            return;
+        }
+        data.knowledgeEarnedToday = System.Math.Max(0L, data.knowledgeEarnedToday - amount);
     }
 
     /// <summary>

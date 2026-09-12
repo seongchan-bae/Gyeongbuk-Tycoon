@@ -27,6 +27,12 @@ public class SoundManager : MonoBehaviour
     // SoundManager 는 DontDestroyOnLoad 라 씬 오브젝트가 참조할 수 없어, 씬 쪽에서 등록해 준다.
     private AudioSource sceneSfxSource;
 
+    /// <summary>
+    /// 지금 재생 중인 BGM 의 이름. 재생 중이 아니면 빈 문자열.
+    /// 잠시 다른 곡을 틀었다가 원래 곡으로 되돌려야 할 때 쓴다(도움말 오버레이).
+    /// </summary>
+    public string CurrentBGMName { get; private set; } = string.Empty;
+
     private float EffectiveBgmVolume { get { return bgmMuted ? 0f : bgmVolume; } }
     private float EffectiveSfxVolume { get { return sfxMuted ? 0f : sfxVolume; } }
 
@@ -127,7 +133,11 @@ public void PlayBGM(string clipName, float volume = 1.0f)
     if (bgmDictionary.TryGetValue(clipName, out AudioClip clip))
     {
         // 1. 이미 같은 BGM이 재생 중이라면 중복 재생 방지 후 종료
-        if (bgmSource.isPlaying && bgmSource.clip == clip) return;
+        if (bgmSource.isPlaying && bgmSource.clip == clip)
+        {
+            CurrentBGMName = clipName;
+            return;
+        }
 
         // 2. 다른 BGM이 재생 중이라면 명시적으로 정지
         if (bgmSource.isPlaying)
@@ -140,6 +150,7 @@ public void PlayBGM(string clipName, float volume = 1.0f)
         bgmSource.volume = volume;
         bgmSource.loop = true;
         bgmSource.Play();
+        CurrentBGMName = clipName;
     }
     else
     {
@@ -151,6 +162,7 @@ public void PlayBGM(string clipName, float volume = 1.0f)
     public void StopBGM()
     {
         if (bgmSource != null) bgmSource.Stop();
+        CurrentBGMName = string.Empty;
     }
 
     // 설정창/UI 호출용 BGM 볼륨 적용 메서드
