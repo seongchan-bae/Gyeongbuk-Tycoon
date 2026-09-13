@@ -175,6 +175,7 @@ public void PlayBGM(string clipName, float volume = 1.0f)
 
     public void SetBGMVolume(float volume)
     {
+        
         if (bgmSource != null)
         {
             bgmSource.volume = Mathf.Clamp01(volume);

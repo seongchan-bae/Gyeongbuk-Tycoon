@@ -255,7 +255,7 @@ public class PuzzleUIManager : MonoBehaviour
             if (grantedKnowledge < rewardKnowledge) text += "\n(오늘 지식포인트 한도를 모두 채웠습니다)";
             rewardText.text = text;
         }
-
+        SoundManager.Instance.PlaySFX("success");
         if (closeButton != null) closeButton.SetActive(false);
         if (clearPopup != null) clearPopup.SetActive(true);
     }
