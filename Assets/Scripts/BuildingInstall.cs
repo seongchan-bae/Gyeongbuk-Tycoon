@@ -150,6 +150,10 @@ public class BuildingInstall : MonoBehaviour
                     PlaceWaterTiles(cellPos, matchedData);
             }
         }
+
+        // 모든 건물 복원 후 오프라인 동안 쌓인 생산량 적용
+        if (gameManager != null)
+            gameManager.ApplyOfflineEarnings();
     }
 
 

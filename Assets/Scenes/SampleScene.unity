@@ -87211,8 +87211,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4365401504b02143b6ed1d0991d19d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  resetOnStart: 0
   userMoney: 10000
   userKnowledgePoint: 0
+  currentTourists: 0
+  maxTourists: 0
   currentStage: 0
   puzzleUI: {fileID: 3555456614800485592}
   mainUI: {fileID: 0}

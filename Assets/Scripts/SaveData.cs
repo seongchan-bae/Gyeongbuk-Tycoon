@@ -45,6 +45,9 @@ public class GameSaveData
     // 업그레이드한 건물 수
     public int upgradedBuildingCount = 0;
 
-    // (선택) 마지막 접속 시간 기록
+    // 마지막 접속 시간 기록 (오프라인 보상 계산용)
     public string lastSavedTime = "";
+
+    // 오프라인 생산 계산용 총 골드 생산량 (초당)
+    public float totalGoldRatePerSecond = 0f;
 }
