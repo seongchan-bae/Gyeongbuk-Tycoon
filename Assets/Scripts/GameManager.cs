@@ -38,6 +38,25 @@ public class GameManager : MonoBehaviour
 
     public bool CanInstallBasic() => basicBuildingCount < MaxBasicBuildings;
     public bool IsLandmarkInstalled(string buildingName) => installedLandmarks.Contains(buildingName);
+    public long GetBasicBuildingPrice() => basicBuildingCount * 50000L;
+
+    public long GetLandmarkPrice()
+    {
+        int n = installedLandmarks.Count + 1;
+        if (n <= 5)  return n * 1000000L;
+        if (n <= 10) return 5000000L  + (long)(n - 5)  * 2000000L;
+        if (n <= 15) return 15000000L + (long)(n - 10) * 3000000L;
+                     return 30000000L + (long)(n - 15) * 4000000L;
+    }
+
+    private int upgradedBuildingCount = 0;
+    public long GetUpgradeCost() => (upgradedBuildingCount + 1) * 500000L;
+    public void RegisterUpgrade()
+    {
+        upgradedBuildingCount++;
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.CurrentData.upgradedBuildingCount = upgradedBuildingCount;
+    }
 
     public void RegisterBuilding(BuildingData data)
     {
@@ -110,6 +129,7 @@ public class GameManager : MonoBehaviour
             userMoney = SaveManager.Instance.CurrentData.userMoney;
             userKnowledgePoint = SaveManager.Instance.CurrentData.userKnowledgePoint;
             currentTourists = SaveManager.Instance.CurrentData.currentTourists;
+            upgradedBuildingCount = SaveManager.Instance.CurrentData.upgradedBuildingCount;
         }
         if (SoundManager.Instance != null) SoundManager.Instance.PlayBGM("baseBGM");
         OnMoneyChanged?.Invoke(userMoney);

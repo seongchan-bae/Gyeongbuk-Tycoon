@@ -42,6 +42,9 @@ public class GameSaveData
     // 맵 업그레이드 단계 (1~4)
     public int mapUpgradeStep = 1;
 
+    // 업그레이드한 건물 수
+    public int upgradedBuildingCount = 0;
+
     // (선택) 마지막 접속 시간 기록
     public string lastSavedTime = "";
 }

@@ -14,15 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   buildingName: "\uC740\uD589"
   price: 5000
-  goldProductionRate: 14
+  knowledgePrice: 0
+  goldProductionRate: 32
   thumbnail: {fileID: 0}
   prefab: {fileID: 4416780101656681060, guid: 3ce83611f2372194192af106086b75ad, type: 3}
   tileWidth: 2
   tileHeight: 2
   contentId: 
   manualInfoText: 
-  maxTouristIncrease: 180
-  touristIncrease: 2
+  maxTouristIncrease: 9000
+  touristIncrease: 4
   requiresWaterTile: 0
   waterTilePrefab: {fileID: 0}
   category: 0
+  upgradeTarget: {fileID: 0}
+  upgradeCost: 0

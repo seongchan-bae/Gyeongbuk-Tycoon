@@ -43,7 +43,7 @@ public class BuildingCardUI : MonoBehaviour
         {
             gameManager.OnMoneyChanged += UpdateLockState;
             gameManager.OnKnowledgePointChanged += _ => RefreshLockState();
-            gameManager.OnBuildingCountChanged += RefreshLockState;
+            gameManager.OnBuildingCountChanged += OnBuildingCountChanged;
         }
     }
 
@@ -52,9 +52,17 @@ public class BuildingCardUI : MonoBehaviour
         if (gameManager != null)
         {
             gameManager.OnMoneyChanged -= UpdateLockState;
-            gameManager.OnBuildingCountChanged -= RefreshLockState;
+            gameManager.OnBuildingCountChanged -= OnBuildingCountChanged;
             // OnKnowledgePointChanged는 람다로 등록되어 자동 해제됨
         }
+    }
+
+    long GetCurrentPrice()
+    {
+        if (buildingData == null || gameManager == null) return buildingData != null ? buildingData.price : 0;
+        if (buildingData.category == BuildingCategory.Basic)    return gameManager.GetBasicBuildingPrice();
+        if (buildingData.category == BuildingCategory.Landmark) return gameManager.GetLandmarkPrice();
+        return buildingData.price;
     }
 
     void UpdateLockState(long currentMoney)
@@ -65,7 +73,7 @@ public class BuildingCardUI : MonoBehaviour
             && gameManager != null
             && gameManager.IsLandmarkInstalled(buildingData.buildingName);
 
-        bool notEnoughMoney = currentMoney < buildingData.price;
+        bool notEnoughMoney = currentMoney < GetCurrentPrice();
         bool notEnoughKP = gameManager != null && gameManager.UserKnowledgePoint < buildingData.knowledgePrice;
         bool limitReached = buildingData.category == BuildingCategory.Basic
             && gameManager != null
@@ -79,6 +87,13 @@ public class BuildingCardUI : MonoBehaviour
     void RefreshLockState()
     {
         UpdateLockState(gameManager != null ? gameManager.UserMoney : 0);
+    }
+
+    void OnBuildingCountChanged()
+    {
+        if (priceText != null && buildingData != null)
+            priceText.text = GetCurrentPrice().ToString("N0");
+        RefreshLockState();
     }
 
     void RefreshUI()
@@ -100,7 +115,7 @@ public class BuildingCardUI : MonoBehaviour
         if (goldProductionText   != null) goldProductionText.text   = buildingData.goldProductionRate.ToString("#,##0.##");
         if (touristIncreaseText  != null) touristIncreaseText.text  = buildingData.touristIncrease.ToString("N0");
         if (maxTouristText       != null) maxTouristText.text       = buildingData.maxTouristIncrease.ToString("N0");
-        if (priceText            != null) priceText.text            = buildingData.price.ToString("N0");
+        if (priceText            != null) priceText.text            = GetCurrentPrice().ToString("N0");
         if (knowledgePriceText   != null) knowledgePriceText.text   = buildingData.knowledgePrice.ToString("N0");
     }
 
@@ -132,14 +147,15 @@ public class BuildingCardUI : MonoBehaviour
         }
 
         // 골드 또는 지식포인트 부족 시 구매 차단
-        if (gameManager != null && !gameManager.SpendMoney(buildingData.price))
+        long price = GetCurrentPrice();
+        if (gameManager != null && !gameManager.SpendMoney(price))
         {
             Debug.Log("골드가 부족합니다!");
             return;
         }
         if (gameManager != null && !gameManager.SpendKnowledgePoint(buildingData.knowledgePrice))
         {
-            gameManager.AddMoney(buildingData.price);
+            gameManager.AddMoney(price);
             Debug.Log("지식포인트가 부족합니다!");
             return;
         }
