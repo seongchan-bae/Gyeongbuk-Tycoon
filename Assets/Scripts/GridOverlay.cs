@@ -12,7 +12,6 @@ public class GridOverlay : MonoBehaviour
 
     void Start()
     {
-        DrawGrid();
         gameObject.SetActive(false);
     }
     public void changeGridValue(int newWidth, int newHeight)
@@ -64,9 +63,9 @@ public class GridOverlay : MonoBehaviour
         int halfW = mapWidth / 2;
         int halfH = mapHeight / 2;
 
-        for (int x = -halfW; x < halfW; x++)
+        for (int x = -halfW; x < mapWidth - halfW; x++)
         {
-            for (int y = -halfH; y < halfH; y++)
+            for (int y = -halfH; y < mapHeight - halfH; y++)
             {
                 DrawCell(new Vector3Int(x + mapCenter.x, y + mapCenter.y, 0));
             }
