@@ -22,8 +22,10 @@ MonoBehaviour:
   tileHeight: 3
   contentId: 126214
   manualInfoText: 
-  maxTouristIncrease: 280
+  maxTouristIncrease: 16800
   touristIncrease: 6
   requiresWaterTile: 0
   waterTilePrefab: {fileID: 0}
   category: 1
+  upgradeTarget: {fileID: 0}
+  upgradeCost: 0

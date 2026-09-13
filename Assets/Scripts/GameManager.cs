@@ -2,6 +2,10 @@
 
 public class GameManager : MonoBehaviour
 {
+    [Header("테스트 설정")]
+    [SerializeField] private bool resetOnStart = false;
+    public bool ResetOnStart => resetOnStart;
+
     // 유저가 가지고 있는 돈(GameManager에서만 관리)
     [SerializeField] private long userMoney = 10000L;
 
@@ -9,14 +13,22 @@ public class GameManager : MonoBehaviour
     [SerializeField] private long userKnowledgePoint = 0L;
 
     // 관광객 수치
-    private int currentTourists = 0;
-    private int maxTourists = 0;
+    [SerializeField] private int currentTourists = 0;
+    [SerializeField] private int maxTourists = 0;
     private int touristRatePerSecond = 0;
     private float touristTimer = 0f;
     public int CurrentTourists => currentTourists;
     public int MaxTourists => maxTourists;
     public int TouristRatePerSecond => touristRatePerSecond;
     public event System.Action<int, int> OnTouristsChanged;
+
+    void OnValidate()
+    {
+        if (!Application.isPlaying) return;
+        currentTourists = Mathf.Clamp(currentTourists, 0, maxTourists);
+        OnTouristsChanged?.Invoke(currentTourists, maxTourists);
+        OnKnowledgePointChanged?.Invoke(userKnowledgePoint);
+    }
 
     // 건물 설치 제한
     [Header("게임 단계 (0~3 → 기본건물 최대 10/20/30/40개)")]
@@ -38,6 +50,36 @@ public class GameManager : MonoBehaviour
 
     public bool CanInstallBasic() => basicBuildingCount < MaxBasicBuildings;
     public bool IsLandmarkInstalled(string buildingName) => installedLandmarks.Contains(buildingName);
+    public long GetBasicBuildingPrice() => basicBuildingCount * 50000L;
+
+    public long GetLandmarkPrice()
+    {
+        int n = installedLandmarks.Count + 1;
+        if (n <= 5)  return n * 1000000L;
+        if (n <= 10) return 5000000L  + (long)(n - 5)  * 2000000L;
+        if (n <= 15) return 15000000L + (long)(n - 10) * 3000000L;
+                     return 30000000L + (long)(n - 15) * 4000000L;
+    }
+
+    private float totalGoldRatePerSecond = 0f;
+
+    private int upgradedBuildingCount = 0;
+    public long GetUpgradeCost() => (upgradedBuildingCount + 1) * 500000L;
+    public void RegisterUpgrade()
+    {
+        upgradedBuildingCount++;
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.CurrentData.upgradedBuildingCount = upgradedBuildingCount;
+    }
+
+    private System.Collections.Generic.HashSet<BuildingData> upgradeTargetCache;
+    void BuildUpgradeTargetCache()
+    {
+        upgradeTargetCache = new System.Collections.Generic.HashSet<BuildingData>();
+        foreach (var bd in Resources.FindObjectsOfTypeAll<BuildingData>())
+            if (bd.upgradeTarget != null)
+                upgradeTargetCache.Add(bd.upgradeTarget);
+    }
 
     public void RegisterBuilding(BuildingData data)
     {
@@ -45,6 +87,11 @@ public class GameManager : MonoBehaviour
             basicBuildingCount++;
         else if (data.category == BuildingCategory.Landmark)
             installedLandmarks.Add(data.buildingName);
+
+        totalGoldRatePerSecond += data.goldProductionRate;
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.CurrentData.totalGoldRatePerSecond = totalGoldRatePerSecond;
+
         OnBuildingCountChanged?.Invoke();
     }
 
@@ -54,6 +101,19 @@ public class GameManager : MonoBehaviour
             basicBuildingCount = Mathf.Max(0, basicBuildingCount - 1);
         else if (data.category == BuildingCategory.Landmark)
             installedLandmarks.Remove(data.buildingName);
+
+        totalGoldRatePerSecond = Mathf.Max(0f, totalGoldRatePerSecond - data.goldProductionRate);
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.CurrentData.totalGoldRatePerSecond = totalGoldRatePerSecond;
+
+        if (upgradeTargetCache == null) BuildUpgradeTargetCache();
+        if (upgradeTargetCache.Contains(data))
+        {
+            upgradedBuildingCount = Mathf.Max(0, upgradedBuildingCount - 1);
+            if (SaveManager.Instance != null)
+                SaveManager.Instance.CurrentData.upgradedBuildingCount = upgradedBuildingCount;
+        }
+
         OnBuildingCountChanged?.Invoke();
     }
 
@@ -105,11 +165,24 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        if (resetOnStart && SaveManager.Instance != null)
+        {
+            var d = SaveManager.Instance.CurrentData;
+            d.userMoney = 10000L;
+            d.userKnowledgePoint = 0L;
+            d.currentTourists = 0;
+            d.upgradedBuildingCount = 0;
+            d.mapUpgradeStep = 1;
+            d.placedBuildings?.Clear();
+            SaveManager.Instance.SaveGameData();
+        }
+
         if (SaveManager.Instance != null)
         {
             userMoney = SaveManager.Instance.CurrentData.userMoney;
             userKnowledgePoint = SaveManager.Instance.CurrentData.userKnowledgePoint;
             currentTourists = SaveManager.Instance.CurrentData.currentTourists;
+            upgradedBuildingCount = SaveManager.Instance.CurrentData.upgradedBuildingCount;
         }
         if (SoundManager.Instance != null) SoundManager.Instance.PlayBGM("baseBGM");
         OnMoneyChanged?.Invoke(userMoney);
@@ -133,6 +206,54 @@ public class GameManager : MonoBehaviour
         touristRatePerSecond -= rate;
         if (currentTourists > maxTourists) currentTourists = maxTourists;
         OnTouristsChanged?.Invoke(currentTourists, maxTourists);
+    }
+
+    // 업그레이드 시 이전 관광객 수 보존용
+    public void SetCurrentTourists(int value)
+    {
+        currentTourists = Mathf.Clamp(value, 0, maxTourists);
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.CurrentData.currentTourists = currentTourists;
+        OnTouristsChanged?.Invoke(currentTourists, maxTourists);
+    }
+
+
+    // 게임 시작 시 오프라인 동안 쌓인 생산량 적용
+    public void ApplyOfflineEarnings()
+    {
+        if (SaveManager.Instance == null) return;
+
+        string lastSavedStr = SaveManager.Instance.CurrentData.lastSavedTime;
+        if (string.IsNullOrEmpty(lastSavedStr)) return;
+
+        if (!System.DateTime.TryParseExact(lastSavedStr, "yyyy-MM-dd HH:mm:ss",
+            null, System.Globalization.DateTimeStyles.None, out System.DateTime lastSaved))
+            return;
+
+        double offlineSeconds = (System.DateTime.Now - lastSaved).TotalSeconds;
+        if (offlineSeconds <= 10) return; // 10초 미만은 무시
+        offlineSeconds = System.Math.Min(offlineSeconds, 86400); // 최대 24시간
+
+        long offlineMoney = (long)(totalGoldRatePerSecond * offlineSeconds);
+
+        int offlineTourists = 0;
+        if (touristRatePerSecond > 0 && currentTourists < maxTourists)
+        {
+            offlineTourists = (int)System.Math.Min(
+                (double)touristRatePerSecond * offlineSeconds,
+                maxTourists - currentTourists);
+        }
+
+        if (offlineMoney > 0) AddMoney(offlineMoney);
+        if (offlineTourists > 0)
+        {
+            currentTourists += offlineTourists;
+            if (SaveManager.Instance != null)
+                SaveManager.Instance.CurrentData.currentTourists = currentTourists;
+            OnTouristsChanged?.Invoke(currentTourists, maxTourists);
+        }
+
+        Debug.Log($"[GameManager] 오프라인 보상: {(int)offlineSeconds}초 / +{offlineMoney:N0}원 / +{offlineTourists}명 관광객");
     }
 
     //유저머니 추가

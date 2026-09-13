@@ -14,15 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   buildingName: "\uD3B8\uC758\uC810"
   price: 1000
+  knowledgePrice: 0
   goldProductionRate: 4
   thumbnail: {fileID: 0}
   prefab: {fileID: 6155012932828860074, guid: 951bca7a94b738c4fafbe70299e6a883, type: 3}
   tileWidth: 2
   tileHeight: 2
   contentId: 
-  manualInfoText: 
-  maxTouristIncrease: 100
-  touristIncrease: 2
+  manualInfoText: "\uAC04\uD3B8\uD55C \uC2DD\uB8CC\uD488\uACFC \uC0DD\uD65C\uC6A9\uD488\uC744 \uD310\uB9E4\uD558\uB294 \uD3B8\uC758\uC810\uC785\uB2C8\uB2E4."
+  maxTouristIncrease: 9000
+  touristIncrease: 3
   requiresWaterTile: 0
   waterTilePrefab: {fileID: 0}
   category: 0
+  upgradeTarget: {fileID: 11400000, guid: a5788e513b567ea4e986823f3d56bd68, type: 2}
+  upgradeCost: 600000

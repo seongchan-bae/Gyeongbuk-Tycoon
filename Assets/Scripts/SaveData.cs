@@ -42,6 +42,12 @@ public class GameSaveData
     // 맵 업그레이드 단계 (1~4)
     public int mapUpgradeStep = 1;
 
-    // (선택) 마지막 접속 시간 기록
+    // 업그레이드한 건물 수
+    public int upgradedBuildingCount = 0;
+
+    // 마지막 접속 시간 기록 (오프라인 보상 계산용)
     public string lastSavedTime = "";
+
+    // 오프라인 생산 계산용 총 골드 생산량 (초당)
+    public float totalGoldRatePerSecond = 0f;
 }

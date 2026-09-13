@@ -97,7 +97,7 @@ public class SaveManager : MonoBehaviour
             }
         }
 
-        CurrentData.lastSavedTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+        CurrentData.lastSavedTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
         // 3. 파일로 저장
         try
@@ -167,4 +167,5 @@ public class SaveManager : MonoBehaviour
     {
         SaveGameData();
     }
+
 }

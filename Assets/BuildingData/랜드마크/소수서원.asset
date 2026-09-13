@@ -20,10 +20,12 @@ MonoBehaviour:
   prefab: {fileID: 4573033411206038145, guid: 0ad3947eefbdda04d912e34af15d8651, type: 3}
   tileWidth: 3
   tileHeight: 3
-  contentId: 
+  contentId: 126201
   manualInfoText: 
-  maxTouristIncrease: 540
+  maxTouristIncrease: 32400
   touristIncrease: 7
   requiresWaterTile: 0
   waterTilePrefab: {fileID: 0}
   category: 1
+  upgradeTarget: {fileID: 0}
+  upgradeCost: 0

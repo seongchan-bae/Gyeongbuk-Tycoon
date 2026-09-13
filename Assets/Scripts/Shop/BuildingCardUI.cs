@@ -37,39 +37,55 @@ public class BuildingCardUI : MonoBehaviour
     void Start()
     {
         RefreshUI();
-        UpdateLockState(gameManager != null ? gameManager.UserMoney : 0);
+        UpdateLockState(GM != null ? GM.UserMoney : 0);
 
-        if (gameManager != null)
+        var gm = GM;
+        if (gm != null)
         {
-            gameManager.OnMoneyChanged += UpdateLockState;
-            gameManager.OnKnowledgePointChanged += _ => RefreshLockState();
-            gameManager.OnBuildingCountChanged += RefreshLockState;
+            gm.OnMoneyChanged += UpdateLockState;
+            gm.OnKnowledgePointChanged += _ => RefreshLockState();
+            gm.OnBuildingCountChanged += OnBuildingCountChanged;
         }
+    }
+
+    void OnEnable()
+    {
+        if (priceText != null && buildingData != null)
+            priceText.text = GetCurrentPrice().ToString("N0");
+        RefreshLockState();
     }
 
     void OnDestroy()
     {
-        if (gameManager != null)
+        var gm = GM;
+        if (gm != null)
         {
-            gameManager.OnMoneyChanged -= UpdateLockState;
-            gameManager.OnBuildingCountChanged -= RefreshLockState;
-            // OnKnowledgePointChanged는 람다로 등록되어 자동 해제됨
+            gm.OnMoneyChanged -= UpdateLockState;
+            gm.OnBuildingCountChanged -= OnBuildingCountChanged;
         }
+    }
+
+    GameManager GM => GameManager.Instance != null ? GameManager.Instance : gameManager;
+
+    long GetCurrentPrice()
+    {
+        if (buildingData == null || GM == null) return buildingData != null ? buildingData.price : 0;
+        if (buildingData.category == BuildingCategory.Basic)    return GM.GetBasicBuildingPrice();
+        if (buildingData.category == BuildingCategory.Landmark) return GM.GetLandmarkPrice();
+        return buildingData.price;
     }
 
     void UpdateLockState(long currentMoney)
     {
-        if (buildingData == null) return;
+        if (buildingData == null || GM == null) return;
 
         bool alreadyInstalled = buildingData.category == BuildingCategory.Landmark
-            && gameManager != null
-            && gameManager.IsLandmarkInstalled(buildingData.buildingName);
+            && GM.IsLandmarkInstalled(buildingData.buildingName);
 
-        bool notEnoughMoney = currentMoney < buildingData.price;
-        bool notEnoughKP = gameManager != null && gameManager.UserKnowledgePoint < buildingData.knowledgePrice;
-        bool limitReached = buildingData.category == BuildingCategory.Basic
-            && gameManager != null
-            && !gameManager.CanInstallBasic();
+        bool notEnoughMoney = currentMoney < GetCurrentPrice();
+        long kpCost = buildingData.category == BuildingCategory.Landmark ? 100L : buildingData.knowledgePrice;
+        bool notEnoughKP = GM.UserKnowledgePoint < kpCost;
+        bool limitReached = buildingData.category == BuildingCategory.Basic && !GM.CanInstallBasic();
 
         bool locked = alreadyInstalled || notEnoughMoney || notEnoughKP || limitReached;
         if (lockImage != null) lockImage.SetActive(locked);
@@ -78,7 +94,14 @@ public class BuildingCardUI : MonoBehaviour
 
     void RefreshLockState()
     {
-        UpdateLockState(gameManager != null ? gameManager.UserMoney : 0);
+        UpdateLockState(GM != null ? GM.UserMoney : 0);
+    }
+
+    void OnBuildingCountChanged()
+    {
+        if (priceText != null && buildingData != null)
+            priceText.text = GetCurrentPrice().ToString("N0");
+        RefreshLockState();
     }
 
     void RefreshUI()
@@ -100,8 +123,9 @@ public class BuildingCardUI : MonoBehaviour
         if (goldProductionText   != null) goldProductionText.text   = buildingData.goldProductionRate.ToString("#,##0.##");
         if (touristIncreaseText  != null) touristIncreaseText.text  = buildingData.touristIncrease.ToString("N0");
         if (maxTouristText       != null) maxTouristText.text       = buildingData.maxTouristIncrease.ToString("N0");
-        if (priceText            != null) priceText.text            = buildingData.price.ToString("N0");
-        if (knowledgePriceText   != null) knowledgePriceText.text   = buildingData.knowledgePrice.ToString("N0");
+        if (priceText            != null) priceText.text            = GetCurrentPrice().ToString("N0");
+        long displayKP = buildingData.category == BuildingCategory.Landmark ? 100L : buildingData.knowledgePrice;
+        if (knowledgePriceText   != null) knowledgePriceText.text   = displayKP.ToString("N0");
     }
 
     void ApplyCardSprite(string childName, Sprite sprite)
@@ -132,14 +156,16 @@ public class BuildingCardUI : MonoBehaviour
         }
 
         // 골드 또는 지식포인트 부족 시 구매 차단
-        if (gameManager != null && !gameManager.SpendMoney(buildingData.price))
+        long price = GetCurrentPrice();
+        if (GM != null && !GM.SpendMoney(price))
         {
             Debug.Log("골드가 부족합니다!");
             return;
         }
-        if (gameManager != null && !gameManager.SpendKnowledgePoint(buildingData.knowledgePrice))
+        long kpCost = buildingData.category == BuildingCategory.Landmark ? 100L : buildingData.knowledgePrice;
+        if (GM != null && !GM.SpendKnowledgePoint(kpCost))
         {
-            gameManager.AddMoney(buildingData.price);
+            GM.AddMoney(price);
             Debug.Log("지식포인트가 부족합니다!");
             return;
         }

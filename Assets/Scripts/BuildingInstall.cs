@@ -150,6 +150,10 @@ public class BuildingInstall : MonoBehaviour
                     PlaceWaterTiles(cellPos, matchedData);
             }
         }
+
+        // 모든 건물 복원 후 오프라인 동안 쌓인 생산량 적용
+        if (gameManager != null)
+            gameManager.ApplyOfflineEarnings();
     }
 
 
@@ -436,6 +440,7 @@ public class BuildingInstall : MonoBehaviour
     // 기존 건물 이동 모드
     private bool isBuildingMoving = false;
     private Vector3Int dragOriginalCell;
+    private SpriteRenderer draggedBuildingSR;
 
     void HandleBuildingInteraction()
     {
@@ -554,6 +559,18 @@ public class BuildingInstall : MonoBehaviour
         var col = building.GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
+        // 고스트 설정 — 드래그 중인 건물 스프라이트를 고스트에 복사하고 원본 숨김
+        draggedBuildingSR = building.GetComponentInChildren<SpriteRenderer>();
+        if (draggedBuildingSR != null && ghostRenderer != null)
+        {
+            ghostRenderer.sprite = draggedBuildingSR.sprite;
+            ghostRenderer.sortingLayerName = draggedBuildingSR.sortingLayerName;
+            ghostRenderer.sortingOrder = draggedBuildingSR.sortingOrder + 1;
+            ghostRenderer.transform.localScale = building.transform.localScale;
+            ghostRenderer.gameObject.SetActive(true);
+            draggedBuildingSR.enabled = false;
+        }
+
         // 트리거 콜라이더를 이 건물 크기에 맞게 재설정
         SetupTriggerCollider();
     }
@@ -564,6 +581,11 @@ public class BuildingInstall : MonoBehaviour
         // 건물 콜라이더 복원
         var col = building.GetComponent<Collider2D>();
         if (col != null) col.enabled = true;
+
+        // 고스트 숨기고 원본 스프라이트 복원
+        if (ghostRenderer != null) ghostRenderer.gameObject.SetActive(false);
+        if (draggedBuildingSR != null) draggedBuildingSR.enabled = true;
+        draggedBuildingSR = null;
 
         float origZ = building.transform.position.z;
         if (CannotPlace)
@@ -587,6 +609,7 @@ public class BuildingInstall : MonoBehaviour
                 occupiedCells.Add(cell);
             if (building.buildingData != null && building.buildingData.requiresWaterTile)
                 PlaceWaterTiles(cellPosition, building.buildingData);
+            if (SoundManager.Instance != null) SoundManager.Instance.PlaySFX("install sound");
             SaveManager.Instance?.SaveGameData();
         }
         isOutsideGrid = false;
@@ -695,15 +718,6 @@ public class BuildingInstall : MonoBehaviour
         if (CannotPlace)
         {
             Debug.LogWarning(isOutsideGrid ? "GridOverlay 범위 밖입니다. 설치할 수 없습니다!" : "여기는 건물이나 장애물이 있어 설치할 수 없습니다!");
-            return;
-        }
-
-        // 관광객 초과 시 설치 불가
-        int newCurrent = gameManager.CurrentTourists + currentBuildingData.touristIncrease;
-        int newMax = gameManager.MaxTourists + currentBuildingData.maxTouristIncrease;
-        if (newCurrent > newMax)
-        {
-            Debug.LogWarning("관광객 수용 한도를 초과하여 설치할 수 없습니다!");
             return;
         }
 
