@@ -152,7 +152,7 @@ public class MapUpgrade : MonoBehaviour
                 {
                     case 2:
                         gridOverlay.changeGridValue(22, 22);
-                        gridOverlay.changePositionValue(-12, 18);
+                        gridOverlay.changePositionValue(-11, 19);
                         deletedClouds.transform.Find("DeletedAt2Step")?.gameObject.SetActive(false);
                         break;
                     case 3:
@@ -162,7 +162,7 @@ public class MapUpgrade : MonoBehaviour
                         break;
                     case 4:
                         gridOverlay.changeGridValue(32, 32);
-                        gridOverlay.changePositionValue(-17, 13);
+                        gridOverlay.changePositionValue(-16, 14);
                         deletedClouds.transform.Find("DeletedAt4Step")?.gameObject.SetActive(false);
                         break;
                 }
@@ -184,7 +184,7 @@ public class MapUpgrade : MonoBehaviour
             //     break;
             case 2:
                 gridOverlay.changeGridValue(22,22);
-                gridOverlay.changePositionValue(-12,18);
+                gridOverlay.changePositionValue(-11,19);
                 deletedClouds.transform.Find("DeletedAt2Step")?.gameObject.SetActive(false);
                 break;
             case 3:
@@ -194,7 +194,7 @@ public class MapUpgrade : MonoBehaviour
                 break;
             case 4:
                 gridOverlay.changeGridValue(32,32);
-                gridOverlay.changePositionValue(-17,13);
+                gridOverlay.changePositionValue(-16,14);
                 deletedClouds.transform.Find("DeletedAt4Step")?.gameObject.SetActive(false);
                 break;
         }
