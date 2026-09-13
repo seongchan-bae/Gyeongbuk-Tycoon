@@ -42,6 +42,7 @@ public class BuildingPopupUI : MonoBehaviour
     
 
     private Building selectedBuilding;
+    private BuildingData pendingInfoData;
 
     void Awake()
     {
@@ -147,6 +148,7 @@ public class BuildingPopupUI : MonoBehaviour
 
         if (!string.IsNullOrEmpty(contentId))
         {
+            pendingInfoData = selectedBuilding?.buildingData;
             selectedBuilding = null;
             StartCoroutine(FetchTourInfo(contentId));
         }
@@ -231,11 +233,12 @@ public class BuildingPopupUI : MonoBehaviour
     
     void PopulateStats()
     {
-        BuildingData data = selectedBuilding?.buildingData;
+        BuildingData data = selectedBuilding?.buildingData ?? pendingInfoData;
         if (data == null) return;
 
-        if (statGoldText      != null) statGoldText.text    = data.goldProductionRate.ToString("#,##0.##");
-        if (statTouristText   != null) statTouristText.text = $"{data.touristIncrease:N0} / {data.maxTouristIncrease:N0}";
+        if (statGoldText    != null) statGoldText.text    = data.goldProductionRate.ToString("#,##0.##");
+        if (statTouristText != null) statTouristText.text = $"{data.touristIncrease:N0} / {data.maxTouristIncrease:N0}";
+        pendingInfoData = null;
     }
 
     public void ShowHUD() => SetHudVisible(true);
@@ -258,6 +261,7 @@ public class BuildingPopupUI : MonoBehaviour
             if (infoText != null)
             {
                 infoText.text = "\n" + text;
+                infoText.ForceMeshUpdate();
                 Canvas.ForceUpdateCanvases();
                 LayoutRebuilder.ForceRebuildLayoutImmediate(infoText.GetComponent<RectTransform>());
                 RectTransform contentRect = infoText.transform.parent.GetComponent<RectTransform>();

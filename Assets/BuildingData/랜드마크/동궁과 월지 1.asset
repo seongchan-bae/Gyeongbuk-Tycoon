@@ -10,22 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2468184d78a75348a0a27ee37085bcd, type: 3}
-  m_Name: "\uC18C\uC218\uC11C\uC6D0"
+  m_Name: "\uB3D9\uAD81\uACFC \uC6D4\uC9C0 1"
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
-  buildingName: "\uC18C\uC218\uC11C\uC6D0"
+  buildingName: "\uB3D9\uAD81\uACFC\uC6D4\uC9C0"
   price: 100000
   knowledgePrice: 100
-  goldProductionRate: 10
+  goldProductionRate: 20
   thumbnail: {fileID: 0}
-  prefab: {fileID: 4573033411206038145, guid: 0ad3947eefbdda04d912e34af15d8651, type: 3}
+  prefab: {fileID: 2971251173043264276, guid: b490c123dcddf294aa5f5fc43b6517d2, type: 3}
   tileWidth: 3
   tileHeight: 3
-  contentId: 126201
+  contentId: 128526
   manualInfoText: 
-  maxTouristIncrease: 540
-  touristIncrease: 7
+  maxTouristIncrease: 300
+  touristIncrease: 5
   requiresWaterTile: 0
   waterTilePrefab: {fileID: 0}
   category: 1
-  upgradeTarget: {fileID: 0}
-  upgradeCost: 0
