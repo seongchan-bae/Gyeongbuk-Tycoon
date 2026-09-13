@@ -9,14 +9,22 @@ public class GameManager : MonoBehaviour
     [SerializeField] private long userKnowledgePoint = 0L;
 
     // 관광객 수치
-    private int currentTourists = 0;
-    private int maxTourists = 0;
+    [SerializeField] private int currentTourists = 0;
+    [SerializeField] private int maxTourists = 0;
     private int touristRatePerSecond = 0;
     private float touristTimer = 0f;
     public int CurrentTourists => currentTourists;
     public int MaxTourists => maxTourists;
     public int TouristRatePerSecond => touristRatePerSecond;
     public event System.Action<int, int> OnTouristsChanged;
+
+    void OnValidate()
+    {
+        if (!Application.isPlaying) return;
+        currentTourists = Mathf.Clamp(currentTourists, 0, maxTourists);
+        OnTouristsChanged?.Invoke(currentTourists, maxTourists);
+        OnKnowledgePointChanged?.Invoke(userKnowledgePoint);
+    }
 
     // 건물 설치 제한
     [Header("게임 단계 (0~3 → 기본건물 최대 10/20/30/40개)")]
@@ -58,6 +66,15 @@ public class GameManager : MonoBehaviour
             SaveManager.Instance.CurrentData.upgradedBuildingCount = upgradedBuildingCount;
     }
 
+    private System.Collections.Generic.HashSet<BuildingData> upgradeTargetCache;
+    void BuildUpgradeTargetCache()
+    {
+        upgradeTargetCache = new System.Collections.Generic.HashSet<BuildingData>();
+        foreach (var bd in Resources.FindObjectsOfTypeAll<BuildingData>())
+            if (bd.upgradeTarget != null)
+                upgradeTargetCache.Add(bd.upgradeTarget);
+    }
+
     public void RegisterBuilding(BuildingData data)
     {
         if (data.category == BuildingCategory.Basic)
@@ -73,6 +90,15 @@ public class GameManager : MonoBehaviour
             basicBuildingCount = Mathf.Max(0, basicBuildingCount - 1);
         else if (data.category == BuildingCategory.Landmark)
             installedLandmarks.Remove(data.buildingName);
+
+        if (upgradeTargetCache == null) BuildUpgradeTargetCache();
+        if (upgradeTargetCache.Contains(data))
+        {
+            upgradedBuildingCount = Mathf.Max(0, upgradedBuildingCount - 1);
+            if (SaveManager.Instance != null)
+                SaveManager.Instance.CurrentData.upgradedBuildingCount = upgradedBuildingCount;
+        }
+
         OnBuildingCountChanged?.Invoke();
     }
 
@@ -163,6 +189,7 @@ public class GameManager : MonoBehaviour
             SaveManager.Instance.CurrentData.currentTourists = currentTourists;
         OnTouristsChanged?.Invoke(currentTourists, maxTourists);
     }
+
 
     //유저머니 추가
     public void AddMoney(long money)

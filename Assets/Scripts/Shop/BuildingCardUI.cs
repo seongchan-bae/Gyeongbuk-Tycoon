@@ -83,7 +83,8 @@ public class BuildingCardUI : MonoBehaviour
             && GM.IsLandmarkInstalled(buildingData.buildingName);
 
         bool notEnoughMoney = currentMoney < GetCurrentPrice();
-        bool notEnoughKP = GM.UserKnowledgePoint < buildingData.knowledgePrice;
+        long kpCost = buildingData.category == BuildingCategory.Landmark ? 100L : buildingData.knowledgePrice;
+        bool notEnoughKP = GM.UserKnowledgePoint < kpCost;
         bool limitReached = buildingData.category == BuildingCategory.Basic && !GM.CanInstallBasic();
 
         bool locked = alreadyInstalled || notEnoughMoney || notEnoughKP || limitReached;
@@ -123,7 +124,8 @@ public class BuildingCardUI : MonoBehaviour
         if (touristIncreaseText  != null) touristIncreaseText.text  = buildingData.touristIncrease.ToString("N0");
         if (maxTouristText       != null) maxTouristText.text       = buildingData.maxTouristIncrease.ToString("N0");
         if (priceText            != null) priceText.text            = GetCurrentPrice().ToString("N0");
-        if (knowledgePriceText   != null) knowledgePriceText.text   = buildingData.knowledgePrice.ToString("N0");
+        long displayKP = buildingData.category == BuildingCategory.Landmark ? 100L : buildingData.knowledgePrice;
+        if (knowledgePriceText   != null) knowledgePriceText.text   = displayKP.ToString("N0");
     }
 
     void ApplyCardSprite(string childName, Sprite sprite)
@@ -160,7 +162,8 @@ public class BuildingCardUI : MonoBehaviour
             Debug.Log("골드가 부족합니다!");
             return;
         }
-        if (GM != null && !GM.SpendKnowledgePoint(buildingData.knowledgePrice))
+        long kpCost = buildingData.category == BuildingCategory.Landmark ? 100L : buildingData.knowledgePrice;
+        if (GM != null && !GM.SpendKnowledgePoint(kpCost))
         {
             GM.AddMoney(price);
             Debug.Log("지식포인트가 부족합니다!");

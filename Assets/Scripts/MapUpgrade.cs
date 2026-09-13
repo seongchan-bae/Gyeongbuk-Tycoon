@@ -46,11 +46,10 @@ public class MapUpgrade : MonoBehaviour
 
     void Start()
     {
-        currentStep = (SaveManager.Instance != null)
-            ? SaveManager.Instance.CurrentData.mapUpgradeStep
-            : 1;
+        currentStep = 1; // 테스트용 고정
 
         RestoreGrid();
+        GameManager.Instance?.SetStage(currentStep - 1);
 
         step2Button?.onClick.AddListener(() => TryUpgrade(2));
         step3Button?.onClick.AddListener(() => TryUpgrade(3));
@@ -95,8 +94,6 @@ public class MapUpgrade : MonoBehaviour
             Debug.Log($"[MapUpgrade] 골드 부족 (필요: {cost:N0})");
             return;
         }
-
-        GameManager.Instance.SetCurrentTourists(GameManager.Instance.CurrentTourists - touristRequired);
 
         currentStep = targetStep;
         if (SaveManager.Instance != null)

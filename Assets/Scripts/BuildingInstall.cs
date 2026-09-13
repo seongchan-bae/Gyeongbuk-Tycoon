@@ -717,15 +717,6 @@ public class BuildingInstall : MonoBehaviour
             return;
         }
 
-        // 관광객 초과 시 설치 불가
-        int newCurrent = gameManager.CurrentTourists + currentBuildingData.touristIncrease;
-        int newMax = gameManager.MaxTourists + currentBuildingData.maxTouristIncrease;
-        if (newCurrent > newMax)
-        {
-            Debug.LogWarning("관광객 수용 한도를 초과하여 설치할 수 없습니다!");
-            return;
-        }
-
         // 건물 수 제한 체크
         if (currentBuildingData.category == BuildingCategory.Basic && !gameManager.CanInstallBasic())
         {
