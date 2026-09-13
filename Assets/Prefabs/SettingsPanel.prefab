@@ -1805,7 +1805,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uCD9C\uCC98 \uBC0F \uC800\uC791\uAD8C\n\n[ \uBC30\uACBD\uC74C\uC545 ]\nLazy Village \u2014 SergeQuadrado (Serge Quadrado Music)\nPixabay Content License\npixabay.com/music/happy-childrens-tunes-lazy-village-15547\n\n[ \uC74C\uB7C9 \uC544\uC774\uCF58 ]\nIcons made by icon_small from www.flaticon.com"
+  m_text: "\uCD9C\uCC98 \uBC0F \uC800\uC791\uAD8C\n\n[ \uBC30\uACBD\uC74C\uC545 ]\nLazy Village \u2014 SergeQuadrado (Serge Quadrado Music)\nPixabay Content License\npixabay.com/music/happy-childrens-tunes-lazy-village-15547\n\n[ \uC74C\uB7C9 \uC544\uC774\uCF58 ]\nIcons made by icon_small from www.flaticon.com\n\n[ \uC790\uBB3C\uC1E0 \uC544\uC774\uCF58 ]\n\uC7A0\uAE34 \uC790\uBB3C\uC1E0 \uC544\uC774\uCF58, \uC5F4\uB9B0 \uC790\uBB3C\uC1E0 \uC544\uC774\uCF58 \uC81C\uC791\uC790: Magnific - Flaticon\nwww.flaticon.com"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

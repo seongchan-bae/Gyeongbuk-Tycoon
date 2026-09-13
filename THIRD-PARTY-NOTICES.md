@@ -56,6 +56,23 @@ Icons made by icon_small from www.flaticon.com
 > 개별 아이콘 URL을 기록해 두고 싶으면 위 표에 열을 추가하세요.
 > 라이선스 요건 자체는 제작자명과 flaticon.com 표기로 충족됩니다.
 
+잠금 상태 UI에 사용한 자물쇠 아이콘 2종입니다.
+
+| 항목 | 내용 |
+|---|---|
+| 제작자 | Magnific |
+| 출처 | https://www.flaticon.com/kr/free-icons/- |
+| 라이선스 | Flaticon Free License |
+| 표기 의무 | **있음** |
+
+표기 문구:
+
+```
+잠긴 자물쇠 아이콘, 열린 자물쇠 아이콘 제작자: Magnific - Flaticon
+```
+
+해당 문구는 게임 내 `환경설정 → 정보` 탭에 표시됩니다.
+
 ---
 
 ## 폰트

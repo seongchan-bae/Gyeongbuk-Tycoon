@@ -238,6 +238,8 @@ public class PuzzleUIManager : MonoBehaviour
     {
         isGameActive = false;
         if (gameOverPopup != null) gameOverPopup.SetActive(true);
+        // 다른 미니게임과 똑같이 실패에도 소리로 알려 준다.
+        if (SoundManager.Instance != null) SoundManager.Instance.PlaySFX("gameover");
         // 결과 화면에서는 우측 상단 나가기 대신 패널 안의 버튼을 쓴다.
         if (closeButton != null) closeButton.SetActive(false);
         if (timerText != null) timerText.text = "남은 시간: 시간 초과!";
@@ -255,7 +257,7 @@ public class PuzzleUIManager : MonoBehaviour
             if (grantedKnowledge < rewardKnowledge) text += "\n(오늘 지식포인트 한도를 모두 채웠습니다)";
             rewardText.text = text;
         }
-        SoundManager.Instance.PlaySFX("success");
+        if (SoundManager.Instance != null) SoundManager.Instance.PlaySFX("success");
         if (closeButton != null) closeButton.SetActive(false);
         if (clearPopup != null) clearPopup.SetActive(true);
     }

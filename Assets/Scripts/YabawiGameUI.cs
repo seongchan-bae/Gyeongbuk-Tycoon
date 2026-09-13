@@ -421,12 +421,12 @@ public class YabawiGameUI : MonoBehaviour
             long grantedKnowledge = GameManager.GrantReward(rewardGoldPerWin, rewardKnowledge);
             message = $"보상: {rewardGoldPerWin} 골드 / {grantedKnowledge} 지식 포인트";
             if (grantedKnowledge < rewardKnowledge) message += "\n(오늘 지식포인트 한도를 모두 채웠습니다)";
-            SoundManager.Instance.PlaySFX("success");
+            if (SoundManager.Instance != null) SoundManager.Instance.PlaySFX("success");
         }
         else
         {
             message = "아쉽네요, 다시 도전해 보세요.";
-            SoundManager.Instance.PlaySFX("gameover");
+            if (SoundManager.Instance != null) SoundManager.Instance.PlaySFX("gameover");
         }
 
         if (resultText != null) resultText.text = message;

@@ -1492,6 +1492,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cd168c1a9acc99e4b8f64fc6b6714c93, type: 3}
   - {fileID: 8300000, guid: 54e321edc9dfec647ab68906047a8d0c, type: 3}
   - {fileID: 8300000, guid: 02e412a4e58c1724e861aa75b1cc3324, type: 3}
+  - {fileID: 8300000, guid: 16742f087b363854481d617b469b2197, type: 3}
+  - {fileID: 8300000, guid: da37ea0931301c64cb93ecca4417c103, type: 3}
 --- !u!4 &1353663802
 Transform:
   m_ObjectHideFlags: 0
@@ -2287,8 +2289,8 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 1
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96

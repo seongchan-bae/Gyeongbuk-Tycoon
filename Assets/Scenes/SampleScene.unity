@@ -1225,8 +1225,8 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 1
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -2454,12 +2454,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -3510,9 +3510,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 185689337}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 903.4866, y: 486.8866}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -56.5134, y: -53.1134}
   m_SizeDelta: {x: 93.878, y: 93.878}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &111902142
@@ -6040,10 +6040,10 @@ RectTransform:
   - {fileID: 111902141}
   m_Father: {fileID: 1844937813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000061035, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &185689338
 MonoBehaviour:
@@ -6302,12 +6302,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -6964,8 +6964,8 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 1
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -8378,12 +8378,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -16140,9 +16140,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 585536533}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 903.4866, y: 486.88657}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -56.5134, y: -53.11343}
   m_SizeDelta: {x: 93.878, y: 93.878}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &468139716
@@ -16463,12 +16463,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -16743,7 +16743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552e286bf6b5a48a499cbf0610cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCardUI
-  buildingData: {fileID: 11400000, guid: c35a28c3bfca19b419174692c18551ef, type: 2}
+  buildingData: {fileID: 0}
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
@@ -21264,10 +21264,10 @@ RectTransform:
   - {fileID: 1222384154}
   m_Father: {fileID: 1150707397}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000061035, y: 0.000061035}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &585536534
 MonoBehaviour:
@@ -23173,10 +23173,10 @@ RectTransform:
   - {fileID: 279071997}
   m_Father: {fileID: 585536533}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -2.0495, y: -164.58}
-  m_SizeDelta: {x: 1777.031, y: 617.84}
+  m_SizeDelta: {x: -142.969, y: 617.84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &653334743
 MonoBehaviour:
@@ -27240,7 +27240,6 @@ GameObject:
   - component: {fileID: 771000011}
   - component: {fileID: 771000012}
   - component: {fileID: 771000013}
-  - component: {fileID: 771000014}
   m_Layer: 0
   m_Name: SfxSource
   m_TagString: Untagged
@@ -27372,29 +27371,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b9f2c7d5a4e41f0ab86d2c1e7f40913, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneSfxSource
---- !u!114 &771000014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 771000010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5090ee604319fbb4095df3ee02ec3fd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SoundManager
-  bgmSource: {fileID: 3268845438914368753}
-  sfxSource: {fileID: 771000012}
-  bgmClips:
-  - {fileID: 8300000, guid: b2698d9e8f9dc5b458a93c52f7d60197, type: 3}
-  - {fileID: 8300000, guid: a72394d47d686a14397520ae0a1e9a74, type: 3}
-  sfxClips:
-  - {fileID: 8300000, guid: cd168c1a9acc99e4b8f64fc6b6714c93, type: 3}
-  - {fileID: 8300000, guid: da37ea0931301c64cb93ecca4417c103, type: 3}
-  - {fileID: 8300000, guid: 54e321edc9dfec647ab68906047a8d0c, type: 3}
-  - {fileID: 8300000, guid: 02e412a4e58c1724e861aa75b1cc3324, type: 3}
-  - {fileID: 8300000, guid: 16742f087b363854481d617b469b2197, type: 3}
 --- !u!1 &772838674
 GameObject:
   m_ObjectHideFlags: 0
@@ -28659,12 +28635,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -30353,10 +30329,10 @@ RectTransform:
   - {fileID: 1759528396}
   m_Father: {fileID: 585536533}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -2.0495, y: -164.58}
-  m_SizeDelta: {x: 1777.031, y: 617.84}
+  m_SizeDelta: {x: -142.969, y: 617.84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &860797863
 MonoBehaviour:
@@ -30686,12 +30662,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -40324,7 +40300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552e286bf6b5a48a499cbf0610cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCardUI
-  buildingData: {fileID: 11400000, guid: e3f44fdd9f0cff64da759425f2170353, type: 2}
+  buildingData: {fileID: 0}
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
@@ -40903,7 +40879,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -43254,10 +43230,10 @@ RectTransform:
   - {fileID: 1733038137}
   m_Father: {fileID: 585536533}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -2.0495, y: -164.58}
-  m_SizeDelta: {x: 1777.031, y: 617.84}
+  m_SizeDelta: {x: -142.969, y: 617.84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1222384155
 MonoBehaviour:
@@ -45730,7 +45706,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 48.05188, y: -1.4710693}
+  m_AnchoredPosition: {x: 49.74, y: -3.61}
   m_SizeDelta: {x: 228.2855, y: 20.4726}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1263179686
@@ -46820,9 +46796,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 653334742}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 620.17993, y: 357.5}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -268.33557, y: 357.5}
   m_SizeDelta: {x: 401.8813, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1287763185
@@ -47445,9 +47421,9 @@ RectTransform:
   - {fileID: 1384588127}
   m_Father: {fileID: 585536533}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -232.04956, y: 185.42004}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 727.95044, y: -354.57996}
   m_SizeDelta: {x: 225.5723, y: 66.009}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1295454488
@@ -48113,9 +48089,9 @@ RectTransform:
   - {fileID: 1059506734}
   m_Father: {fileID: 585536533}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -502.0495, y: 185.41998}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 457.9505, y: -354.58002}
   m_SizeDelta: {x: 225.5723, y: 66.009}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1302341890
@@ -49033,9 +49009,9 @@ RectTransform:
   - {fileID: 925529713}
   m_Father: {fileID: 585536533}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -770, y: 185.42004}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 190, y: -354.57996}
   m_SizeDelta: {x: 225.5723, y: 66.009}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1335578026
@@ -50456,7 +50432,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f552e286bf6b5a48a499cbf0610cdf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCardUI
-  buildingData: {fileID: 11400000, guid: 8a5fe52d5c0d2c941a6e622d2fd2d5bb, type: 2}
+  buildingData: {fileID: 0}
   buildingInstall: {fileID: 1595887092}
   baseUI: {fileID: 223139033}
   gameManager: {fileID: 361643058}
@@ -50721,12 +50697,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -64646,7 +64622,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1748465119}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6b606a19402f0645a06b0e819013555, type: 3}
   m_Name: 
@@ -67055,10 +67031,10 @@ RectTransform:
   - {fileID: 1011730445}
   m_Father: {fileID: 185689337}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 13.4942, y: -42.6368}
-  m_SizeDelta: {x: 1593.7268, y: 733.4098}
+  m_SizeDelta: {x: -326.2732, y: 733.4098}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1841905399
 MonoBehaviour:
@@ -67196,12 +67172,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -67748,9 +67724,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 585536533}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 793.6086, y: 486.88657}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -166.3914, y: -53.11343}
   m_SizeDelta: {x: 93.878, y: 93.878}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1863883205
@@ -68418,7 +68394,7 @@ MonoBehaviour:
   flipButton: {fileID: 1658298306}
   buildingName: {fileID: 0}
   gameManager: {fileID: 361643058}
-  buildingData: {fileID: 11400000, guid: 4e6e584f408da834da8cce8d9eb99d74, type: 2}
+  buildingData: {fileID: 0}
   buildingInstall: {fileID: 0}
   tourApiKey: 616315cd61c155564e9088acbc319ff980ccc75a67ed38601b3876602d23ee9d
   infoPopupPanel: {fileID: 185689336}
@@ -70913,7 +70889,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Store
   buildingLists: []
-  buildingSelect: {fileID: 11400000, guid: 4e6e584f408da834da8cce8d9eb99d74, type: 2}
+  buildingSelect: {fileID: 0}
   storeMainPanel: {fileID: 1150707393}
   gameManager: {fileID: 361643058}
   buildingInstall: {fileID: 1595887092}
@@ -78880,12 +78856,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -80000,10 +79976,10 @@ RectTransform:
   - {fileID: 5732200513846865008}
   m_Father: {fileID: 7826426623794309093}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1273011412561071083
 CanvasRenderer:
@@ -80507,10 +80483,10 @@ RectTransform:
   - {fileID: 7044628049514896770}
   m_Father: {fileID: 487581849141088804}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1594932649324932722
 RectTransform:
@@ -82248,12 +82224,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -84924,12 +84900,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -85376,12 +85352,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -85645,12 +85621,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -87682,12 +87658,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -90691,10 +90667,10 @@ RectTransform:
   - {fileID: 988290748078137737}
   m_Father: {fileID: 4310237239842570343}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7355090633471350741
 GameObject:
@@ -91684,10 +91660,10 @@ RectTransform:
   - {fileID: 8277581306569924606}
   m_Father: {fileID: 487581849141088804}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &8026107705700186170
 PrefabInstance:
@@ -92496,8 +92472,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -35, y: -51}
-  m_SizeDelta: {x: 1991.6045, y: 1076.5273}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8532059888715558003
 GameObject:
@@ -93583,10 +93559,10 @@ RectTransform:
   - {fileID: 701632736834930684}
   m_Father: {fileID: 2580653083196566228}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9087285359781340836
 CanvasRenderer:

@@ -184,6 +184,10 @@ public void PlayBGM(string clipName, float volume = 1.0f)
     
 
     #region SFX Methods
+    /// <summary>
+    /// 이름으로 효과음을 재생한다. 이름은 인스펙터의 Sfx Clips 에 넣어 둔
+    /// AudioClip 에셋의 파일명(확장자 제외)과 정확히 같아야 한다.
+    /// </summary>
     public void PlaySFX(string clipName, float volume = 1.0f)
     {
         if (sfxDictionary == null || sfxSource == null) return;
@@ -191,6 +195,13 @@ public void PlayBGM(string clipName, float volume = 1.0f)
         if (sfxDictionary.TryGetValue(clipName, out AudioClip clip))
         {
             sfxSource.PlayOneShot(clip, volume);
+        }
+        else
+        {
+            // 조용히 넘어가면 "왜 소리가 안 나지" 를 찾는 데 오래 걸린다.
+            // BGM 과 똑같이 등록되지 않은 이름을 바로 알려 준다.
+            Debug.LogWarning($"[SoundManager] 효과음 클립을 찾을 수 없습니다: {clipName} " +
+                             "(SoundManager 의 Sfx Clips 배열에 추가해야 합니다)");
         }
     }
 

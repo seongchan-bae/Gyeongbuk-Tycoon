@@ -411,7 +411,7 @@ public class SilueteGameManager : MonoBehaviour
                 string text = $"<b><color=#00FF00>정답입니다!</color></b>\n보상: {rewardGold} 골드 / {grantedKnowledge} 지식 포인트를 획득했습니다.";
                 if (grantedKnowledge < rewardKnowledgePoint) text += "\n<size=80%>(오늘 지식포인트 한도를 모두 채웠습니다)</size>";
                 resultMessageText.text = text;
-                SoundManager.Instance.PlaySFX("success");
+                if (SoundManager.Instance != null) SoundManager.Instance.PlaySFX("success");
             }
         }
         else
@@ -431,7 +431,7 @@ public class SilueteGameManager : MonoBehaviour
                     text += "\n<size=80%>(지식 포인트가 없어 더 깎이지 않았습니다)</size>";
                 }
                 resultMessageText.text = text;
-                SoundManager.Instance.PlaySFX("gameover");
+                if (SoundManager.Instance != null) SoundManager.Instance.PlaySFX("gameover");
             }
         }
     }
