@@ -2,6 +2,10 @@
 
 public class GameManager : MonoBehaviour
 {
+    [Header("테스트 설정")]
+    [SerializeField] private bool resetOnStart = false;
+    public bool ResetOnStart => resetOnStart;
+
     // 유저가 가지고 있는 돈(GameManager에서만 관리)
     [SerializeField] private long userMoney = 10000L;
 
@@ -150,6 +154,18 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        if (resetOnStart && SaveManager.Instance != null)
+        {
+            var d = SaveManager.Instance.CurrentData;
+            d.userMoney = 10000L;
+            d.userKnowledgePoint = 0L;
+            d.currentTourists = 0;
+            d.upgradedBuildingCount = 0;
+            d.mapUpgradeStep = 1;
+            d.placedBuildings?.Clear();
+            SaveManager.Instance.SaveGameData();
+        }
+
         if (SaveManager.Instance != null)
         {
             userMoney = SaveManager.Instance.CurrentData.userMoney;

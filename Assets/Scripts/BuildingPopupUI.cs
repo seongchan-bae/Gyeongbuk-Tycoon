@@ -31,6 +31,7 @@ public class BuildingPopupUI : MonoBehaviour
     [SerializeField] private GameObject upgradeCostGoldImage;
 
     [Header("건물 스탯 텍스트")]
+    [SerializeField] private TextMeshProUGUI statBuildingNameText;
     [SerializeField] private TextMeshProUGUI statGoldText;
     [SerializeField] private TextMeshProUGUI statTouristRateText;
     [SerializeField] private TextMeshProUGUI statMaxTouristText;
@@ -237,6 +238,7 @@ public class BuildingPopupUI : MonoBehaviour
         BuildingData data = selectedBuilding?.buildingData ?? pendingInfoData;
         if (data == null) return;
 
+        if (statBuildingNameText != null) statBuildingNameText.text = data.buildingName;
         if (statGoldText         != null) statGoldText.text         = $"{data.goldProductionRate.ToString("#,##0.##")}/초";
         if (statTouristRateText  != null) statTouristRateText.text  = $"{data.touristIncrease:N0}/초";
         if (statMaxTouristText   != null) statMaxTouristText.text   = $"{data.maxTouristIncrease:N0}";

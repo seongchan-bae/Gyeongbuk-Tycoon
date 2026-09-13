@@ -46,7 +46,8 @@ public class MapUpgrade : MonoBehaviour
 
     void Start()
     {
-        currentStep = SaveManager.Instance != null ? Mathf.Max(1, SaveManager.Instance.CurrentData.mapUpgradeStep) : 1;
+        bool reset = GameManager.Instance != null && GameManager.Instance.ResetOnStart;
+        currentStep = (!reset && SaveManager.Instance != null) ? Mathf.Max(1, SaveManager.Instance.CurrentData.mapUpgradeStep) : 1;
 
         RestoreGrid();
         GameManager.Instance?.SetStage(currentStep - 1);
