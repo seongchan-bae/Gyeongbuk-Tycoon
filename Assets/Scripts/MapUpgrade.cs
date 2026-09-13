@@ -46,7 +46,7 @@ public class MapUpgrade : MonoBehaviour
 
     void Start()
     {
-        currentStep = 1; // 테스트용 고정
+        currentStep = SaveManager.Instance != null ? Mathf.Max(1, SaveManager.Instance.CurrentData.mapUpgradeStep) : 1;
 
         RestoreGrid();
         GameManager.Instance?.SetStage(currentStep - 1);
@@ -114,12 +114,12 @@ public class MapUpgrade : MonoBehaviour
     void UpdateButtons()
     {
         int tourists = GameManager.Instance != null ? GameManager.Instance.CurrentTourists : 0;
-        SetButtonLock(step2Button, step2LockImage, currentStep != 1 || tourists < step2TouristRequired);
-        SetButtonLock(step3Button, step3LockImage, currentStep != 2 || tourists < step3TouristRequired);
-        SetButtonLock(step4Button, step4LockImage, currentStep != 3 || tourists < step4TouristRequired);
+        SetButtonLock(step2Button, step2LockImage, currentStep != 1 || tourists < step2TouristRequired, currentStep >= 2);
+        SetButtonLock(step3Button, step3LockImage, currentStep != 2 || tourists < step3TouristRequired, currentStep >= 3);
+        SetButtonLock(step4Button, step4LockImage, currentStep != 3 || tourists < step4TouristRequired, currentStep >= 4);
     }
 
-    void SetButtonLock(Button btn, GameObject lockImage, bool locked)
+    void SetButtonLock(Button btn, GameObject lockImage, bool locked, bool alreadyUnlocked = false)
     {
         if (btn != null)
         {
@@ -130,7 +130,7 @@ public class MapUpgrade : MonoBehaviour
             cg.interactable = !locked;
             cg.blocksRaycasts = !locked;
         }
-        if (lockImage != null) lockImage.SetActive(locked);
+        if (lockImage != null) lockImage.SetActive(locked && !alreadyUnlocked);
     }
 
     void RestoreGrid()
