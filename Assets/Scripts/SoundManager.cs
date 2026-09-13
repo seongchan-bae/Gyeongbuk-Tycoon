@@ -43,6 +43,11 @@ public class SoundManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             Initialize();
+
+            // 명시하지 않으면 기기에 따라 30fps로 제한되는 경우가 있어, 모바일에서
+            // 프레임이 매끄럽지 않게 느껴지는 원인이 된다. 앱 시작 시점(가장 먼저
+            // 생성되는 DontDestroyOnLoad 싱글톤)에 한 번만 60fps로 명시한다.
+            Application.targetFrameRate = 60;
         }
         else
         {

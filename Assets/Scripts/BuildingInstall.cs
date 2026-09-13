@@ -69,6 +69,8 @@ public class BuildingInstall : MonoBehaviour
     private List<SpriteRenderer> tileHighlights = new List<SpriteRenderer>();
     private Sprite   tileHighlightSprite;
     private GameObject highlightContainer;
+    private string lastHighlightSortingLayer;
+    private int    lastHighlightSortingOrder = int.MinValue;
 
 #if UNITY_EDITOR
     void OnValidate()
@@ -229,11 +231,17 @@ public class BuildingInstall : MonoBehaviour
             tileHighlights.Add(sr);
         }
 
-        // 기존 풀 오브젝트 소팅 동기화
-        foreach (var sr in tileHighlights)
+        // 기존 풀 오브젝트 소팅 동기화 — 값이 실제로 바뀐 경우에만 (sortingLayerName/Order 대입은
+        // 값이 같아도 렌더러 재정렬 비용이 들기 때문에 드래그 중 매 프레임 호출을 피한다)
+        if (targetLayer != lastHighlightSortingLayer || targetOrder != lastHighlightSortingOrder)
         {
-            sr.sortingLayerName = targetLayer;
-            sr.sortingOrder = targetOrder;
+            foreach (var sr in tileHighlights)
+            {
+                sr.sortingLayerName = targetLayer;
+                sr.sortingOrder = targetOrder;
+            }
+            lastHighlightSortingLayer = targetLayer;
+            lastHighlightSortingOrder = targetOrder;
         }
 
         Color col = CannotPlace ? invalidColor : validColor;
@@ -333,18 +341,25 @@ public class BuildingInstall : MonoBehaviour
                 transform.position = targetPos;
         }
 
-        // GridOverlay 범위 밖이면 설치 불가 처리
-        if (gridOverlay != null && currentBuildingData != null)
+        // 설치/이동 모드일 때만 필요한 계산 — 평상시(관전 모드)에 매 프레임 GetFootprintCells가
+        // 리스트를 새로 할당하고 하이라이트 정렬을 다시 계산하던 것이 모바일 프레임 드랍의 원인이었음
+        bool activePlacementMode = gameManager != null && (gameManager.installingActivation || isBuildingMoving);
+
+        if (activePlacementMode)
         {
-            isOutsideGrid = false;
-            foreach (var cell in GetFootprintCells(cellPosition, currentBuildingData))
+            // GridOverlay 범위 밖이면 설치 불가 처리
+            if (gridOverlay != null && currentBuildingData != null)
             {
-                if (!gridOverlay.Contains(cell)) { isOutsideGrid = true; break; }
+                isOutsideGrid = false;
+                foreach (var cell in GetFootprintCells(cellPosition, currentBuildingData))
+                {
+                    if (!gridOverlay.Contains(cell)) { isOutsideGrid = true; break; }
+                }
             }
-        }
-        else
-        {
-            isOutsideGrid = gridOverlay != null && !gridOverlay.Contains(cellPosition);
+            else
+            {
+                isOutsideGrid = gridOverlay != null && !gridOverlay.Contains(cellPosition);
+            }
         }
 
         // 3. Ghost 색상 업데이트 — 설치 불가: 빨간색 반투명 / 설치 가능: 초록색 반투명
@@ -355,8 +370,11 @@ public class BuildingInstall : MonoBehaviour
                 : new Color(0f, 1f, 0f, 0.5f);
         }
 
-        // 4. 타일 셀 하이라이트 갱신
-        UpdateTileHighlights();
+        // 4. 타일 셀 하이라이트 갱신 — 설치/이동 모드일 때만
+        if (activePlacementMode)
+        {
+            UpdateTileHighlights();
+        }
 
         // 5. 모드 변경 및 클릭 로직
         if (gameManager != null)
