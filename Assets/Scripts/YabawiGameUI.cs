@@ -187,14 +187,23 @@ public class YabawiGameUI : MonoBehaviour
             float startX = -totalWidth / 2f;
             return new Vector2(startX + index * cupSpacingX, 0);
         }
-        else if (totalCups == 4) // 4개: 2행 2열
+        else if (totalCups == 4) // 4개: 마름모꼴 (1-2-1) 배치
         {
-            int row = index / 2; // 0: 상단행, 1: 하단행
-            int col = index % 2; // 0: 좌, 1: 우
-
-            float x = (col == 0) ? -cupSpacingX / 2f : cupSpacingX / 2f;
-            float y = (row == 0) ? cupSpacingY / 2f : -cupSpacingY / 2f;
-            return new Vector2(x, y);
+            // 같은 열(X)에 컵이 겹치지 않도록 위(0) - 중간 좌우(1,2) - 아래(3)로 배치.
+            // 2행 2열 배치는 같은 열의 아래쪽 컵이 들어 올려질 때 위쪽 컵(보물)을 가리는 문제가 있어 변경함.
+            if (index == 0) // 상단 1개
+            {
+                return new Vector2(0, cupSpacingY);
+            }
+            else if (index == 3) // 하단 1개
+            {
+                return new Vector2(0, -cupSpacingY);
+            }
+            else // 중단 2개 (좌: 1, 우: 2)
+            {
+                float x = (index == 1) ? -cupSpacingX / 2f : cupSpacingX / 2f;
+                return new Vector2(x, 0);
+            }
         }
         else // 5개: 2행 3열 (상단 3개, 하단 2개 중앙)
         {
