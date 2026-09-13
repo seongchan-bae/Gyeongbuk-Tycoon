@@ -21,7 +21,7 @@ MonoBehaviour:
   tileWidth: 2
   tileHeight: 2
   contentId: 
-  manualInfoText: 
+  manualInfoText: "\uAC04\uB2E8\uD55C \uC74C\uC2DD\uACFC \uAC04\uC2DD\uC744 \uC990\uAE38 \uC218 \uC788\uB294 \uD3EC\uC7A5\uB9C8\uCC28\uC785\uB2C8\uB2E4."
   maxTouristIncrease: 6000
   touristIncrease: 64
   requiresWaterTile: 0
