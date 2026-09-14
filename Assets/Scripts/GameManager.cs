@@ -7,14 +7,14 @@ public class GameManager : MonoBehaviour
     public bool ResetOnStart => resetOnStart;
 
     // 유저가 가지고 있는 돈(GameManager에서만 관리)
-    [SerializeField] private long userMoney = 10000000L; // TEMP: 원래 값 10000L
+    [SerializeField] private long userMoney = 10000L;
 
     // 유저가 가지고 있는 지식포인트(GameManager에서만 관리)
-    [SerializeField] private long userKnowledgePoint = 1000000L; // TEMP: 원래 값 0L
+    [SerializeField] private long userKnowledgePoint = 0L;
 
     // 관광객 수치
-    [SerializeField] private int currentTourists = 100000; // TEMP: 원래 값 0
-    [SerializeField] private int maxTourists = 100000; // TEMP: 원래 값 0
+    [SerializeField] private int currentTourists = 0;
+    [SerializeField] private int maxTourists = 0;
     private int touristRatePerSecond = 0;
     private float touristTimer = 0f;
     public int CurrentTourists => currentTourists;
@@ -168,9 +168,9 @@ public class GameManager : MonoBehaviour
         if (resetOnStart && SaveManager.Instance != null)
         {
             var d = SaveManager.Instance.CurrentData;
-            d.userMoney = 10000000L; // TEMP: 원래 값 10000L
-            d.userKnowledgePoint = 1000000L; // TEMP: 원래 값 0L
-            d.currentTourists = 100000; // TEMP: 원래 값 0
+            d.userMoney = 10000L;
+            d.userKnowledgePoint = 0L;
+            d.currentTourists = 0;
             d.upgradedBuildingCount = 0;
             d.mapUpgradeStep = 1;
             d.placedBuildings?.Clear();
