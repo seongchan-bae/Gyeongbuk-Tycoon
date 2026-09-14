@@ -12,9 +12,13 @@ public class ShopTabController : MonoBehaviour
     [SerializeField] private Button landmarkTabButton;
     [SerializeField] private Button mapTabButton;
 
-    [Header("탭 버튼 스프라이트")]
-    [SerializeField] private Sprite activeSprite;
-    [SerializeField] private Sprite inactiveSprite;
+    [Header("탭 버튼 스프라이트 (선택됨 / 선택안됨-흑백)")]
+    [SerializeField] private Sprite basicActiveSprite;
+    [SerializeField] private Sprite basicInactiveSprite;
+    [SerializeField] private Sprite landmarkActiveSprite;
+    [SerializeField] private Sprite landmarkInactiveSprite;
+    [SerializeField] private Sprite mapActiveSprite;
+    [SerializeField] private Sprite mapInactiveSprite;
 
     [Header("기본건물 건물 수 표기")]
     [SerializeField] private TextMeshProUGUI buildingCountText; // "현재 / 최대" 표시 텍스트
@@ -71,17 +75,18 @@ public class ShopTabController : MonoBehaviour
 
     void UpdateTabSprites(Button activeButton)
     {
-        if (activeSprite == null || inactiveSprite == null) return;
-
-        SetButtonSprite(basicTabButton,    basicTabButton    == activeButton);
-        SetButtonSprite(landmarkTabButton, landmarkTabButton == activeButton);
-        SetButtonSprite(mapTabButton,      mapTabButton      == activeButton);
+        SetButtonSprite(basicTabButton,    basicActiveSprite,    basicInactiveSprite,    basicTabButton    == activeButton);
+        SetButtonSprite(landmarkTabButton, landmarkActiveSprite, landmarkInactiveSprite, landmarkTabButton == activeButton);
+        SetButtonSprite(mapTabButton,      mapActiveSprite,      mapInactiveSprite,      mapTabButton      == activeButton);
     }
 
-    void SetButtonSprite(Button btn, bool isActive)
+    void SetButtonSprite(Button btn, Sprite active, Sprite inactive, bool isActive)
     {
         if (btn == null) return;
+        Sprite target = isActive ? active : inactive;
+        if (target == null) return;
+
         Image img = btn.GetComponent<Image>();
-        if (img != null) img.sprite = isActive ? activeSprite : inactiveSprite;
+        if (img != null) img.sprite = target;
     }
 }
