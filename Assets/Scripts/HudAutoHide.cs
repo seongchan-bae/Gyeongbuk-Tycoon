@@ -44,7 +44,8 @@ public class HudAutoHide : MonoBehaviour
 
         // 상태가 바뀔 때만 건드린다. 매 프레임 SetActive 를 호출하면
         // 자식들의 OnEnable 이 계속 다시 돌 수 있다.
-        if (initialized && shouldHide == lastShouldHide) return;
+        // 단, 다른 스크립트(BuildingPopupUI 등)가 숨긴 HUD 를 다시 켜 버린 경우에는 되돌린다.
+        if (initialized && shouldHide == lastShouldHide && !IsOutOfSync(shouldHide)) return;
         lastShouldHide = shouldHide;
         initialized = true;
 
@@ -56,5 +57,17 @@ public class HudAutoHide : MonoBehaviour
 
         for (int i = 0; i < transform.childCount; i++)
             transform.GetChild(i).gameObject.SetActive(!shouldHide);
+    }
+
+    /// <summary>숨겨야 하는데 켜져 있는 대상이 있는지. 창이 열린 동안 외부에서 켜진 경우를 잡는다.</summary>
+    private bool IsOutOfSync(bool shouldHide)
+    {
+        if (!shouldHide) return false; // 보여줄 때는 다른 창(정보 팝업 등)이 일부러 끈 것을 존중한다
+
+        if (content != null) return content.activeSelf;
+
+        for (int i = 0; i < transform.childCount; i++)
+            if (transform.GetChild(i).gameObject.activeSelf) return true;
+        return false;
     }
 }

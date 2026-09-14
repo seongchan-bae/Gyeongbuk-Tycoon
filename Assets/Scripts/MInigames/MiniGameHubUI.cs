@@ -121,6 +121,10 @@ public class MiniGameHubUI : MonoBehaviour
     /// <summary>메인화면 HUD 전체를 한 번에 켜고 끈다.</summary>
     private void SetMainUIActive(bool active)
     {
+        // 건물을 눌러 떠 있던 액션 팝업/정보 창은 다른 캔버스에 있어서 mainUI를 꺼도 남는다.
+        // 미니게임으로 들어갈 때 같이 닫는다.
+        if (!active) BuildingPopupUI.Instance?.Hide();
+
         if (mainUI != null) mainUI.SetActive(active);
 
         for (int i = 0; i < extraMainUI.Count; i++)

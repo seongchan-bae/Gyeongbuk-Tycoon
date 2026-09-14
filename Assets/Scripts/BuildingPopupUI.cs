@@ -119,7 +119,9 @@ public class BuildingPopupUI : MonoBehaviour
     {
         popupPanel.gameObject.SetActive(false);
         selectedBuilding = null;
-        if (infoPopupPanel != null)
+        // 정보 창이 실제로 열려 있었을 때만 HUD 를 되살린다.
+        // 미니게임 진입처럼 HUD 를 숨기는 도중에 Hide() 가 불리면 우측 상단 버튼이 다시 켜지는 버그가 있었다.
+        if (infoPopupPanel != null && infoPopupPanel.activeSelf)
         {
             infoPopupPanel.SetActive(false);
             SetHudVisible(true);
@@ -259,6 +261,11 @@ public class BuildingPopupUI : MonoBehaviour
     {
         if (infoPopupPanel != null)
         {
+            // 부모 캔버스(ApiUI)가 에디터에서 꺼진 채 저장되는 일이 반복돼서,
+            // 패널만 켜면 화면에 안 나오고 HUD만 사라지는 문제가 있었다. 부모까지 같이 켠다.
+            for (Transform t = infoPopupPanel.transform.parent; t != null; t = t.parent)
+                if (!t.gameObject.activeSelf) t.gameObject.SetActive(true);
+
             infoPopupPanel.SetActive(true);
             SetHudVisible(false);
             PopulateStats();
