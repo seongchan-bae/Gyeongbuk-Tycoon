@@ -167,16 +167,33 @@ public class PuzzleUIManager : MonoBehaviour
 
     /// <summary>
     /// 고른 그림을 퍼즐 틀에 반영하고 게임을 시작한다.
+    /// puzzleImage 가 없고 contentId 가 있으면 TourAPI 로 이미지를 받아온 뒤 시작한다.
     /// </summary>
     private void ApplyPuzzle(PuzzleData data)
     {
-        currentSelectedSprite = data != null ? data.puzzleImage : null;
+        if (data == null) { StartPuzzleWithSprite(null); return; }
 
-        // 퍼즐 틀(FrameImage) 배경 이미지 교체
-        if (boardFrameImage != null && currentSelectedSprite != null)
+        if (data.puzzleImage != null)
         {
-            boardFrameImage.texture = currentSelectedSprite.texture;
+            StartPuzzleWithSprite(data.puzzleImage);
+            return;
         }
+
+        if (!string.IsNullOrEmpty(data.contentId))
+        {
+            TourImageLoader.Instance.LoadImage(data.contentId, sprite => StartPuzzleWithSprite(sprite));
+            return;
+        }
+
+        StartPuzzleWithSprite(null);
+    }
+
+    private void StartPuzzleWithSprite(Sprite sprite)
+    {
+        currentSelectedSprite = sprite;
+
+        if (boardFrameImage != null && sprite != null)
+            boardFrameImage.texture = sprite.texture;
 
         ResetAndInitializeUI();
     }

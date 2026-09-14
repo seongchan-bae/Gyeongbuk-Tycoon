@@ -9,7 +9,11 @@
       "Bash(Get-ChildItem -Path \"Assets\\\\Scripts\" -Recurse -Filter \"*.cs\")",
       "Bash(Measure-Object)",
       "Bash(Select-Object -ExpandProperty Count)",
-      "Bash(xargs -I {} basename {})"
+      "Bash(xargs -I {} basename {})",
+      "Bash(grep -n \"m_UiScaleMode: 0\\\\|m_ReferenceResolution: {x: 800\\\\|m_MatchWidthOrHeight: 0$\" \"C:\\\\Users\\\\dlxkc\\\\OneDrive\\\\Desktop\\\\Unity project\\\\Gyeongbuk_Tycoon\\\\Assets\\\\Scenes\\\\SampleScene.unity\")",
+      "Bash(Get-ChildItem -Recurse \"C:\\\\Users\\\\dlxkc\\\\OneDrive\\\\Desktop\\\\Unity project\\\\Gyeongbuk_Tycoon\\\\Assets\\\\Scripts\" -Filter \"*.cs\")",
+      "Bash(Select-String -Pattern \"UnityWebRequest|WWW|HttpClient|APIboard|APIBoard\" -List)",
+      "Bash(Select-Object -ExpandProperty Path)"
     ]
   }
 }

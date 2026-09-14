@@ -5,4 +5,6 @@ public class PuzzleData
 {
     public string puzzleTitle;
     public Sprite puzzleImage;
+    [Tooltip("TourAPI contentId. puzzleImage 가 없을 때 런타임에 API 로 이미지를 받아온다.")]
+    public string contentId;
 }

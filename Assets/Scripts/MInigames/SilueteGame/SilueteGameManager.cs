@@ -23,6 +23,9 @@ public class SilhouetteQuizData
     [TextArea(2, 6)]
     [Tooltip("글 퀴즈 지문. 비워두면 QuizDescriptions 에서 정답 이름으로 찾는다. 둘 다 없으면 이미지 퀴즈로만 출제.")]
     public string description;
+
+    [Tooltip("TourAPI contentId. originalImage 가 없을 때 런타임에 API 로 이미지를 받아온다.")]
+    public string contentId;
 }
 
 public class SilueteGameManager : MonoBehaviour
@@ -103,7 +106,8 @@ public class SilueteGameManager : MonoBehaviour
         public string answer;
         public Sprite image;
         public string description;
-        public bool HasImage => image != null;
+        public string contentId;
+        public bool HasImage => image != null || !string.IsNullOrEmpty(contentId);
         public bool HasText => !string.IsNullOrEmpty(description);
     }
 
@@ -211,7 +215,7 @@ public class SilueteGameManager : MonoBehaviour
                     ? q.description
                     : QuizDescriptions.Get(q.correctAnswer);
 
-                var rq = new RuntimeQuiz { answer = q.correctAnswer, image = q.originalImage, description = desc };
+                var rq = new RuntimeQuiz { answer = q.correctAnswer, image = q.originalImage, description = desc, contentId = q.contentId };
                 if (!rq.HasImage && !rq.HasText) continue;   // 낼 방법이 없는 문제는 제외
 
                 pool.Add(rq);
@@ -326,9 +330,31 @@ public class SilueteGameManager : MonoBehaviour
             else
             {
                 targetImage.rectTransform.sizeDelta = targetImageDefaultSize;
-                targetImage.sprite = currentQuiz.image;
                 targetImage.preserveAspect = true;
                 targetImage.color = targetImageDefaultColor;
+
+                if (currentQuiz.image != null)
+                {
+                    targetImage.sprite = currentQuiz.image;
+                }
+                else if (!string.IsNullOrEmpty(currentQuiz.contentId))
+                {
+                    // 로컬 이미지 없음 → TourAPI 로 비동기 로드
+                    targetImage.sprite = null;
+                    targetImage.color = new Color(0.85f, 0.85f, 0.85f); // 로딩 중 회색
+                    var quizRef = currentQuiz; // 클로저 캡처용
+                    TourImageLoader.Instance.LoadImage(quizRef.contentId, sprite =>
+                    {
+                        if (sprite == null) return;
+                        quizRef.image = sprite; // 캐싱: 다음 출제 때 바로 씀
+                        // 현재 표시 중인 문제와 같을 때만 교체
+                        if (currentQuiz == quizRef && !currentIsTextQuiz && targetImage != null)
+                        {
+                            targetImage.sprite = sprite;
+                            targetImage.color = targetImageDefaultColor;
+                        }
+                    });
+                }
             }
         }
     }
@@ -393,13 +419,37 @@ public class SilueteGameManager : MonoBehaviour
         string answerName = currentQuiz != null ? currentQuiz.answer : string.Empty;
 
         // 정답 장소/유적의 사진 — 미리 만들어 둔 ResultRelicImage 오브젝트에 채운다.
-        // 사진이 있는 문제면 그 사진을, 없으면 Resources 에서 정답 이름으로 찾는다. 둘 다 없으면 숨긴다.
+        // 사진이 있는 문제면 그 사진을, 없으면 Resources 에서 정답 이름으로 찾는다.
+        // 둘 다 없고 contentId 가 있으면 TourAPI 로 비동기 로드한다.
         if (resultImage != null)
         {
             Sprite relicSprite = ResolveResultImage(currentQuiz);
-            resultImage.sprite = relicSprite;
-            resultImage.preserveAspect = true;
-            resultImage.gameObject.SetActive(relicSprite != null);
+            if (relicSprite != null)
+            {
+                resultImage.sprite = relicSprite;
+                resultImage.preserveAspect = true;
+                resultImage.gameObject.SetActive(true);
+            }
+            else if (!string.IsNullOrEmpty(currentQuiz?.contentId))
+            {
+                resultImage.gameObject.SetActive(false);
+                var quizRef = currentQuiz;
+                TourImageLoader.Instance.LoadImage(quizRef.contentId, sprite =>
+                {
+                    if (sprite == null) return;
+                    quizRef.image = sprite; // 다음 출제 때도 바로 쓸 수 있게 캐싱
+                    if (resultImage != null && currentQuiz == quizRef)
+                    {
+                        resultImage.sprite = sprite;
+                        resultImage.preserveAspect = true;
+                        resultImage.gameObject.SetActive(true);
+                    }
+                });
+            }
+            else
+            {
+                resultImage.gameObject.SetActive(false);
+            }
         }
 
         if (isCorrect)
